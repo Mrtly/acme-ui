@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  font-size: 1rem;
+  height: 100%;
+  /* @apply font-roboto; */
+  @apply text-gray-800;
+}
+
+img {
+  display: block;
+  position: relative;
+}
