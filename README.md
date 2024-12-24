@@ -9,6 +9,7 @@ A collection of samples of my work from the last couple years.
 - a **data table** system wrapping **tanstack table**
 - **alert** & **toast/snackbar** notifications systems inlc. components & state/context hooks
 - an **`<Icon>`** wrapper component using the **react-feather** icons library
+- more! :)
 
 [acme-ui.vercel.app](https://acme-ui.vercel.app/)
 

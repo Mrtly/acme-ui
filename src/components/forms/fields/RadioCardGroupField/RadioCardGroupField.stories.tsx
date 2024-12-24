@@ -10,8 +10,8 @@ import { userEvent, within, expect } from '@storybook/test'
 import { GlobalToastRegion, addToastToQueue } from '@/components/notifications/Toast/Toast'
 import JsonCodeBlockDisplay from '@/utils/helpers/JsonCodeBlockDisplay'
 import { Button } from '@/components/buttons/Button'
-import { CurrencyFormat } from '../../../../other/CurrencyFormat'
-import { DateFormat } from '../../../../other/DateFormat'
+import { CurrencyFormat } from '../../../../backlog/CurrencyFormat'
+import { DateFormat } from '../../../../backlog/DateFormat'
 import { Icon } from '@/theme/Icons'
 
 const FormSchema = z.object({

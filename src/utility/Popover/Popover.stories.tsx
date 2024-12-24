@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/utility/Popover'
+import { Popover, PopoverTrigger, PopoverContent } from 'src/utility/Popover'
 import { Button } from '@/components/buttons/Button'
 import { screen, userEvent, waitFor, within, expect } from '@storybook/test'
 

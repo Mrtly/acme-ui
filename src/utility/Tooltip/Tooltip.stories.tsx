@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/utility/Tooltip'
+import { Tooltip, TooltipTrigger, TooltipContent } from 'src/utility/Tooltip'
 import { screen, userEvent, waitFor, within, expect } from '@storybook/test'
 import { Icon } from '@/theme/Icons'
 

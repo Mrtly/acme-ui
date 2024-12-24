@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { DateFormat } from 'src/other/DateFormat'
+import { DateFormat } from 'src/backlog/DateFormat'
 import { within, expect } from '@storybook/test'
 
 const date: Date = new Date('2023-12-08T17:40:16.541Z')

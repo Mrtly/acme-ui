@@ -27,13 +27,13 @@ const meta: Meta<typeof Button> = {
 	},
 	argTypes: {
 		variant: {
-			options: ['primary', 'secondary', 'destructive', 'ghost', 'action'],
+			options: ['primary', 'secondary', 'destructive', 'ghost'],
 			control: {
 				type: 'select',
 			},
 		},
 		size: {
-			options: ['sm', 'md', 'lg', 'xl'],
+			options: ['sm', 'md', 'lg'],
 			control: {
 				type: 'select',
 			},
@@ -53,11 +53,8 @@ const meta: Meta<typeof Button> = {
 			expect(button).not.toBeDisabled()
 			await expect(button).toHaveAttribute('data-busy', 'true')
 			await expect(button).toHaveAccessibleName()
-			if (args.variant !== 'action') {
-				const loadingIndicator = within(button).getByTestId('loading-indicator')
-				await expect(loadingIndicator).toBeVisible()
-			}
-			if (args.busyMsg && args.variant !== 'action') {
+
+			if (args.busyMsg) {
 				await expect(button).toHaveTextContent(args.busyMsg)
 			}
 		} else {
@@ -76,9 +73,6 @@ const meta: Meta<typeof Button> = {
 				case 'destructive':
 					await expect(button.className).toContain('bg-error text-white')
 					break
-				case 'action':
-					await expect(button.className).toContain('text-brand')
-					break
 				default:
 					break
 			}
@@ -96,9 +90,6 @@ const meta: Meta<typeof Button> = {
 					break
 				case 'ghost':
 					await expect(button.className).toContain('bg-gray-100')
-					break
-				case 'action':
-					await expect(button.className).toContain('text-blue-800')
 					break
 				default:
 					break

@@ -12,10 +12,10 @@ const tailwindConfig : Config = {
 	theme: {
 		extend: {
 			colors: {
-				brand: '#6d28d9',
-				success: '#047857',
-				warning: '#c2410c',
-				error:'#b91c1c',
+				brand: '#1d4ed8', //blue-700
+				success: '#047857', //green-700
+				warning: '#c2410c', //orange-700
+				error:'#b91c1c', //red-700
 			},
 			gridTemplateRows: {
 				'fr-0': '0fr', // used for vertical transitions

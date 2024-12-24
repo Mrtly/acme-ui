@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { DatePicker } from './DatePicker'
-import { DateFormat } from '../../../../other/DateFormat'
+import { DateFormat } from '../../../../backlog/DateFormat'
 import { within, expect, userEvent, screen, waitFor } from '@storybook/test'
 import { cn } from '@/utils/cn'
 
