@@ -4,7 +4,7 @@ import {
 	DropdownMenuTrigger,
 	DropdownMenuContent,
 	DropdownMenuCheckboxItem,
-} from './DropdownMenu'
+} from '../../menus/DropdownMenu/DropdownMenu'
 import { Button } from '@/components/buttons/Button'
 import { Table } from '@tanstack/react-table'
 

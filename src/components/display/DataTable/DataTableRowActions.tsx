@@ -4,7 +4,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from './DropdownMenu'
+} from '../../menus/DropdownMenu/DropdownMenu'
 import { IconButton } from '@/components/buttons/IconButton'
 import { Checkbox } from '@/components/forms/inputs/Checkbox'
 
