@@ -1,0 +1,31 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.tabSize": 2,
+	"editor.detectIndentation": false,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+	"emmet.includeLanguages": {
+		"javascript": "javascriptreact"
+	},
+	"prettier.requireConfig": true,
+	"editor.quickSuggestions": {
+		"strings": true
+	},
+	"editor.inlineSuggest.enabled": true,
+	//exclude sources/files/patterns from automatic import suggestions
+	"typescript.preferences.autoImportFileExcludePatterns": [],
+	//fixes warning squiggly on @tailwind, @apply, @import etc in .css files
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	//enable TW suggestions in text consts named somethingStyles or styles
+	"tailwindCSS.classAttributes": ["className", ".*Styles", ".*styles"],
+	//enable TW suggestions in cva and cn
+	"tailwindCSS.emmetCompletions": true,
+	"tailwindCSS.experimental.classRegex": [
+		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+		["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+	]
+}
