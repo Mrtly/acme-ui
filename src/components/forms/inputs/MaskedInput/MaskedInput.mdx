@@ -1,0 +1,41 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as MaskedInputStories from './MaskedInput.stories'
+
+<Meta of={MaskedInputStories} />
+
+# MaskedInput
+
+**`<MaskedInput>`** is a text input component, with masking functionality for `account`, `phone`, `zip` and `usd` mask types.
+
+In forms use the **`<MaskedInputField>`** component (see [Forms > Fields > MaskedInputField](/docs/forms-fields-maskedinputfield--docs)).
+
+For a Phone number form field use the **`<PhoneField>`** component (see [Forms > Fields > PhoneField](/docs/forms-fields-phonefield--docs)).
+
+<Canvas of={MaskedInputStories.Default} />
+
+- **account**: 0000-0000-0000-0000
+- **phone**: (000) 000-0000
+- **zip**: 00000
+- **USD**: $ amount formatted with commas and 2 decimal places
+
+### Usage
+
+Because of the masking functionality, masked inputs should only be used as uncontrolled.
+
+<Source code={`import { MaskedInput } from '@acme/ui'`} />
+
+<Source
+	code={`
+<MaskedInput
+  maskType={/* 'account' | 'phone' | 'zip' | 'usd' */}
+  label={label} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  onMaskedValueUpdate={v => {}} {/* function/value listener, used in form fields */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+/>
+`}
+/>

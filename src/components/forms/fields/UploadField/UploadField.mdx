@@ -1,0 +1,90 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/blocks'
+import * as UploadFieldStories from './UploadField.stories'
+
+<Meta of={UploadFieldStories} />
+
+# UploadField
+
+**`<UploadField>`** component for uploading a file or image, to be used in Forms
+
+For non-form purposes, utilize the base **`<Upload>`** input. [Forms > Input > Upload](/docs/inputs-fileupload--docs).
+
+<Canvas of={UploadFieldStories.File} />
+
+### Usage
+
+Use **`<UploadField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { UploadField } from '@acme/ui'`} />
+
+#### Image upload example
+
+<Source
+	code={`
+<UploadField
+  name="imgfile" {/* string */}
+  id="imgfile" {/* string */}
+  filetype="image" {/* will allow to select an image file */}
+  showPreview={showPreview} {/* boolean - show/hide the uploaded image preview */}
+  accept="image/png,image/jpg,image/jpeg,image/webp" {/* string, optional - the filetypes accepted */}
+  control={form.control} {/* connect to form control */}
+  label={label} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean - visually hide the label */}
+  description={description} {/* string */}
+  srOnlyDescription={srOnlyDescription} {/* boolean - visually hide the description */}
+  disabled={disabled} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form */}
+/>
+`}
+/>
+
+#### File upload example
+
+<Source
+	code={`
+<UploadField
+  name="imgfile" {/* string */}
+  id="imgfile" {/* string */}
+  filetype="file" {/* default */}
+  accept=".pdf, .doc" {/* optional - if left empty all file types will be accepted */}
+  control={form.control} {/* connect to form control */}
+  label={label} {/* string */}
+  srOnlyLabel={srOnlyLabel} option to visually hide the label */}
+  description={description} {/* string */}
+  srOnlyDescription={srOnlyDescription} {/* option to visually hide the description */}
+  disabled={disabled} {/* boolean */}
+/>
+`}
+/>
+
+### Props notes
+
+For documentation on the `accept` HTML attribute, see the MDN Docs
+
+By using the `accept` prop, the accepted filetypes will be available to the user in the selection dialog.
+This does not automatically validate the form on submission.
+
+The filetypes indicated by the `accept` prop should match the field's zod validation schema.
+
+#### Zod validation schema example
+
+<Source code={`
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+
+const ImageSchema = z.object({
+file: z
+.custom<File>((file) => file, {
+message: 'An image file is required.',
+})
+.refine(
+(file) => file && ACCEPTED_IMAGE_TYPES.includes(file?.type),
+'Only .jpg, .jpeg, .png and .webp formats are supported.'
+),
+// .optional(), {/* if this field is optional */}
+})
+`} />
+
+### Story props
+
+<Controls />

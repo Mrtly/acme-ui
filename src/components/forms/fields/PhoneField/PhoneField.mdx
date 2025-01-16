@@ -1,0 +1,63 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as PhoneFieldStories from './PhoneField.stories'
+
+<Meta of={PhoneFieldStories} />
+
+# PhoneField
+
+A **`<PhoneField>`** component to be used in Forms.
+
+It only accepts digits, and it masks the phone value to the `(000) 000-0000` pattern.
+
+<Canvas of={PhoneFieldStories.Default} />
+
+### Usage
+
+Use **`<PhoneField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+Use the `PhoneFieldSchema` or see the [Zod schema docs](/docs/forms-zodschemas--docs#predefined-schemas) for a schema breakdown.
+
+<Source
+	code={`import { PhoneField, PhoneFieldSchema, Form } from '@acme/ui'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+`}
+/>
+
+<Source code={`
+const FormSchema = z.object({
+  phone: PhoneFieldSchema,
+})
+
+const onSubmit = (data: z.infer<typeof FormSchema>) => {
+//submission logic
+}
+
+const FormDemo = () => {
+const form = useForm<z.infer<typeof FormSchema>>({
+resolver: zodResolver(FormSchema),
+})
+
+return (
+
+<Form formMethods={form} formName="Masked phone form" onSubmit={onSubmit}>
+<PhoneField
+control={form.control} {/* connect to form control */}
+name={name} {/* string */}
+label={label} {/* string */}
+{/* optional props */}
+id={id} {/* string */}
+description={description} {/* string */}
+placeholder={placeholder} {/* string */}
+srOnlyLabel={srOnlyLabel} {/* boolean */}
+srOnlyDescription={srOnlyDescription} {/* boolean */}
+disabled={disabled} {/* boolean */}
+required={required} {/* boolean, default true - "(optional)" shown on label if !required */}
+showOptional={showOptional} {/* boolean */}
+/>
+<Button type="submit"> Submit </Button>
+</Form>
+)
+}
+`}/>

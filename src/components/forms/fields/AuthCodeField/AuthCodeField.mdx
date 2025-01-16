@@ -1,0 +1,74 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as AuthCodeFieldStories from './AuthCodeField.stories'
+
+<Meta of={AuthCodeFieldStories} />
+
+# AuthCodeField
+
+A **`<AuthCodeField>`** component to be used in Forms.
+
+<Canvas of={AuthCodeFieldStories.Default} />
+
+### Usage
+
+Use **`<AuthCodeField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+The `AuthCodeFieldSchema` is also exported by the library, that requires 6 digits to be entered before submitting the form.
+
+<Source code={`import { AuthCodeField, AuthCodeFieldSchema, Form } from '@acme/ui'`} />
+
+<Source code={`
+const FormSchema = z.object({
+	verification_code: AuthCodeFieldSchema,
+})
+
+const form = useForm<z.infer<typeof FormSchema>>({
+resolver: zodResolver(FormSchema),
+})
+
+<Form formMethods={form} {...}>
+  <AuthCodeField
+    name="verification_code" {/* string - the field name  */}
+    control={form.control} {/* connect to the form control */}
+    {/* optional props  */}
+    id={id} {/* string - the field id */}
+    label="Verification code" {/* string, optional - the field label */}
+    description={description} {/* string, optional - the field description */}
+    srOnlyLabel={srOnlyLabel} {/* boolean - whether to visually hide the label  */}
+    srOnlyDescription={srOnlyDescription} {/* boolean - whether to visually hide the description  */}
+  />
+</Form>
+`}/>
+
+To trigger the form submission when all 6 digits are entered:
+
+<Source code={`
+const code = form.watch('verification_code')
+
+useEffect(() => {
+if (code?.length === 6) {
+form.handleSubmit(onSubmit)()
+}
+}, [code])`} />
+
+Zod validation schema - `AuthCodeFieldSchema`
+
+<Source
+	code={`
+const AuthCodeFieldSchema = z
+  .string({
+    requiredE'Enter the 6-digit code.',
+  })
+  .min(1, 'Enter the 6-digit code.')
+  .min(6, 'Code must be 6 digits.')
+  .max(6, 'Code must be 6 digits.'),
+`}
+/>
+
+### Props notes
+
+The field `label` defaults to `"Verification code"` if not provided.
+
+### Story props
+
+<Controls />

@@ -1,0 +1,86 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as ComboboxFieldStories from './ComboboxField.stories'
+
+<Meta of={ComboboxFieldStories} />
+
+# ComboboxField
+
+A **`<ComboboxField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<Combobox>`** input. [Inputs > Combobox](/docs/inputs-combobox--docs).
+
+<Canvas of={ComboboxFieldStories.Default} />
+
+### Variants
+
+The **`<ComboboxField>`** has 2 variants:
+
+- **'default'** renders a text input with a chevron dropdown button on the right
+- **'search'** renders the combobox as a search bar, with a search icon on the left
+
+The `variant` prop is passed to the `ComboboxField` and `ComboboxFieldItem` components to control their appearance.
+
+### Usage
+
+Use **`<ComboboxField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source
+	code={`import { ComboboxField, ComboboxFieldItem, ComboboxFieldSection } from '@acme/ui'`}
+/>
+
+<Source code={`
+<ComboboxField
+  control={form.control} {/* connect to form control */}
+  name={name} {/* string */}
+  label={label} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  placeholder={placeholder} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  description={description} {/* string - recommended, add a description for better accessibility */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  maxHeight={maxHeight} {/* number */}
+  required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+  showOptional={showOptional} {/* boolean */}
+  defaultValue={defaultValue} {/* string - can be manually set but does not update the default value on the zod data */}
+  variant="default" {/* "default" | "search" */}
+>
+ {/* add items - value (string) is required for each item (the field value) */}
+  <ComboboxFieldItem
+    value={value}
+    variant="default" {/* "default" | "search" */}
+  > 
+    {label} 
+  </ComboboxFieldItem>
+  {/* ...more items */}
+  {/* optionally wrap items in a titled Section */}
+  <ComboboxFieldSection title={title}>  {/* string */}
+    <ComboboxFieldItem value={value}> {label} </ComboboxFieldItem>
+  </ComboboxFieldSection>
+
+{/* or use iteration */}
+{[...].map((item, index) => {
+return (
+
+<ComboboxFieldItem key={item + index} value="item.value">
+	{' '}
+	{item.name}{' '}
+</ComboboxFieldItem>
+) })}
+
+</ComboboxField>
+`}/>
+
+### Props notes
+
+The `maxHeight` (number of pixels) prop will add a `max-height` class on the dropdown's scroll area.
+
+The **`<ComboboxField>`** allows a defaultValue to be set through Zod.
+
+The `variant` prop ('default' | 'search') applies styling based on the vairant and must be passed to both `ComboboxField` and `ComboboxFieldItem`.
+
+### Story props
+
+<Controls />

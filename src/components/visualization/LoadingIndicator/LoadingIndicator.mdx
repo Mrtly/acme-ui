@@ -1,0 +1,44 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/blocks'
+import * as LoadingIndicatorStories from './LoadingIndicator.stories'
+
+<Meta of={LoadingIndicatorStories} />
+
+# LoadingIndicator
+
+A **`<LoadingIndicator>`** is a visual animation used to convey processing or loading.
+
+#### variant `default`
+
+<Canvas of={LoadingIndicatorStories.Default} />
+
+#### variant `dots`
+
+<Canvas of={LoadingIndicatorStories.Dots} />
+
+### Usage
+
+Loading indicators are used when retrieving data or performing slow computations, and help to notify users that loading is underway.
+
+<Source code={` import { LoadingIndicator } from '@acme/ui' `} />
+
+<Source
+	code={`
+<LoadingIndicator 
+  {/* optional props */}
+  variant={variant} {/* 'default' | 'dots' */}
+  dotColor={dotColor} {/* 'brand' | 'black' | 'gray' */}
+/>
+`}
+/>
+
+### Props notes
+
+the `variant` prop defines which loading indicator animation to display (spinner or dots)
+
+the `dotColor` prop is only applicable if `variant === 'dots'`, sets the color of the dots for the `dots` variant
+
+the default loading indicator (circular spinner) receives `currentColor` from its parent element's color
+
+### Story props
+
+<Controls />

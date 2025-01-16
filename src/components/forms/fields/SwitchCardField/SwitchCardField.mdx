@@ -1,0 +1,42 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SwitchCardFieldStories from './SwitchCardField.stories'
+
+<Meta of={SwitchCardFieldStories} />
+
+# SwitchCardField
+
+A **`<SwitchCardField>`** component to be used in Forms
+
+Switches allow users to turn an individual option on or off. They are usually used to activate or deactivate a setting.
+
+For non-form purposes, utilize the base **`<SwitchCard>`** input. [Forms > Input > SwitchCard](/docs/inputs-switchcard--docs).
+
+<Canvas of={SwitchCardFieldStories.Default} />
+
+### Usage
+
+Use **`<SwitchCardField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { SwitchCardField } from '@acme/ui'`} />
+
+<Source
+	code={`
+<SwitchCardField
+  control={form.control} {/* connect field to form control */}
+  name={name} {/* string, the field name  */}
+  label={label} {/* string, the field label */}
+  {/* optional */}
+  id={id} {/* string, the field id */}
+  statusLabelTrue={statusLabelTrue} {/* string, label text for checked state */}
+  statusLabelFalse={statusLabelFalse} {/* string, label text for unchecked state */}
+  description={description} {/* string, the field description */}
+  srOnlyDescription={srOnlyDescription} {/* boolean, whether to render description as sr-only */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

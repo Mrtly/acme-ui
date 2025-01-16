@@ -1,0 +1,90 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as ComboboxStories from './Combobox.stories'
+
+<Meta of={ComboboxStories} />
+
+# Combobox
+
+**`<ComboBox>`** combines a text entry with a picker menu, allowing users to filter longer lists to only the selections matching a query.
+
+In forms use the **`<Combobox>`** component (see [Forms > Fields > Combobox](/docs/forms-fields-comboboxfield--docs)).
+
+<Canvas of={ComboboxStories.Default} />
+
+### Variants
+
+The Combobox has 2 variants:
+
+- **'default'** renders a text input with a chevron dropdown button on the right
+- **'search'** renders the combobox as a search bar, with a search icon on the left
+
+The `variant` prop is passed to the `ComboboxTrigger`, `ComboBoxContent`, and `ComboboxItem` components to control their appearance.
+
+### Usage
+
+<Source
+	code={`import { Combobox, ComboboxContent, ComboboxItem, ComboboxSection, ComboboxTrigger } from '@acme/ui'`}
+/>
+
+<Source
+	code={`
+ <Combobox
+  label={label} {/* string */}
+  onSelectionChange={(value) => {}} {/* value change listener */}
+  {/* optional props */}
+  srOnlyLabel={srOnlyLabel} {/* string */}
+  placeholder={placeholder} {/* string */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form */}
+  defaultInputValue={defaultInputValue} {/* string - for uncontrolled Combobox */}
+  defaultSelectedKey={defaultInputValue} {/* string - for uncontrolled Combobox */}
+  {/* for controlled Combobox */}
+  inputValue={inputValue} {/* string */}
+  selectedKey={inputValue} {/* string */}
+  onInputChange={onSelectionChange} {/* () => {} */}
+  onSelectionChange={onSelectionChange} {/* () => {} */}
+>
+  {/* this is the interactive element */}
+  <ComboboxTrigger
+    placeholder={placeholder} {/* string */}
+    error={error} {/* boolean */}
+    small={small} {/* boolean - a smaller element for use in application UI patterns */}
+    variant="default" {/* "default" | "search" */}
+  />
+  {/* content wrapper for options/items */}
+  <ComboboxContent 
+    maxHeight={maxHeight} {/* number - maxHeight of the dropdown area */}
+    variant="default" {/* "default" | "search" */}
+  > 
+    {/* ITEMS - value (string) is required for each item (this is the emitted field value) */}
+    <ComboboxItem
+      value={value}
+      variant="default" {/* "default" | "search" */}
+    > 
+      { label } 
+    </ComboboxItem>
+    {/* ...more items */}
+    <ComboboxSection title={title}> {/* optional, section with title */}
+      <ComboboxItem value={value}> { label } </ComboboxItem>
+      {/* ...more items */}
+    </ComboboxSection>
+  </ComboboxContent>
+</Combobox>
+`}
+/>
+
+### Props notes
+
+**`<ComboBoxTrigger>`**, **`<ComboBoxContent>`**, **`<ComboBoxItem>`**
+
+- `variant`: 'default' | 'search' - Applies styling based on the Combobox variant
+
+**`<ComboBoxContent>`**
+
+- `maxHeight`: `number` of pixels - will add a `max-height` class to the dropdown's scroll area
+
+### Story props
+
+<Controls />

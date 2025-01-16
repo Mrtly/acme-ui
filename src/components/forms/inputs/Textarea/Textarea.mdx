@@ -1,0 +1,38 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as TextareaStories from './Textarea.stories'
+
+<Meta of={TextareaStories} />
+
+# Textarea
+
+**`<Textarea>`** is a multiline text input, useful for cases where users have a sizable amount of text to enter.
+
+In forms use the **`<TextareaField>`** component (see [Forms > Fields > TextareaField](/docs/forms-fields-textareafield--docs)).
+
+<Canvas of={TextareaStories.Default} />
+
+### Usage
+
+<Source code={`import { Textarea } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Textarea
+  label={label} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  placeholder={placeholder} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  onChange={(event: Event) => {}} {/* function, change event listener */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

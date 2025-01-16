@@ -1,0 +1,40 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/blocks'
+import * as CodeBlockStories from './CodeBlock.stories'
+
+<Meta of={CodeBlockStories} />
+
+# CodeBlock
+
+A **`<CodeBlock>`** component that displays highlighted code samples (using `prism-react-renderer`)
+
+<Canvas of={CodeBlockStories.Default} />
+
+### Usage
+
+<Source code={` import { CodeBlock } from '@acme/ui' `} />
+
+<Source
+	code={`
+<CodeBlock
+  code={code} {/* string of pre-formatted code sample */}
+  darkMode={darkMode} {/* boolean, defaults to true */}
+  filename={filename} {/* optional, string */}
+/>
+`}
+/>
+
+### Props notes
+
+- `code` : `string`, required - pre-formatted code sample
+- `darkMode` : `boolean` - default `true`
+- `fileName` : `string` - renders the filename at the top of the CodeBlock
+
+#### Story props
+
+<Controls />
+
+### Component Expansion
+
+The component uses the `'prism-react-renderer'` package. See the [prism-react-renderer docs](https://github.com/FormidableLabs/prism-react-renderer) for more features.
+
+The **`<CodeBlock>`** themes are set to the VSCode dark and light default themes. Prism-react-renderer offers more themes, as well as theme customization.

@@ -1,0 +1,99 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DrawerDialogStories from './DrawerDialog.stories'
+
+<Meta of={DrawerDialogStories} />
+
+# DrawerDialog
+
+A modal dialog is a UI element that temporarily halts the workflow of the user by requiring interaction before allowing further access to the main application.
+
+The **`<DrawerDialog>`** component opens content in a drawer from the side of the screen.
+
+<Canvas of={DrawerDialogStories.Default} />
+
+### Usage
+
+<Source
+	code={`import { DrawerDialog, DrawerDialogTrigger, DrawerDialogContent } from '@acme/ui'`}
+/>
+
+To improve accessibility, ensure there is a descriptive title that will be read by the screen-reader.
+The `title` is passed as a prop to `DrawerDialogContent` and rendered as an `h2` element.
+If a visually-hidden title is preferred, it can be added directly as the `DrawerDialogTitle` element inside the Content.
+
+#### Button trigger
+
+Dialog content with string title and description:
+
+<Source
+	code={`
+<DrawerDialog>
+  <DrawerDialogTrigger asChild> {/* add asChild prop if trigger child is a button  */}
+    <Button>Open</Button>
+  </DrawerDialogTrigger>
+  {/* title and description can be passed as props, separate from the main content */}
+  <DrawerDialogContent
+    title="Are you absolutely sure?"
+    description="This action cannot be undone. This will permanently delete your
+  account and remove your data from our servers."
+  >
+    {/* main content here */}
+  </DrawerDialogContent>
+</DrawerDialog>
+`}
+/>
+
+Content with Logo in the title:
+
+<Source
+	code={`
+<DrawerDialogContent
+  title={
+    <>
+      <Logo aria-label="acme logo" />
+      {/* a screen-reader-only readable title added for accessibility */}
+      <span className="sr-only">scrollable menu</span> 
+    </>
+  }
+>
+  {/* content */}
+</DrawerDialogContent>
+`}
+/>
+
+Content with visually-hidden title:
+
+<Source
+	code={`
+<DrawerDialogContent>
+  <DrawerDialogTitle className="sr-only">menu</DrawerDialogTitle>
+  {/* content */}
+</DrawerDialogContent>
+`}
+/>
+
+#### Dynamic trigger
+
+<Source code={`
+const [showDialog, setShowDialog] = useState(false)
+
+const triggerDialog = () => { setShowDialog(true) } {/* call by button or event */}
+
+<DrawerDialog open={showDialog} onOpenChange={setShowDialog}>
+	<DrawerDialogContent>{/* ... */}</DrawerDialogContent>
+</DrawerDialog>
+`}/>
+
+### Props notes
+
+**`DrawerDialogContent`**
+
+- `side` : `'left' | 'right' | 'top' | 'bottom'` - position the drawer to that side of the screen. The default `side` is `right`.
+
+---
+
+**`DrawerDialogTrigger`**
+
+- `asChild` : Trigger elements by Radix components render a button element.
+  When inserting a button in the trigger element, the HTML result is a button within a button (a bad practice for accessibility that can also break the UI).
+  By adding the - `asChild` prop to the Trigger, the trigger becomes a (non-interactive) div element. An interactive element can then be added in the trigger, ie. a button, link etc.

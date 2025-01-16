@@ -1,0 +1,79 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SelectFieldStories from './SelectField.stories'
+
+<Meta of={SelectFieldStories} />
+
+# SelectField
+
+A **`<SelectField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<Select>`** input. [Forms > Input > Select](/docs/inputs-select--docs).
+
+<Canvas of={SelectFieldStories.Default} />
+
+### Usage
+
+Use **`<SelectField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { SelectField, SelectFieldItem, SelectFieldSection } from '@acme/ui'`} />
+
+<Source code={`
+<SelectField
+  control={form.control} {/* connect to form control */}
+  name={name} {/* string */}
+  label={label} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  description={description} {/* string, recommended - add a description for better accessibility */}
+  placeholder={placeholder} {/* string */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  maxHeight={maxHeight} {/* Number */}
+  showTrueValue={showTrueValue} {/* boolean */}
+  required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+  showOptional={showOptional} {/* boolean */}
+  canClearSelection={canClearSelection} {/* boolean */}
+  defaultValue={defaultValue} {/* string */}
+>
+ {/* add items - value is required for each item (the field value) */}
+  <SelectFieldItem value="chocolate"> Chocolate </SelectFieldItem>
+    <SelectFieldItem value="vanilla"> Vanilla </SelectFieldItem>
+  <SelectFieldItem value="strawberry"> Strawberry </SelectFieldItem>
+
+{/* optionally wrap items in a titled Section */}
+
+{' '}
+
+<SelectFieldSection title="Sorbet">
+	<SelectFieldItem value="lemon"> Lemon Sorbet </SelectFieldItem>
+</SelectFieldSection>
+
+{/* or use iteration */}
+{[...].map((item, index) => {
+return (
+
+<SelectFieldItem key={item + index} value="item.value">
+	{' '}
+	{item.name}{' '}
+</SelectFieldItem>
+) })}
+
+</SelectField>
+`}/>
+
+### Props notes
+
+The `canClearSelection` (boolean) will add an option item at the top of the option list that resets the Select field value to unset (undefined) and renders the placeholder
+
+The `maxHeight` (number of pixels) prop will add a `max-height` class on the dropdown's scroll area.
+
+By default, the component will show the display value of the selected Item (the text content)
+
+<br />
+The `showTrueValue` prop (boolean) will display the selected Item value on the Select trigger
+element
+
+### Story props
+
+<Controls />

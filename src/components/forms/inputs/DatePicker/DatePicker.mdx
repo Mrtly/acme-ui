@@ -1,0 +1,44 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DatePickerStories from './DatePicker.stories'
+
+<Meta of={DatePickerStories} />
+
+# DatePicker
+
+**`<DatePicker>`** combines a Date input and a Calendar popover to allow users to enter or select a date value.
+
+In forms use the **`<DatePicker>`** component (see [Forms > Fields > DatePicker](/docs/forms-fields-datepickerfield--docs)).
+
+<Canvas of={DatePickerStories.Default} />
+
+### Usage
+
+<Source code={`import { DatePicker } from '@acme/ui'`} />
+
+<Source code={`
+const [date, setDate] = React.useState<Date | undefined>()
+const [invalid, setInvalid] = React.useState<boolean>(false)
+
+<DatePicker
+  label={label} {/* string */}
+  onDateChange={setDate} {/* (value: Date) => {} - value change listener */}
+  {/* optional props */}
+  id={id} {/* string */}
+  error={error} {/* boolean */}
+  onValidation={setInvalid} {/* (value: boolean) => {} - error state change listener used in the field component */}
+  defaultValue={Date} {/* Date - set a default value */}
+  value={Date} {/* Date - set the value for controlled component */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean */}
+  {/* optional calendar props */}
+  showCalendarValue={showCalendarValue} {/* boolean */}
+  disablePastDates={disablePastDates} {/* boolean */}
+  disableWeekends={disableWeekends} {/* boolean */}
+  disableToday={disableToday} {/* boolean */}
+  minDate={minDate} {/* Date */}
+  maxDate={maxDate} {/* Date */}
+/>
+`}/>

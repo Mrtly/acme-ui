@@ -1,0 +1,68 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as RadioCardGroupStories from './RadioCardGroup.stories'
+
+<Meta of={RadioCardGroupStories} />
+
+# RadioCardGroup
+
+**`<RadioCardGroup>`** & **`<RadioCard>`** base input components
+
+In forms use the **`<RadioCardGroupField>`** component (see [Forms > Fields > RadioCardGroupField](/docs/forms-fields-radioCardGroupfield--docs))
+
+<Canvas of={RadioCardGroupStories.Default} />
+
+### Usage
+
+<Source code={`import { RadioCardGroup, RadioCard } from '@acme/ui'`} />
+
+<Source
+	code={`
+<RadioCardGroup
+  legend="Choose level" {/* string */}
+  {/* optional props */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean */}
+  showOptional={showOptional} {/* boolean */}
+  srOnlyLegend={srOnlyLegend} {/* boolean - visually hides the legend */}
+  defaultValue="cat" {/* string - set a default value */}
+  value="cat" {/* string - for controlled component, must be used with onChange */}
+  onChange={(value) => {}} {/* function, value change listener */}
+  className="w-72" {/* width class to manage width of fieldset and items */}
+> 
+  <RadioCard
+    id="dog" {/* string */}
+    value="dog" {/* string */}
+    label="Dog" {/* string */}
+    disabled={disabled} {/* boolean, disables this item only */}
+    rightSlot={<Badge variant="outline"> 10 points </Badge>} {/* ReactNode - optional */}
+    bottomSlot={<Badge variant="outline"> 10 points </Badge>} {/* ReactNode - optional */}
+  />
+  {/* ...more items */}
+</RadioCardGroup>
+`}
+/>
+
+### Props notes
+
+**`<RadioCardGroup>`**
+
+- `orientation` : `'vertical' | 'horizontal'` - default is `'vertical'`
+
+In horizontal orientation wrap each item in a `<div>`, so it does not take the full width of the group.
+
+---
+
+**`<RadioCard>`**
+
+- `rightSlot` : optionally, a right-side element can rendered on the right side of the card.
+- `bottomSlot` : optionally, a bottom-side element can rendered on the bottom side of the card.
+
+The slots must not contain any interactive elements or other inputs, they are for static elements only such as displaying extra information or images.
+
+---
+
+### Story props
+
+<Controls />

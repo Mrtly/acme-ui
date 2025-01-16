@@ -1,0 +1,94 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as TopNavMenuStories from './TopNavMenu.stories'
+
+<Meta of={TopNavMenuStories} />
+
+# TopNavMenu
+
+A navigation component that can be used to show a list of navigation links positioned in the top/header of a page or application.
+
+Renders a `<nav>` element with links and lists of links.
+
+<Canvas of={TopNavMenuStories.Default} />
+
+### Usage
+
+**`<TopNavMenuLink>`** renders a (`<a>`) element by default.
+It can render a Next Link if passed via the `as` prop. The `href` property is required.
+
+**`<TopNavMenuButton>`** renders a (`<button>`) element, used for calling an action. The `onClick` property is required.
+
+<Source code={`
+import {
+  TopNavMenu,
+  TopNavMenuLink,
+  TopNavMenuGroup,
+  TopNavMenuButton,
+} from '@acme/ui'
+
+import { default as NextLink } from 'next/link' {/* if using Next Link */}
+`} />
+
+<Source code={`
+<TopNavMenu>
+  <TopNavMenuLink
+    href="/" {/* required */}
+    as={NextLink} {/* optional, pass in Next.js Link component */}
+    current={pathname === '/'} {/* boolean, compare pathname from next/navigation to the path */}
+  >
+    Home
+  </TopNavMenuLink>
+  <TopNavMenuGroup title={title} current={current}>
+    <TopNavMenuLink href="/"> {/* label */} </TopNavMenuLink>
+    {/* ...more links */}
+    <TopNavMenuButton onClick={() => alert('button action')}> {/* label */} </TopNavMenuButton>
+  </TopNavMenuGroup>
+
+{/* solo link on the nav, using NextLink */}
+
+{' '}
+
+<TopNavMenuLink as={NextLink} href="https://example.com/" target="_blank">
+	Example Site <Icon name="ExternalLink" />
+</TopNavMenuLink>
+
+{/* solo button on the main nav */}
+
+  <TopNavMenuButton onClick={() => alert('button action')}>
+    Button <LogOut className="size-4" />
+  </TopNavMenuButton>
+</TopNavMenu>
+`}/>
+
+### Props notes
+
+- `className` : additional classes can be applied to the TopNavMenu components
+
+**`<TopNavMenu>`**
+
+- `ariaLabel` : `string`, optional, the default aria-label is 'Top Navigation Bar'
+
+---
+
+**`<TopNavMenuGroup>`**
+
+- `title` : `string`, required
+- `current` : `boolean`, used for accessibility & styling, optional
+
+---
+
+**`<TopNavMenuLink>`**
+
+- `href` : `string`, required
+- `as` : slot prop to pass in `NextLink` component, optional
+- `current` : `boolean`, used for accessibility & styling, optional
+- `icon` : slot prop for an Icon component, optional
+
+---
+
+**`<TopNavMenuButton>`**
+
+- `onClick` : function
+- `icon` : slot prop for an Icon component, optional
+
+---

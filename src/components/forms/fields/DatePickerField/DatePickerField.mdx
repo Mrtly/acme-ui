@@ -1,0 +1,111 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DatePickerFieldStories from './DatePickerField.stories'
+
+<Meta of={DatePickerFieldStories} />
+
+# DatePickerField
+
+A **`<DatePickerField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<DatePicker>`** input. [Forms > Input > DatePicker](/docs/inputs-datepicker--docs).
+
+<Canvas of={DatePickerFieldStories.Default} />
+
+### Usage
+
+Use **`<DatePickerField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+**`<DatePickerField>`** uses two subcomponents, a **`<Calendar>`**, and a DateInput (from RAC).
+Calendar accepts the disabling props, and will not let the user pick any unavailable dates.
+
+<br /> The DateInput will do the same validation based on the disabling props, but requires extra
+handling inside the `Form` component. This is because form validation will come from zod but also
+from within the DatePikcerField component, and this information must be considered before the form
+is submitted.
+
+<Source code={`import { DatePickerField } from '@acme/ui'`} />
+
+<Source code={`
+{/* The below handles validation for the Date input for unavailable dates */}
+const [datepickerError, setDatepickerError] = useState<string | null>(null)
+
+const setErrorMessage = useCallback(
+(msg: string) => {
+form.setError('date_picker', {
+type: 'custom',
+message: msg,
+})
+},
+[form]
+)
+
+useEffect(() => {
+datepickerError
+? setErrorMessage(datepickerError)
+: form.clearErrors('date_picker')
+}, [form, datepickerError, setErrorMessage])
+
+const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
+if (datepickerError) {
+//set the error message again because RHF removes it
+setErrorMessage(datepickerError)
+// focus on the first invalid field
+const firstErrorField = Object.keys(form.formState.errors)[0]
+const fieldRef = form.control.\_fields?.[firstErrorField]?.\_f.ref
+// @ts-expect-error (ref possibly undefined)
+fieldRef && fieldRef.focus()
+} else {
+onSubmit(data) //proceed to submission
+}
+}
+`}/>
+
+<Source
+	code={`
+<Form
+  formMethods={form}
+  formName="datepicker form"
+  onSubmit={handleSubmit} {/* the handleSubmit method defined above */}
+>
+  <DatePickerField
+    control={form.control} {/* connect to form control */}
+    handleFieldError={setDatepickerError} {/* () => {} - set the error msg in the local state */}
+    name={name} {/* string */}
+    label={label} {/* string */}
+    description={description} {/* string - recommended, add a description for better accessibility */}
+    {/* optional props */}
+    id={id} {/* string */}
+    srOnlyLabel={srOnlyLabel} {/* boolean */}
+    srOnlyDescription={srOnlyDescription} {/* boolean */}
+    disabled={disabled} {/* boolean */}
+    readOnly={readOnly} {/* boolean */}
+    required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+    showOptional={showOptional} {/* boolean */}
+    {/* optional calendar props */}
+    showCalendarValue={showCalendarValue} {/* boolean */}
+    disablePastDates={disablePastDates} {/* boolean */}
+    disableWeekends={disableWeekends} {/* boolean */}
+    disableToday={disableToday} {/* boolean */}
+    minDate={minDate} {/* Date */}
+    maxDate={maxDate} {/* Date */}
+  />
+</Form>
+`}
+/>
+
+### Setting a default value
+
+Settting a `defaultValue` in the `form` will populate the **DatePickerField** on initial render.
+
+<Source
+	code={`const form = useForm<z.infer<typeof FormSchema2>>({
+  resolver: zodResolver(FormSchema2),
+  defaultValues: {
+    date_picker: new Date(),
+  },
+})`}
+/>
+
+### Story props
+
+<Controls />

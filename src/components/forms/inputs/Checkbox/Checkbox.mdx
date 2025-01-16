@@ -1,0 +1,46 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as CheckboxStories from './Checkbox.stories'
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+**`<Checkbox>`** is used to mark one individual item as selected (or not).
+
+Checkboxes can also allow the user to select multiple items from a list of individual items.
+
+This is an individual item, suitable for a `boolean` value input.
+
+For a group of Checkboxes use the [CheckboxGroupField](/docs/inputs-checkboxgroup--docs).
+
+In forms use the **`<CheckboxField>`** component (see [Forms > Fields > CheckboxField](/docs/forms-fields-checkboxfield--docs)).
+
+<Canvas of={CheckboxStories.Default} />
+
+### Usage
+
+<Source code={`import { Checkbox } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Checkbox
+  label={label} {/* string */}
+  value={value} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form ie. filters */}
+  small={small} {/* boolean - a smaller element used in application UI */}
+  defaultChecked={defaultChecked} {/* default value */}
+  onChange={(value: boolean) => {}} {/* value change listener */}
+  checked={checked} {/* controlled value - must be used with onChange listener */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

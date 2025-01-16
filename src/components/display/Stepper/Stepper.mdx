@@ -1,0 +1,350 @@
+import { Meta, Story, Canvas, Source } from '@storybook/blocks'
+import * as StepperStories from './Stepper.stories'
+
+<Meta of={StepperStories} />
+
+# Stepper
+
+A **`<Stepper>`** component for multi-step display and forms.
+
+It renders a `tablist` with `tab`s and `tabpanel`, with horizontal or vertical orientation, and keyboard accessibility.
+
+For a form stepper example see [Form example](#form-example)
+
+<Canvas of={StepperStories.Default} />
+
+### Usage
+
+<Source code={` import { useStepper, Stepper, Step, StepConfig, StepperControlsArea } from '@acme/ui'
+
+{/* additional components */}
+import { Button } from '@acme/uis/uis/ui'
+`} />
+
+<Source code={`
+{/* create a steps array to hold the steps/tabs information */}
+const steps = [
+	{ label: 'Step 1', description: 'a description' },
+	{
+		label: 'Step 2',
+		description: 'this is a longer description with some more wordy words',
+	},
+	{
+		label: 'Step 3',
+		description: 'this is an optional step',
+		optional: true,
+		optionalLabel: 'optional',
+		icon: <Icon name="Circle" />,
+	},
+	{ label: 'Step 4' },
+] satisfies StepConfig[] {/* optional type check */}
+
+{/* initialize stepper data with the useStepper hook */}
+const {
+nextStep,
+prevStep,
+resetSteps,
+setStep,
+completeAndNextStep,
+activeStep,
+isDisabledStep,
+isLastStep,
+isStepperFinished,
+isOptionalStep,
+isStepCompleted
+} = useStepper({
+initialStep: 0,
+steps {/* the steps array created above */}
+})
+
+{/* setup helper functions */}
+const onClickStep = (i: number) => { setStep(i) }
+
+const handleNext = () => {
+completeAndNextStep() {/* or nextStep() without completing the step */}
+}
+
+const handleReset = () => { resetSteps() }
+
+return (
+
+  <>
+    <Stepper
+      orientation={orientation}
+      labelOrientation={labelOrientation}
+      activeStep={activeStep}
+      enableAllSteps={enableAllSteps}
+      onClickStep={onClickStep}
+    >
+      {steps.map((step, index) => (
+        <Step
+          index={index}
+          key={index}
+          isCompletedStep={isStepCompleted(index)}
+          {...step}
+        >
+          <div className="min-h-[160px] flex justify-between flex-col w-full rounded-lg bg-accent-blue-100erp-4 text-gray-800">
+            {/* tabpanel content */}
+            <p>This is Step {index + 1}</p>
+            {index===0 && <> content 1 </>}
+            {index===1 && <> content 2 </>}
+            {/* ... */}
+
+            {/* navigation buttons in a flex-row-reverse container,
+              buttons must be placed in a Next/Finish - Skip - Prev order */}
+            {!isStepperFinished && (
+              <StepperControlsArea>
+                  <Button
+                  size="sm"
+                  onClick={handleNext}
+                >
+                  {isLastStep ? 'Finish' : 'Next'}
+                </Button>
+                {isOptionalStep && (
+                  <Button size="sm" variant="secondary" onClick={nextStep}>
+                    Skip
+                  </Button>
+                )}
+                {activeStep !== 0 && (
+                  <Button
+                    size="sm"
+                    disabled={isDisabledStep}
+                    onClick={prevStep}
+                  >
+                    Prev
+                  </Button>
+                )}
+              </StepperControlsArea>
+            )}
+          </div>
+        </Step>
+      ))}
+    </Stepper>
+
+    {/* final view after steps completed */}
+    {isStepperFinished && (
+      <div className="min-h-[160px] flex justify-between flex-col w-full rounded-lg bg-accent-blue-100erp-4 text-gray-800">
+        <h2>All steps completed!</h2>
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <Button size="sm" className="w-fit" onClick={handleReset}>
+            Reset
+          </Button>
+        </div>
+      </div>
+    )}
+
+  </>
+)
+`}/>
+
+### Form example
+
+<Source code={` import { useStepper, Stepper, Step, StepConfig, StepperControlsArea } from '@acme/uis/uis/ui'
+
+{/* additional components */}
+import {
+Button,
+Form,
+CheckboxField,
+TextInputField,
+GlobalToastRegion,
+addToastToQueue,
+} from '@acme/uis/uis/ui'
+
+{/* form tools */}
+import { useForm } from 'react-hook-form'
+import \* as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+`} />
+
+<Source code={`
+{/* declare the steps array */}
+const formSteps = [
+  { label: 'Name' },
+  { label: 'Email' },
+  { label: 'Terms' },
+] satisfies StepConfig[]
+
+{/* declare the form schema with Zod */}
+const FormSchema = z.object({
+name: z
+.string({
+required_error: 'Enter a valid name.',
+})
+.min(2, {
+message: 'Name should be more than two characters.',
+}),
+email: z
+.string()
+.min(1, { message: 'Enter a valid email.' })
+.email('This is not a valid email.'),
+terms: z.boolean().refine((v) => v === true, {
+message: 'Required.',
+}),
+})
+
+const StepperFormExample = () => {
+const {
+nextStep,
+prevStep,
+resetSteps,
+setStep,
+completeAndNextStep,
+activeStep,
+isDisabledStep,
+isLastStep,
+isStepperFinished,
+isOptionalStep,
+isStepCompleted,
+} = useStepper({
+initialStep: 0,
+steps: formSteps, {/* the formSteps array declared above */}
+})
+
+{/* helper functions */}
+const onClickStep = (i: number) => { setStep(i) }
+
+const handleNext = () => { completeAndNextStep() }
+
+const handleReset = () => {
+resetSteps()
+form.reset()
+}
+
+const onSubmit = (data: z.infer<typeof FormSchema>) => {
+handleNext() //finish stepper
+{/* & do soemthing with the data */}
+}
+
+{/* initialize form (react-hook-form) */}
+const form = useForm<z.infer<typeof FormSchema>>({
+mode: 'onBlur', // https://react-hook-form.com/docs/useform#mode
+reValidateMode: 'onSubmit',
+resolver: zodResolver(FormSchema),
+})
+
+return (
+<div className="max-w-lg mx-auto">
+<Form
+        formMethods={form}
+        formName="Email subscription form"
+        onSubmit={onSubmit}
+      >
+<Stepper
+          orientation={orientation}
+          labelOrientation={labelOrientation}
+          activeStep={activeStep}
+          onClickStep={onClickStep}
+        >
+{formSteps.map((step, index) => (
+<Step
+index={index}
+key={index}
+isCompletedStep={isStepCompleted(index)}
+{...step} >
+<div className="rounded-lg border bg-white  shadow p-4 text-gray-800 mt-6">
+<div className="max-w-[280px] w-full mx-auto py-4">
+{index === 0 && (
+<TextInputField
+                      type="text"
+                      id="name"
+                      name="name"
+                      label="Name"
+                      placeholder="Your name"
+                      control={form.control}
+                    />
+)}
+{index === 1 && (
+<TextInputField
+                      type="email"
+                      id="email"
+                      name="email"
+                      label="Email"
+                      placeholder="Your email address"
+                      control={form.control}
+                    />
+)}
+{index === 2 && (
+<CheckboxField
+                      control={form.control}
+                      id="terms"
+                      name="terms"
+                      label="Terms & conditions"
+                    />
+)}
+</div>
+
+                {!isStepperFinished && (
+                  <StepperControlsArea>
+                    {!isLastStep && (
+                      <Button
+                        size="sm"
+                        disabled={
+                          (activeStep === 0 &&
+                            (!form.getValues().name ||
+                              !!form.formState.errors.name)) ||
+                          (activeStep === 1 &&
+                            (!form.getValues().email ||
+                              !!form.formState.errors.email)) ||
+                          (activeStep === 2 &&
+                            (!form.getValues().terms ||
+                              !!form.formState.errors.terms))
+                        }
+                        onClick={handleNext}
+                      >
+                        Next
+                      </Button>
+                    )}
+                    {isLastStep && (
+                      <Button
+                        size="sm"
+                        disabled={
+                          !!form.formState.errors.name ||
+                          !!form.formState.errors.email ||
+                          !form.getValues().terms ||
+                          !!form.formState.errors.terms
+                        }
+                        type="submit"
+                      >
+                        Submit
+                      </Button>
+                    )}
+
+                    {isOptionalStep && (
+                      <Button size="sm" variant="secondary" onClick={nextStep}>
+                        Skip
+                      </Button>
+                    )}
+
+                    {activeStep !== 0 && (
+                      <Button
+                        size="sm"
+                        disabled={isDisabledStep}
+                        onClick={prevStep}
+                      >
+                        Prev
+                      </Button>
+                    )}
+                  </StepperControlsArea>
+                )}
+              </div>
+            </Step>
+          ))}
+        </Stepper>
+
+        {isStepperFinished && (
+          <div className="min-h-[160px] flex justify-between flex-col w-full rounded-lg bg-accent-blue-100erp-4 text-gray-800">
+            <h2>All steps completed!</h2>
+            <div className="flex items-center justify-end gap-2 mt-2">
+              <Button size="sm" className="w-fit" onClick={handleReset}>
+                Reset
+              </Button>
+            </div>
+          </div>
+        )}
+      </Form>
+    </div>
+
+)
+})
+`}/>

@@ -1,0 +1,71 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as RadioCardGroupFieldStories from './RadioCardGroupField.stories'
+
+<Meta of={RadioCardGroupFieldStories} />
+
+# RadioCardGroupField
+
+A **`<RadioCardGroupField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<RadioCardGroup>`** input. [Forms > Input > RadioCardGroup](/docs/inputs-radiocardGroup--docs).
+
+<Canvas of={RadioCardGroupFieldStories.Default} />
+
+### Usage
+
+Use **`<RadioCardGroupField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { RadioCardGroupField, RadioCardGroupFieldItem } from '@acme/ui'`} />
+
+<Source
+	code={`
+<RadioCardGroupField
+  control={form.control} {/* connect to form control */}
+  name={name} {/* string */}
+  legend={legend} {/* string */}
+  {/* optional props */}
+  description={description} {/* string - recommended, add a field description */}
+  srOnlyDescription={srOnlyDescription} {/* boolean - visually hides the description */}
+  srOnlyLegend={srOnlyLegend} {/* boolean - visually hides the legend */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+  showOptional={showOptional} {/* boolean */}
+  className="w-72" {/* width class to manage width of fieldset and items */}
+>
+  <RadioCardGroupFieldItem
+    id="amount-due" {/* string */}
+    label="Amount due" {/* string */}
+    value="amount_due" {/* string */}
+    disabled={disabled} {/* boolean */}
+    description={<> Due on <DateFormat date={new Date()}/> </>} {/* string | ReactNode */}
+    rightSlot={<CurrencyFormat amount="140.25" />} {/* ReactNode, optional */}
+    bottomSlot={<VisaIcon />} {/* ReactNode, optional */}
+  />
+ {/* ...more items */}
+</RadioCardGroupField>
+`}
+/>
+
+### Props notes
+
+**`<RadioCardGroupField>`**
+
+- `orientation` : `'vertical' | 'horizontal'` - default is `'vertical'`
+
+In horizontal orientation wrap each item in a `<div>`, so it does not take the full width of the group.
+
+---
+
+**`<RadioCardGroupFieldItem>`**
+
+- `rightSlot` : optionally, a right-side element can rendered on the right side of the card.
+- `bottomSlot` : optionally, a bottom-side element can rendered on the bottom side of the card.
+
+The slots must not contain any interactive elements or other fields, they are for static elements only such as displaying extra information or images.
+
+---
+
+### Story props
+
+<Controls />

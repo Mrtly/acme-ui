@@ -1,0 +1,118 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as FormStories from './Form.stories'
+
+<Meta of={FormStories} />
+
+# Form
+
+#### Create a type-safe form with client-side validation, using the **`<Form>`** and **`<Field>`** components with [**React Hook Form**](https://react-hook-form.com/) and [**Zod**](https://zod.dev/])
+
+- [Example use](#example-use)
+- [Starter code](#starter-code)
+- [Forms > Zod Schemas guide](/docs/forms-zodschemas--docs)
+- [Zod documentation](https://zod.dev/?id=basic-usage)
+
+<Canvas of={FormStories.FormDemo3} />
+
+### Example use
+
+<Source
+	code={`
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, EmailField, EmailFieldSchema, CheckboxField, Button } from '@acme/ui'
+`}
+/>
+
+<Source code={`
+// Establish a Zod schema
+const FormSchema = z.object({
+  email: EmailFieldSchema,
+	subscribed: z.boolean().refine((v) => v === true, {
+		message: 'Required.',
+	}),
+})
+
+// Create the onSubmit() function to manage the form data
+const onSubmit = (data: z.infer<typeof FormSchema>) => {
+{/* Do something with the form values */}
+console.log(JSON.stringify(data, null, 2))
+}
+
+const SubscriptionForm = () => {
+{/* Initialize the form using useForm() and zodResolver */}
+const form = useForm<z.infer<typeof FormSchema>>({
+resolver: zodResolver(FormSchema),
+})
+
+return (
+<Form
+formMethods={form} {/* the form object returned by the useForm hook */}
+formName="Email Form" {/* form name for accessibility */}
+onSubmit={onSubmit} {/* the submit function to be called on submission */}
+className="flex flex-col gap-4" {/* wrapper styles, optional */} >
+<EmailField
+control={form.control} {/* connect to the form control */}
+id="email"
+name="email"
+label="Your email"
+/>
+<CheckboxField
+control={form.control} {/* connect to the form control */}
+id="check"
+name="subscribe"
+label="Subscribe to our newsletter"
+description="You can unsubscribe anytime"
+/>
+<Button type="submit"> Submit </Button> {/* must be type="submit" */}
+</Form>
+)
+}
+/>
+`}/>
+
+### Starter code
+
+<Source code={`
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const FormSchema = z.object({ {/* add form values schema */} })
+
+const onSubmit = (data: z.infer<typeof FormSchema>) => { {/* add submit handler */} }
+
+const NameThisForm = () => { {/* name the component */}
+const form = useForm<z.infer<typeof FormSchema>>({ resolver: zodResolver(FormSchema) })
+
+return (
+
+   <Form
+      formMethods={form} {/* Attach the form object returned by the useForm hook */}
+      formName="Form name" {/* form name for accessibility (is passed to aria-label) */}
+      onSubmit={onSubmit} {/* the function to be called on submission */}
+      className="" {/* optional styles */}
+    >
+      {/* add fields */}
+      {/* add button type="submit" */}
+    </Form>
+    )
+  }
+/>
+`} />
+
+### Using the form context in child components
+
+When building complex forms in React, it's often necessary to share form state and methods between parent and child components.
+
+The **`useFormContext`** hook from `react-hook-form` makes this possible by providing **access to the form context within any nested component**.
+
+This ensures that child components can interact with the form without having to pass down props manually.
+
+<Source code={`
+//child component nested in a <Form> wrapper
+
+const formInstance = useFormContext()
+{/* example */}
+const amountType = formInstance.watch('amount_type')`}/>

@@ -1,0 +1,40 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as AccordionStories from './Accordion.stories'
+
+<Meta of={AccordionStories} />
+
+# Accordion
+
+**`<Accordion>`** is a vertically stacked set of interactive headings that each reveal an associated section of content.
+
+<Canvas of={AccordionStories.Default} />
+
+### Usage
+
+<Source
+	code={`import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@acme/ui'`}
+/>
+
+<Source
+	code={`
+<Accordion type="single" collapsible>
+  <AccordionItem value="value"> {/* a string value to identify each item */}
+    <AccordionTrigger> { heading } </AccordionTrigger>
+    <AccordionContent> { content } </AccordionContent>
+  </AccordionItem>
+  {/* ... more items */}
+</Accordion>
+`}
+/>
+
+### Props notes
+
+**`<Accordion>`**
+
+- `defaultValue` : `string` - defines the open item by default
+- `collapsible` : `boolean` to allow all items to close
+- `type : 'single' (default) or 'multiple' to enable opening multiple items at once
+
+**`<AccordionItem>`**
+
+- `value` : `string` to identify the item uniquely

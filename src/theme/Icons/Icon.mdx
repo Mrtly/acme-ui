@@ -1,0 +1,39 @@
+import { Meta, Source } from '@storybook/blocks'
+import * as IconsStories from './Icon.stories'
+
+<Meta of={IconsStories} />
+
+# Icon
+
+**`<Icon>`** is a reuseable component representing all icons in the library.
+
+The specific icon is selected by the `name` property.
+
+Refer to **[All Icons](/docs/theme-icons--docs)** for a list of icon names.
+
+**`<Icon>`** size:
+- `sm` (16px)
+- `md` (20px)
+- `lg` (24px)
+- `xl` (30px)
+
+### Usage
+
+<Source code={` import { Icon } from '@ppl-gds/ui' 
+
+<Icon name="Circle" size="md" />`} />
+
+### Accessibility
+
+By default, an `<Icon>` has the `aria-hidden={true}` property.
+
+An `aria-label` can be provided by the `ariaLabel` prop, that renders the icon visible to screen-readers.
+
+`ariaLabel` should only be added to implementations where the icon is used to convey semantic meaning or useful feedback to the user.
+
+### Color
+
+By default, Icos inherit the `currentColor` - with the exception of the `PPL` Icons that default to a color.
+
+Add a color to an `<Icon>` through the `className="text-{color}"` property.
+

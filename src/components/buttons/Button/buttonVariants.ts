@@ -8,7 +8,7 @@ const buttonVariants = cva(
 		variants: {
 			variant: {
 				primary:
-					'bg-brand text-white enabled:hover:bg-blue-800 data-[busy=true]:hover:bg-blue-800 active:bg-blue-800 disabled:bg-gray-100 disabled:text-gray-400 disabled:border disabled:border-gray-200 disabled:border-solid',
+					'bg-brand text-white enabled:hover:bg-indigo-700 data-[busy=true]:hover:bg-indigo-700 active:bg-indigo-700 disabled:bg-gray-100 disabled:text-gray-400 disabled:border disabled:border-gray-200 disabled:border-solid',
 				secondary:
 					'bg-white text-gray-600 border-2 border-gray-500 enabled:hover:bg-gray-100 data-[busy=true]:hover:bg-white disabled:bg-gray-100 disabled:text-gray-400 disabled:border disabled:border-gray-200 disabled:border-solid',
 				destructive:
@@ -16,7 +16,7 @@ const buttonVariants = cva(
 				ghost:
 					'text-gray-500 enabled:hover:bg-gray-100 enabled:hover:text-gray-600 data-[busy=true]:hover:bg-transparent data-[busy=true]:hover:text-gray-500 disabled:opacity-70',
 				action:
-					'inline-flex text-brand enabled:hover:text-blue-800 !px-0 active:text-blue-800 !h-fit disabled:text-gray-400 focus-visible:ring-offset-4',
+					'inline-flex text-brand enabled:hover:text-indigo-700 !px-0 active:text-indigo-700 !h-fit disabled:text-gray-400 focus-visible:ring-offset-4',
 			},
 			size: {
 				sm: 'text-sm h-9 px-3',

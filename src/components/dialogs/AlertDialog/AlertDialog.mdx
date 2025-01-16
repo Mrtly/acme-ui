@@ -1,0 +1,73 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as AlertDialogStories from './AlertDialog.stories'
+
+<Meta of={AlertDialogStories} />
+
+# AlertDialog
+
+**`<AlertDialog>`** is a modal dialog that interrupts the user with important content and often requires action.
+
+It uses with `role="alertdialog"`, and screen-reader users will be notified when the dialog is opened.
+
+<Canvas of={AlertDialogStories.Default} />
+
+### Usage
+
+To improve accessibility, ensure there is a descriptive title that will be read by the screen-reader.
+
+<Source
+	code={`import  {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel
+} from '@acme/ui'`}
+/>
+
+#### Button trigger
+
+<Source
+	code={`
+<AlertDialog>
+  <AlertDialogTrigger asChild>  {/* use asChild if child is a button or other interactive element */}
+    <Button variant="secondary"> Show Dialog </Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle> { title } </AlertDialogTitle>
+      <AlertDialogDescription> { description } </AlertDialogDescription>
+    </AlertDialogHeader>
+    {/* more content, optional */}
+    <AlertDialogFooter>
+      <AlertDialogCancel> Cancel </AlertDialogCancel>
+      <AlertDialogAction> Continue </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+`}
+/>
+
+#### Dynamic trigger
+
+<Source code={`
+const [showAlert, setShowAlert] = useState(false)
+
+const triggerAlert = () => { setShowAlert(true) } {/* call by button, event, or another function */}
+
+<AlertDialog open={showAlert} onOpenChange={setShowAlert}>
+	<AlertDialogContent>{/* ... */}</AlertDialogContent>
+</AlertDialog>
+`}/>
+
+### Props notes
+
+**`<AlertDialogTrigger>`**
+
+- `asChild`: Trigger elements by Radix components render a button element.
+  When inserting a button in the trigger element, the HTML result is a button within a button (a bad practice for accessibility that can also break the UI).
+  By adding the- `asChild` prop to the Trigger, the trigger becomes a (non-interactive) div element. An interactive element can then be added in the trigger, ie. a button, link etc.

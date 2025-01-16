@@ -1,0 +1,87 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SelectStories from './Select.stories'
+
+<Meta of={SelectStories} />
+
+# Select
+
+**`<Select>`** displays a collapsible list of options and allows a user to select one of them.
+
+In forms use the **`<SelectField>`** component (see [Forms > Fields > SelectField](/docs/forms-fields-selectfield--docs)).
+
+<Canvas of={SelectStories.Default} />
+
+### Usage
+
+<Source
+	code={`import { Select, SelectContent, SelectItem, SelectSection, SelectTrigger } from '@acme/ui'`}
+/>
+
+<Source
+	code={`
+ <Select
+  label={label} {/* string */}
+  onSelectionChange={(v) => {}} {/* value change listener */}
+  {/* optional props */}
+  srOnlyLabel={srOnlyLabel} {/* string */}
+  placeholder={placeholder} {/* string */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form */}
+  disabled={disabled} {/* boolean */}
+  defaultSelectedKey={value} {/* string */}
+  selectedKey={value} {/* string - for controlled Select - must be used with onSelectionChange */}
+>
+  <SelectTrigger
+    error={error} {/* boolean */}
+    showTrueValue={showTrueValue} {/* boolean - will show the value of selected item on the Select element */}
+    small={small} {/* boolean - a smaller element for use in application UI patterns */}
+  />
+  {/* content wrapper for options/items */}
+  <SelectContent
+    maxHeight={maxHeight} {/* number - maxHeight of the dropdown area */}
+    canClearSelection={canClearSelection} {/* boolean - show a 'clear' option in the content */}
+  >
+    {/* ITEMS - value (string) is required for each item (it is the field value) */}
+    <SelectItem value={value}> {label} </SelectItem>
+    {/* ...more items */}
+    <SelectSection title={title}> {/* string - optional section with title */}
+      <SelectItem value={value}> {label} </SelectItem>
+      {/* ...more items */}
+    </SelectSection>
+  </SelectContent>
+</Select>
+`}
+/>
+
+### Props notes
+
+**`<Select>`**
+
+- `canClearSelection` (boolean) will add an option item at the top of the option list that resets the Select field value to unset (undefined) and renders the placeholder
+
+- `maxHeight` (number of pixels) prop will add a `max-height` class on the dropdown's scroll area.
+
+- By default, the component will show the display value of the selected Item (the text content)
+  <br />
+  The `showTrueValue` prop (boolean) will display the selected Item value on the Select trigger
+  element
+
+**`<SelectItem>`**
+
+- `truncate` (boolean) is used to toggle the `text-overflow:ellipses` class on the item content. Used by the Combobox search variant.
+
+### Accessibility
+
+**`<Select>`** uses a primitive component from Adobe's `react-aria-components` library.
+
+**`<Select>`** may trigger a [known accessibility false positive](https://github.com/adobe/react-spectrum/wiki/Known-accessibility-false-positives#picker) from automated accessibility testing tools.
+
+[Adobe Aria components Select - Accessibility reference](https://react-spectrum.adobe.com/react-aria/Select.html#accessibility)
+
+In the current story the false positive is suppresed.
+Using the `data-a11y-ignore="aria-hidden-focus"` data attribute already added to the component,
+the problematic element is excluded from the automated accessibility tests.
+
+### Story props
+
+<Controls />

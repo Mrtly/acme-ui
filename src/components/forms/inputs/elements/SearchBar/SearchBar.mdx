@@ -1,0 +1,33 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SearchBarStories from './SearchBar.stories'
+
+<Meta of={SearchBarStories} />
+
+# SearchBar
+
+The **`<SearchBar>`** allows a user to enter and clear a search query.
+
+<Canvas of={SearchBarStories.Default} />
+
+### Usage
+
+<Source code={`import { SearchBar } from '@acme/ui'`} />
+
+<Source
+	code={`
+<SearchBar
+  label={label} {/* string */}
+  onValueChange={(value) => {}} {/* function - search value listener */}
+  {/* optional props */}
+  id={id} {/* string */}
+  placeholder={placeholder} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean - for visually-hidden label */}
+  small={small} {/* boolean - used in application UI patterns */}
+  showSearchIcon={showSearchIcon} {/* boolean */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

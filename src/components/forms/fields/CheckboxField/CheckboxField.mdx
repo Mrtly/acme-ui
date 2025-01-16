@@ -1,0 +1,45 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as CheckboxFieldStories from './CheckboxField.stories'
+
+<Meta of={CheckboxFieldStories} />
+
+# CheckboxField
+
+A **`<CheckboxField>`** component to be used in Forms
+
+This is an individual form item, suitable for a `boolean` value form field.
+
+For a group of Checkboxes or CheckboxCards use the [CheckboxGroupField](/docs/forms-fields-checkboxgroupfield--docs).
+
+For non-form purposes, utilize the base **`<Checkbox>`** input. [Forms > Input > Checkbox](/docs/inputs-checkbox--docs).
+
+<Canvas of={CheckboxFieldStories.Default} />
+
+### Usage
+
+Use **`<CheckboxField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { CheckboxField } from '@acme/ui'`} />
+
+<Source
+	code={`
+<CheckboxField
+  control={form.control} {/* connect to form control */}
+  name={name} {/* string */}
+  label={label} {/* string */}
+  description={description} {/* string - recommended, add a description for better accessibility */}
+  {/* optional props */}
+  id={id} {/* string */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required}{/* boolean */}
+  showOptional={showOptional} {/* boolean - "(optional)" shown on label if !required  */}
+  defaultChecked={defaultChecked} {/* boolean - sets a default value */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

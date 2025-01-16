@@ -1,0 +1,105 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as ToastStories from './Toast.stories'
+
+<Meta of={ToastStories} />
+
+# Toast
+
+The **`<Toast>`** component displays non-intrusive, temporary notifications to users, providing timely feedback within the user interface.
+
+**`<Toast>`** can be used with
+
+- **`<GlobalToastRegion>`** (Snackbar) and a global toast queue
+- **`<LocalToastRegion>`** wrapper and a local toast queue
+
+A toast region is an ARIA landmark region labeled "Notifications". It contains one or more visible toasts, in priority order.
+
+When the limit is reached, additional toasts are queued until the visible toasts auto-close (timeout) or the user dismisses them.
+
+Each toast is an alert element (ARIA role=alert), containing the title and description of the notification and a 'dismiss' button. The alert is announced by screen-readers at real-time.
+
+<Canvas of={ToastStories.Default} />
+
+### When to use
+
+Toasts contain low-attention level information. They are used to show notifications that are not critical or require immediate user action.
+
+To display critical information to the user, it is best to use the [Alert](/story/notifications-alert--default) component instead.
+
+### GlobalToastRegion
+
+<Source code={` import { GlobalToastRegion, addToastToQueue } from '@acme/ui' `} />
+
+- Render the **`<GlobalToastRegion/>`** in the application _(ideally in the main/root component)_
+- Use the **`addToastToQueue`** function to add Toasts
+
+<Source code={`
+{/* render the region in the app */}
+<GlobalToastRegion />
+
+{/* add a toast */}
+addToastToQueue(
+{
+title: 'Status update:',
+description: 'Your message has been sent.',
+},
+{ timeout: 5000 }
+)
+`}/>
+
+#### `addToastToQueue(content, options)`
+
+<Source
+	code={`
+addToastToQueue(
+  {
+    title: string | JSX element, {/* add title or description or both */}
+    description: string | JSX element,
+    variant: string,  {/* optional - 'default'|'info'|'success'|'warning'|'error'  */}
+    onAction: () => { doTheThing() }, {/* optional - call a function */}
+    actionLabel: string, {/* required if onAction is passed */}
+    shouldCloseOnAction: boolean, {/* optional - dismiss toast after action */}
+  },
+  { 
+    priority: number, {/* optional - toast order priority, ie 1|2|3|4|5  */}
+    timeout: number {/* default 5000 (ms) - option to add longer timeout  */}
+    disableTimeout: boolean {/* optional - remove timeout  */}
+  }
+)
+`}
+/>
+
+### timeout options
+
+- Toasts auto-dismiss after the timeout (default is 5000ms, time can be increased)
+- The timeout is increased based on the Toast's content length (by 1s per 120 additional characters)
+- Timers automatically pause when the user focuses or hovers over a Toast
+- The Toast will not auto-dismiss if:
+  - the option `disableTimeout` is added
+  - the Toast includes an Action button
+
+### LocalToastRegion
+
+<Source code={` import { LocalToastRegion, type ToastStateType } from '@acme/uis/uis/ui' `} />
+
+- The **`<LocalToastRegion/>`** wrapper manages a **`<Toast>`** within its own **`state`**
+- Each LocalToastRegion has a separate queue
+
+<Source
+	code={`
+<LocalToastRegion>
+  {(state: ToastStateType) => ( {/* state within the local region */}
+    <Button
+      onClick={() =>
+        state.add({  {/* use state.add to add a Toast */}
+          title: 'This is a Toast with its own Provider',
+          description: 'It is not in the GlobalToastRegion queue',
+        })
+      }
+    >
+      Show toast
+    </Button>
+  )}
+</LocalToastRegion>
+`}
+/>

@@ -1,0 +1,37 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as CalendarStories from './Calendar.stories'
+
+<Meta of={CalendarStories} />
+
+# Calendar
+
+**`<Calendar>`** displays a date grid and allows users to select a single date.
+
+It is used in the [DatePicker input](/docs/inputs-datepicker--docs) and the [DatePickerField](/docs/forms-fields-datepickerfield--docs).
+
+<Canvas of={CalendarStories.Default} />
+
+### Usage
+
+<Source code={`import { Calendar } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Calendar
+  {/* optional props */}
+  ariaLabel="Event date" {/* string, defaults to 'Select a date' */}
+  disablePastDates={disablePastDates} {/* boolean */}
+  disableWeekends={disableWeekends} {/* boolean */}
+  disableToday={disableToday} {/* boolean */}
+  showCalendarValue={showCalendarValue} {/* boolean - prints the value inside the calendar */}
+  readOnly={readOnly} {/* boolean */}
+  minDate={minDate} {/* Date */}
+  maxDate={maxDate} {/* Date */}
+  defaultDate={defaultDate} {/* Date */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

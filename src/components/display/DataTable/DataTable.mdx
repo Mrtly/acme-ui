@@ -1,0 +1,339 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DataTableStories from './DataTable.stories'
+
+<Meta of={DataTableStories} />
+
+# DataTable
+
+**`<DataTable>`** components can be used to create tables with enhanced functionality (filter, search, pagination etc.)
+
+For creating static tables see [Table](/docs/display-table--docs).
+
+To use the **`<DataTable>`** functionality, install the [@tanstack/react-table library](https://tanstack.com/table/v8).
+
+The **`<DataTable>`** components and this guide are written based on **v8 of @tanstack/react-table** .
+
+- [List of components](#components)
+- [Guide](#install)
+- [Starter Kit](/story/display-datatable--starter-kit)
+
+<Canvas of={DataTableStories.Default} />
+
+<hr />
+
+### Components
+
+list of the DataTable components and their use
+
+- **`<DataTableGlobalSearch>`**: text search in all columns
+- **`<DataTableColumnSearch>`**: text search in one specific column
+- **`<DataTableFilter>`**: filter by a list of options of a column
+- **`<DataTableResetFilterButton>`**: show 'Reset' button if the table `isFiltered`
+- **`<DataTableViewOptions>`**: dropdown menu to show/hide columns
+
+- **`<DataTableCheckbox>`**: used in the headers definition object to offer 'select' functionality
+- **`<DataTableColumnHeader>`**: used in the headers definition object, displays the title & shows/hides the sorting button
+- **`<DataTableActionsMenu>`**: the 'three-dot' dropdown menu used in rows
+
+- **`<DataTable>`**: the table wrapper
+- **`<DataTableCaption>`**: table caption element, optional
+- **`<DataTableHeader>`**: renders the table header cells using the table display functions
+- **`<DataTableBody>`**: renders the table body cells using the table display functions
+
+- **`<DataTablePagination>`**: pagination tools with optional rendering of elements ('x rows selected', 'page size', 'pager')
+
+<hr />
+
+### Install
+
+<Source code={`npm install @tanstack/react-table@8`} />
+
+### Usage
+
+##### import
+
+<Source code={`
+import { // component imports
+  DataTableGlobalSearch, 
+  DataTableColumnSearch,
+  DataTableFilter, 
+  DataTableResetFilterButton,
+  DataTableViewOptions,
+  DataTableColumnHeader,
+  DataTableActionsMenu,
+  DataTableCheckbox,
+  DataTable,
+  DataTableCaption,
+  DataTableBody,
+  DataTableHeader,
+  DataTablePagination,
+} from '@acme/ui'
+
+import { // tanstack table imports
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+  PaginationState,
+} from '@tanstack/react-table'
+`} />
+
+##### example data
+
+<Source code={`
+// table data type
+type DataType = {
+  id: string
+  description: string
+  status: string
+  priority: string
+}
+
+// table data
+const tasks = [
+{
+id: 'TASK-2468',
+description: 'Create user personas based on research data',
+status: 'Todo',
+priority: 'High',
+},
+... // more items
+] satisfies DataType[]
+`}/>
+
+##### define & customize column headers
+
+<Source
+	code={`
+const columns: ColumnDef<DataType>[] = [
+  {
+    // the first column is a 'select' type column with checkboxes
+    id: 'select',
+    header: ({ table }) => (
+      <DataTableCheckbox // the checkbox in the header that selects/unselects 'all'
+        id="all"
+        label="Select all"
+        checked={table.getIsAllPageRowsSelected()}
+        onChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      />
+    ),
+    cell: ({ row }) => (
+      <DataTableCheckbox // the checkbox in each row
+        id={row.getValue('id')}
+        label="Select row"
+        checked={row.getIsSelected()}
+        onChange={(value) => row.toggleSelected(!!value)}
+      />
+    ),
+    enableSorting: false, // disable sorting for this column 
+  },
+  {
+    accessorKey: 'id', // an accessorKey is needed for searching/filtering
+    header: 'Task ID', // the header display text
+    cell: ({ row }) => <div>{row.getValue('id')}</div>, // the cells values
+    enableHiding: false, // disable hiding this column
+  },
+  {
+    accessorKey: 'description', 
+    header: ({ column }) => { 
+      // to enable sorting for a column header use DataTableColumnHeader component
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title="Description"
+          // className='' // header cell styles are defined by the DataTableHeader but can be accessed individually here
+        />
+      )
+    },
+    cell: ({ row }) => <div>{row.getValue('description')}</div>,
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader 
+          column={column} 
+          title="Status"
+          enableSorting // enable sorting & show the sorting button for this column
+       />
+      )
+    },
+    cell: ({ row }) => <div>{row.getValue('status')}</div>,
+    // add this filterFn if this column is filtered by DataTableFilter
+    filterFn: (row, id, value) => { return value.includes(row.getValue(id)) },
+  },
+  {
+    accessorKey: 'priority',
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title="Priority"
+          enableSorting // enable sorting & show the sorting button for this column
+        />
+      )
+    },
+    cell: ({ row }) => <div>{row.getValue('priority')}</div>,
+    // add this filterFn if this column is filtered by DataTableFilter
+    filterFn: (row, id, value) => { return value.includes(row.getValue(id)) },
+  },
+  {
+    id: 'actions',
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title="Actions" // for accessibility, column headers must have a title
+          className="sr-only" // add class 'sr-only' to the title to visually hide it
+        />
+      )
+    },
+    cell: ({ row }) => {
+      const item = row.original // returns the data object
+      // define options as {displayName: string | ReactNode, action: () => {}}[]
+      const options = [
+        { displayName: 'View', action: () => console.log(item) },
+        { displayName: 'Mark as done', action: () => console.log(item) },
+      ]
+      return <DataTableActionsMenu options={options} /> // the 'three-dot' dropdown menu
+    },
+  },
+]
+`}
+/>
+
+##### DataTable example component
+
+<Source code={`
+const DataTableDemo = () => {
+  {/* if using column sorting */}
+  const [sorting, setSorting] = React.useState<SortingState>([])
+
+{/* if using single column filter */}
+const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+
+{/* if using global filter (all columns) */}
+const [globalFilter, setGlobalFilter] = React.useState('')
+
+{/* if using the ViewOptions filter */}
+const [columnVisibility, setColumnVisibility] =
+React.useState<VisibilityState>({})
+
+{/* if using checkboxes for row selection */}
+const [rowSelection, setRowSelection] = React.useState({})
+
+{/* custom controlled pagination - only add this if using custom pagination */}
+{/* in default/uncontrolled pagination the page size is 10 */}
+const [{ pageIndex, pageSize }, setPagination] =
+React.useState<PaginationState>({
+pageIndex: 0,
+pageSize: 6,
+})
+const pagination = React.useMemo(() => ({ pageIndex, pageSize, }), [pageIndex, pageSize])
+
+{/* create the table instance */}
+const table = useReactTable({
+data: tasks,
+// columns
+columns,
+onColumnFiltersChange: setColumnFilters,
+onColumnVisibilityChange: setColumnVisibility,
+// rows
+getCoreRowModel: getCoreRowModel(),
+onRowSelectionChange: setRowSelection,
+getFilteredRowModel: getFilteredRowModel(),
+// sorting
+onSortingChange: setSorting,
+getSortedRowModel: getSortedRowModel(),
+// pagination
+onPaginationChange: setPagination, // only add this line if using custom pagination
+getPaginationRowModel: getPaginationRowModel(),
+// global filter
+onGlobalFilterChange: setGlobalFilter,
+// state
+state: {
+sorting,
+columnFilters, // if using single column filter
+globalFilter, // if using global filter (all columns)
+columnVisibility,
+rowSelection,
+pagination, // only add this line if using custom pagination
+},
+})
+
+React.useEffect(() => {
+// on mobile hide some columns (they are still available on the View filter)
+if (window?.matchMedia('only screen and (max-width: 760px)').matches) {
+setColumnVisibility({ status: false, priority: false, actions: false })
+}
+}, [])
+
+return (
+<>
+{/* table search/filter tools */}
+<div className="w-full flex items-center justify-between py-2">
+<div className="flex items-center gap-2">
+{/* if using global search, declare the [globalFilter, setGlobalFilter] */}
+<DataTableGlobalSearch
+placeholder="Search all columns"
+value={globalFilter ?? ''}
+onValueChange={(value: string) => setGlobalFilter(String(value))}
+showSearchIcon={boolean} //renders the search icon in the search bar
+/>
+{/* if using single column search, declare the [columnFilters, setColumnFilters] */}
+<DataTableColumnSearch
+table={table}
+searchColumn="description" // column accessorKey
+placeholder="Search descriptions"
+/>
+<DataTableFilter
+column={table.getColumn('status')} // column accessorKey
+title="Status"
+options={['Backlog', 'Todo', 'In progress', 'Done']} // options array
+/>
+<DataTableFilter
+column={table.getColumn('priority')} // column accessorKey
+title="Priority"
+options={['Low', 'Medium', 'High']} // options array
+/>
+<DataTableResetFilterButton table={table} /> {/* 'Reset' button will show if table isFiltered */}
+</div>
+<DataTableViewOptions table={table} /> {/* 'View Options' menu to hide/show columns */}
+</div>
+
+      {/* table */}
+      <DataTable className="">
+        {/* a table caption is good for accessibility, visually-hide it with 'sr-only' class */}
+        <DataTableCaption className="sr-only"> Tasks table demo </DataTableCaption>
+
+        {/* renders the table header cells using the table display functions */}
+        <DataTableHeader table={table} className="" />  {/* manage header cell styles with className */}
+
+        {/* renders the table body cells using the table display functions */}
+        <DataTableBody table={table} className="" /> {/* manage table cell styles with className */}
+      </DataTable>
+
+      {/* table pagination tools */}
+      <DataTablePagination
+        table={table}
+        pageSizes={[5, 6, 10, 15]} // page size options array
+        // options to enable/disable elements:
+        // showGoToFirstLast={boolean}
+        // showPager={boolean}
+        // showRowsPerPage={boolean}
+        // showRowsSelected={boolean}
+      />
+    </>
+
+)
+}
+`}/>
+
+<hr />
+
+- [DataTable Starter Kit](/story/display-datatable--starter-kit)

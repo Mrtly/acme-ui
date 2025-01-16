@@ -1,0 +1,36 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SwitchStories from './Switch.stories'
+
+<Meta of={SwitchStories} />
+
+# Switch
+
+**`<Switch>`** allows users to turn an individual option on or off. They are usually used to activate or deactivate a setting.
+
+In forms use the **`<SwitchField>`** component (see [Forms > Fields > SwitchField](/docs/forms-fields-switchfield--docs)).
+
+<Canvas of={SwitchStories.Default} />
+
+### Usage
+
+<Source code={`import { Switch } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Switch
+  label={label} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  error={error} {/* boolean */}
+  defaultSelected={defaultSelected} {/* boolean */}
+  selected={selected} {/* boolean, controlled, must be used with onChange */}
+  onChange={(value: boolean) => {}} {/* function, reads the selected value */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

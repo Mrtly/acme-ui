@@ -1,0 +1,66 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as EmailFieldStories from './EmailField.stories'
+
+<Meta of={EmailFieldStories} />
+
+# EmailField
+
+A **`<EmailField>`** component to be used in Forms.
+
+It accepts only valid email addresses.
+
+If the UI requires a field that will accept either an email or a username use the [TextInputField](/docs/forms-fields-textinputfield--docs) instead, with the appropriate Zod validation chema.
+
+<Canvas of={EmailFieldStories.Default} />
+
+### Usage
+
+<Source
+	code={`import { EmailField, EmailFieldSchema, Form } from '@acme/ui'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+`}
+/>
+
+Use **`<EmailField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+Use the `EmailFieldSchema` or see the [Zod schema docs](/docs/forms-zodschemas--docs#predefined-schemas) for a schema breakdown.
+
+<Source code={`
+const FormSchema = z.object({
+  email: EmailFieldSchema,
+})
+
+const onSubmit = (data: z.infer<typeof FormSchema>) => {
+//...
+}
+
+const FormDemo = () => {
+const form = useForm<z.infer<typeof FormSchema>>({
+resolver: zodResolver(FormSchema),
+})
+
+return (
+<Form formMethods={form} formName="email form" onSubmit={onSubmit}>
+<EmailField
+control={form.control} {/* connect to the form.control */}
+id="email" {/* string */}
+name="email" {/* string */}
+label="email" {/* string */}
+{/* optional props */}
+autoComplete="email" {/* "email" (default) | "off" */}
+placeholder={placeholder} {/* string, default is 'name@example.com' */}
+srOnlyLabel={srOnlyLabel} {/* boolean */}
+description={description} {/* string - recommended, add a description for better accessibility */}
+srOnlyDescription={srOnlyDescription} {/* boolean */}
+disabled={disabled} {/* boolean */}
+readOnly={readOnly} {/* boolean */}
+required={required} {/* boolean, default true - "(optional)" shown on label if !required */}
+showOptional={showOptional} {/* boolean */}
+/>
+<Button type="submit"> Submit </Button>
+</Form>
+)
+}
+`}/>

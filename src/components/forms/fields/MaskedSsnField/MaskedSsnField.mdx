@@ -1,0 +1,65 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as MaskedSsnFieldStories from './MaskedSsnField.stories'
+
+<Meta of={MaskedSsnFieldStories} />
+
+# MaskedSsnField
+
+A **`<MaskedSsnField>`** component to be used in Forms
+
+**`<MaskedSsnField>`** masks the value on input (adds dashes), and visually replaces the value with the `***-**-0000` format on field blur
+
+<Canvas of={MaskedSsnFieldStories.Default} />
+
+### Usage
+
+Use **`<MaskedSsnField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+Because of the masking functionality, masked inputs should only be used as uncontrolled.
+
+Use the `MaskedSsnFieldSchema` or see the [Zod schema docs](/docs/forms-zodschemas--docs#predefined-schemas) for a schema breakdown.
+
+<Source
+	code={`import { MaskedSsnField, MaskedSsnFieldSchema, Form } from '@acme/ui'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+`}
+/>
+
+<Source code={`
+const FormSchema = z.object({
+  ssn: MaskedSsnFieldSchema,
+})
+
+const onSubmit = (data: z.infer<typeof FormSchema>) => {
+//submission logic
+}
+
+const FormDemo = () => {
+const form = useForm<z.infer<typeof FormSchema>>({
+resolver: zodResolver(FormSchema),
+})
+
+return (
+
+<Form formMethods={form} formName="Masked ssn form" onSubmit={onSubmit}>
+<MaskedSsnField
+control={form.control} {/* connect to form control */}
+name={name} {/* string */}
+label={label} {/* string */}
+{/* optional props */}
+id={id} {/* string */}
+description={description} {/* string */}
+placeholder="000-00-0000" {/* string of a pattern */}
+srOnlyLabel={srOnlyLabel} {/* boolean */}
+srOnlyDescription={srOnlyDescription} {/* boolean */}
+disabled={disabled} {/* boolean */}
+required={required} {/* boolean, default true - "(optional)" shown on label if !required */}
+showOptional={showOptional} {/* boolean */}
+/>
+<Button type="submit"> Submit </Button>
+</Form>
+)
+}
+`}/>

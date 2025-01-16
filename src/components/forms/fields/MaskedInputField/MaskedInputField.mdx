@@ -1,0 +1,94 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as MaskedInputFieldStories from './MaskedInputField.stories'
+
+<Meta of={MaskedInputFieldStories} />
+
+# MaskedInputField
+
+Text field component to be used in Forms, with masking functionality for `account`, `zip` and `ssn` mask types.
+
+For non-form purposes, utilize the base **`<MaskedInput>`** input. [Forms > Input > MaskedInput](/docs/inputs-maskedinput--docs).
+
+<Canvas of={MaskedInputFieldStories.Default} />
+
+### Usage
+
+Use this **`<MaskedInputField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+Because of the masking functionality, masked inputs should only be used as uncontrolled.
+
+<Source
+	code={`import { 
+  MaskedInputField, 
+  MaskedInputAccountSchema, 
+  Form
+} from '@acme/ui'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+`}
+/>
+
+<Source code={`
+const FormSchema = z.object({
+  account_number: MaskedInputAccountSchema,
+})
+
+const onSubmit = (data: z.infer<typeof FormSchema>) => {
+//submission logic
+}
+
+const FormDemo = () => {
+const form = useForm<z.infer<typeof FormSchema>>({
+resolver: zodResolver(FormSchema),
+})
+
+return (
+<Form
+      formMethods={form}
+      formName="Masked input fields form"
+      onSubmit={onSubmit}
+      className="flex flex-col gap-4"
+    >
+<MaskedInputField
+control={form.control} {/* connect to form control */}
+id="account-number" {/* string */}
+name="account_number" {/* string */}
+label="Account number" {/* string */}
+maskType="account" {/* string */}
+{/* optional props */}
+placeholder={placeholder} {/* string */}
+description="16-digit account number" {/* string */}
+required={required} {/* boolean, default true - "(optional)" shown on label if !required */}
+showOptional={showOptional} {/* boolean */}
+disabled={disabled} {/* boolean */}
+readOnly={readOnly} {/* boolean */}
+/>
+<Button type="submit"> Submit </Button>
+</Form>
+)
+}
+`}/>
+
+### Props notes
+
+The masked values for `'account'` and `'zip'` are typed as `string`. Values can be sanitized (certain characters removed) before submission.
+
+The masked value of `'usd'` is typed as `Number`. This allows for setting min/max values for the field through the Zod schema.
+
+### Zod Schemas
+
+- `MaskedInputAccountSchema`
+- `MaskedInputZipSchema`
+
+### Example USD amount Zod schema
+
+<Source
+	code={`
+const FormSchema = z.object({
+  dollar_amount: z
+    .number()
+    .refine((v) => v < 1000.01, 'Maximum amount is $1000.'),
+}) 
+`}
+/>

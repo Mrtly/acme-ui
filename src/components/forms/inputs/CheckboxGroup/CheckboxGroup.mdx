@@ -1,0 +1,50 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as CheckboxGroupStories from './CheckboxGroup.stories'
+
+<Meta of={CheckboxGroupStories} />
+
+# CheckboxGroup
+
+**`<CheckboxGroup>`** is a checkbox group component that can be used with `Checkbox` or `CheckboxCard`.
+
+Used for a list of options where multiple items may be selected.
+
+The individual input items, suitable for a `boolean` value input are [Checkbox](/docs/inputs-checkbox--docs) and [CheckboxCard](/docs/inputs-checkboxcard--docs).
+
+In forms use the **`<CheckboxGroupField>`** component (see [Forms > Fields > CheckboxGroupField](/docs/forms-fields-checkboxGroupfield--docs)).
+
+<Canvas of={CheckboxGroupStories.WithCheckbox} />
+
+<Canvas of={CheckboxGroupStories.WithCheckboxCard} />
+
+### Usage
+
+Use with:
+
+- `Checkbox`
+- `CheckboxCard`
+
+The group **value** is an array of strings **(`string[]`)** representing the values of the selected checkboxes.
+
+<Source code={`import { CheckboxGroup, Checkbox, CheckboxCard } from '@acme/ui'`} />
+
+<Source
+	code={`
+<CheckboxGroup
+  label={label} {/* string */}
+  onChange={ v: <string[]> => {} } {/* change value listner */}
+  {/* optional */}
+  defaultValue={defaultValue} {/* string[] */}
+  srOnlyLabel={srOnlyLabel} {/* boolean - whether to visually hide the label  */}
+>
+  <Checkbox label={label}} id={id} value={value} />
+  {/* or */}
+  <CheckboxCard label={label}} id={id} value={value} />
+  {/* more items */}
+</CheckboxGroup>
+`}
+/>
+
+### Story props
+
+<Controls />

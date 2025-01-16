@@ -1,0 +1,71 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DropdownMenuStories from './DropdownMenu.stories'
+
+<Meta of={DropdownMenuStories} />
+
+# DropdownMenu
+
+**`<DropdownMenu>`** displays a menu to the user, such as a set of actions, triggered by a button.
+
+<Canvas of={DropdownMenuStories.Default} />
+
+### Usage
+
+<Source
+	code={`import { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+ } from '@acme/ui'`}
+/>
+
+#### Button trigger
+
+<Source
+	code={`
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button> Menu </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel> { optional section label } </DropdownMenuLabel>
+    <DropdownMenuSeparator /> {/* optional visual separator */}
+    <DropdownMenuItem> { item label } </DropdownMenuItem>
+    {/* ...more items */}
+  </DropdownMenuContent>
+</DropdownMenu>
+`}
+/>
+
+#### Dynamic trigger
+
+<Source code={`
+const [showMenu, setShowMenu] = useState(false)
+
+const triggerMenu = () => { setShowMenu(true) } {/* call by button, event, or another function */}
+
+<DropdownMenu open={showMenu} onOpenChange={setShowMenu}>
+	{content}
+</DropdownMenu>
+`}/>
+
+### Props notes
+
+- `className` : additional classes can be applied to the DropdownMenu components
+
+---
+
+**`<DropdownMenuTrigger>`**
+
+- `asChild`: Trigger elements by Radix components render a button element.
+  When inserting a button in the trigger element, the HTML result is a button within a button (a bad practice for accessibility that can also break the UI).
+  By adding the- `asChild` prop to the Trigger, the trigger becomes a (non-interactive) div element. An interactive element can then be added in the trigger, ie. a button, link etc.
+
+---
+
+### Component Expansion
+
+This component utilizes Radix Primitives. For extending this component, refer to the [Radix DropdownMenu docs](https://www.radix-ui.com/primitives/docs/components/dropdown-menu).

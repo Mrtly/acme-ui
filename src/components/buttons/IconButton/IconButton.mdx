@@ -1,0 +1,58 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/blocks'
+import * as IconButtonStories from './IconButton.stories'
+
+<Meta of={IconButtonStories} />
+
+# IconButton
+
+A button allows a user to perform an action, with mouse, touch, and keyboard interactions.
+
+The **`<IconButton>`** component is specifically designed to accommodate a single icon without accompanying text as its label.
+
+<br /> For accessibility purposes, an `ariaLabel` attribute must be provided.
+
+Add the icon name to the `iconName` attribute. See [Icons](/docs/theme-icons--docs) for a list of available icons.
+
+<Canvas of={IconButtonStories.Default} />
+
+### Usage
+
+<Source code={`import { IconButton } from '@acme/ui'`} />
+
+<Source
+	code={`
+<IconButton 
+  iconName={iconName} {/* FeatherIconName - see Icons for available icon names */}
+  ariaLabel={ariaLabel} {/* string */}
+  onClick={() => {}}
+  {/* optional props */}
+  variant={variant} {/* 'primary' (default) | 'secondary' | 'destructive' | 'ghost' */}
+  size={size} {/* 'xs' | 'sm' | 'md' (default) | 'lg' | xl */}
+  disabled={disabled} {/* boolean */}
+  busy={busy} {/* boolean - displays LoadingIndicator icon inside the button */}
+  busyMsg={busyMsg} {/* string - add a visually-hidden message for screen-readers */}
+  type="button" {/* 'button' (default) | 'submit' | 'reset' */}
+/>
+`}
+/>
+
+### Accessibility
+
+A `disabled` button is removed from keyboard navigation, which may be confusing for screen-reader users.
+
+After the button has been clicked and while an action is processing (ie. submitting a form),
+it is recommended to mark the button as `busy`. A busy button is still accessible by keyboard, but the `onClick` action is blocked.
+
+In the `busy` state the button will render a loading indicator next to the label, to indicate that an action is processing.
+
+The `default` size of the `IconButton` is the `md` equivalent of the `Button` component.
+
+The `xs` size of the `IconButton` is used in application components, ie. `DataTable`.
+
+### Props notes
+
+`type`: `'button' | 'submit' | 'reset'` defaults to `'button'` as a failsafe for unintended form submissions.
+
+### Story props
+
+<Controls />

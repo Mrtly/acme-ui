@@ -1,0 +1,43 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as TextInputFieldStories from './TextInputField.stories'
+
+<Meta of={TextInputFieldStories} />
+
+# TextInputField
+
+A **`<TextInputField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<TextInput>`** input. [Forms > Input > TextInput](/docs/inputs-textinput--docs).
+
+<Canvas of={TextInputFieldStories.Default} />
+
+### Usage
+
+Use **`<TextInputField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { TextInputField } from '@acme/ui'`} />
+
+<Source
+	code={`
+<TextInputField
+  control={form.control} {/* connect to form control */}
+  name={name} {/* string */}
+  label={label} {/* string */}
+  description={description} {/* string, recommended - add a description for better accessibility */}
+  {/* optional props */}
+  id={id} {/* string */}
+  type={type} {/* string, default type="text" */}
+  autoComplete={autoComplete} {/* string - must be a valid autocomplete value */}
+  placeholder={placeholder} {/* string */}
+  required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

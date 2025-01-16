@@ -1,0 +1,56 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as RadioGroupStories from './RadioGroup.stories'
+
+<Meta of={RadioGroupStories} />
+
+# RadioGroup
+
+**`<RadioGroup>`** & **`<Radio>`** base components
+
+In forms use the **`<RadioGroupField>`** component (see [Forms > Fields > RadioGroupField](/docs/forms-fields-radiogroupfield--docs))
+
+<Canvas of={RadioGroupStories.Default} />
+
+### Usage
+
+<Source code={`import { RadioGroup, Radio } from '@acme/ui'`} />
+
+<Source
+	code={`
+<RadioGroup
+  legend={legend} {/* string */}
+  name={name} {/* string */}
+  {/* optional props */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean */}
+  showOptional={showOptional} {/* boolean */}
+  srOnlyLegend={srOnlyLegend} {/* boolean - visually hides the legend */}
+  orientation="vertical" {/* "vertical" || "horizontal" */}
+  defaultValue="cat" {/* string */}
+  value="cat" {/* string - for controlled component, (must be used with onChange) */}
+  onChange={(value) => {}} {/* function, value change listener */}
+> 
+  <Radio
+    label={label} {/* string */}
+    value={value} {/* string */} 
+    disabled={disabled} {/* boolean */} 
+  />
+  {/* ...more items */}
+</RadioGroup>
+`}
+/>
+
+### Props notes
+
+**`<RadioGroup>`**
+
+- `orientation` : `'vertical' | 'horizontal'` - default is `'vertical'`
+- `className` : additional classes can be applied to the fieldset
+
+In horizontal orientation wrap each item in a `<div>`, so it does not take the full width of the group.
+
+### Story props
+
+<Controls />

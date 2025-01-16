@@ -1,0 +1,65 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as CheckboxGroupFieldStories from './CheckboxGroupField.stories'
+
+<Meta of={CheckboxGroupFieldStories} />
+
+# CheckboxGroupField
+
+**`<CheckboxGroupField>`** is a checkbox group component that can be used in Forms.
+
+Used for a list of options where multiple items may be selected.
+
+The individual form items, suitable for a `boolean` value form fields are [CheckboxField](/docs/forms-fields-checkboxfield--docs) and [CheckboxCardField](/docs/forms-fields-checkboxcardfield--docs).
+
+For non-form purposes, utilize the **`<CheckboxGroup>`**. [Forms > Input > CheckboxGroup](/docs/inputs-checkboxgroup--docs).
+
+<Canvas of={CheckboxGroupFieldStories.Default} />
+
+### Usage
+
+Use **`<CheckboxGroupField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+Use with:
+
+- `CheckboxGroupFieldItem`
+- `CheckboxGroupFieldCard`
+
+The field **value** is an array of strings **(`string[]`)** representing the values of the selected checkboxes.
+
+<Source
+	code={`import { CheckboxGroupField, CheckboxGroupFieldCard, CheckboxGroupFieldItem } from '@acme/ui'`}
+/>
+
+<Source
+	code={`
+<CheckboxGroupField
+  control={form.control} {/* connect to the form control */}
+  name={name} {/* string */}
+  label={label} {/* string */}
+  description={description} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean */}
+>
+  <CheckboxGroupFieldCard
+    label={label} {/* string */}
+    value={value} {/* string */}
+    description={description} {/* string | ReactNode */}
+    {/* ...CheckboxCard props */}
+  />
+{/* or */}
+  <CheckboxGroupFieldItem
+    label={label} {/* string */}
+    value={value} {/* string */}
+    {/* ...Checkbox props */}
+  />
+  {/* more items */}
+</CheckboxGroupField>
+`}
+/>
+
+### Story props
+
+<Controls />

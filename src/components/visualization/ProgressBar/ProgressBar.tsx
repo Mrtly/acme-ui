@@ -65,10 +65,10 @@ const ProgressBar = ({
 				<Label className={cn('labelStyles', srOnlyLabel && 'sr-only')}>{label}</Label>
 				<div className="relative h-5 w-full">
 					{/* div with just the border, absolute so that the border does not contain the bar,
-		 the blue bar sits exactly on top of the border */}
+		 the indigo bar sits exactly on top of the border */}
 					<div
 						className={cn(
-							'absolute inset-0 rounded-full border border-blue-500 bg-white',
+							'absolute inset-0 rounded-full border border-indigo-600 bg-white',
 							value && 'z-[1]'
 						)}
 					/>
@@ -91,7 +91,7 @@ const ProgressBar = ({
 								width: !indeterminate && value ? styleWidth : '',
 							}}
 							className={cn(
-								'absolute inset-0 rounded-full bg-blue-500 transition-all duration-300 ease-out',
+								'absolute inset-0 rounded-full bg-indigo-600 transition-all duration-300 ease-out',
 								indeterminate ? 'animate-indeterminate-bar duration-3000' : 'z-[4] mix-blend-screen'
 							)}
 						/>

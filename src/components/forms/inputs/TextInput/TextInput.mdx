@@ -1,0 +1,40 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as TextInputStories from './TextInput.stories'
+
+<Meta of={TextInputStories} />
+
+# TextInput
+
+**`<TextInput>`** allows users to input custom text entries with a keyboard.
+
+In forms use the **`<TextInputField>`** component (see [Forms > Fields > TextInputField](/docs/forms-fields-textinputfield--docs)).
+
+<Canvas of={TextInputStories.Default} />
+
+### Usage
+
+<Source code={`import { TextInput } from '@acme/ui'`} />
+
+<Source
+	code={`
+<TextInput
+  label={label} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  placeholder={placeholder} {/* string */}
+  autoComplete={autoComplete} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form ie. Searchbar */}
+  small={small} {/* boolean - a smaller input to be used in application elements  */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  onChange={(event: Event) => {}} {/* function, change event listener */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

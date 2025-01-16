@@ -1,0 +1,97 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as ModalDialogStories from './ModalDialog.stories'
+
+<Meta of={ModalDialogStories} />
+
+# ModalDialog
+
+A **`<ModalDialog>`** is a UI element that temporarily halts the workflow of the user by requiring interaction before allowing further access to the main application.
+
+<Canvas of={ModalDialogStories.Default} />
+
+### Usage
+
+To improve accessibility, ensure there is a descriptive title that will be read by the screen-reader.
+
+<Source
+	code={`import  {
+  ModalDialog,
+  ModalDialogTrigger,
+  ModalDialogContent,
+  ModalDialogHeader,
+  ModalDialogFooter,
+  ModalDialogTitle,
+  ModalDialogDescription,
+  ModalDialogClose
+} from '@acme/ui'`}
+/>
+
+#### Button trigger
+
+<Source
+	code={`
+<ModalDialog>
+  <ModalDialogTrigger asChild> {/* use asChild if child is a button or other interactive element */}
+    {/* add trigger element, ie <Button> */}
+  </ModalDialogTrigger>
+  <ModalDialogContent>
+    <ModalDialogHeader>
+      <ModalDialogTitle> { title } </ModalDialogTitle>
+      <ModalDialogDescription> { description } </ModalDialogDescription>
+    </ModalDialogHeader>
+   {/* add ModalDialog content here */}
+    <ModalDialogFooter>
+      <ModalDialogClose asChild>
+        {/* add submit/close/cancel button(s) */}
+      </ModalDialogClose>
+    </ModalDialogFooter>
+  </ModalDialogContent>
+</ModalDialog>
+`}
+/>
+
+#### Dynamic trigger
+
+<Source code={`
+const [showModal, setShowModal] = useState(false)
+
+const triggerModal = () => { setShowModal(true) } {/* call by button, event, or another function */}
+
+<ModalDialog open={showModal} onOpenChange={setShowModal}>
+	{/* showCloseButton (default true) - set to false to remove the X button (top right) */}
+	<ModalDialogContent showCloseButton={showCloseButton}>{/* ... */}</ModalDialogContent>
+</ModalDialog>
+`}/>
+
+#### Delay modal close
+
+<Source code={`
+const [showModal, setShowModal] = useState(false)
+
+const triggerModal = () => { setShowModal(true) }
+
+<ModalDialog open={showModal} onOpenChange={setShowModal}>
+	<ModalDialogContent>
+		<form
+			onSubmit={(event) => {
+				wait().then(() => setShowModal(false))
+				{
+					/* delayed closing */
+				}
+				event.preventDefault()
+			}}
+		>
+			{/** some inputs */}
+			<button type="submit">Submit</button>
+		</form>
+	</ModalDialogContent>
+</ModalDialog>
+`}/>
+
+### Props notes
+
+**`<ModalDialogTrigger>`**
+
+- `asChild`: Trigger elements by Radix components render a button element.
+  When inserting a button in the trigger element, the HTML result is a button within a button (a bad practice for accessibility that can also break the UI).
+  By adding the- `asChild` prop to the Trigger, the trigger becomes a (non-interactive) div element. An interactive element can then be added in the trigger, ie. a button, link etc.

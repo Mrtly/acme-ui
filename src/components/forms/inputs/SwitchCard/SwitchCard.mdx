@@ -1,0 +1,38 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SwitchCardStories from './SwitchCard.stories'
+
+<Meta of={SwitchCardStories} />
+
+# SwitchCard
+
+**`<SwitchCard>`** allows users to turn an individual option on or off. They are usually used to activate or deactivate a setting.
+
+In forms use the **`<SwitchCardField>`** component (see [Forms > Fields > SwitchCardField](/docs/forms-fields-SwitchCardfield--docs)).
+
+<Canvas of={SwitchCardStories.Default} />
+
+### Usage
+
+<Source code={`import { SwitchCard } from '@acme/ui'`} />
+
+<Source
+	code={`
+<SwitchCard
+  label={label} {/*  string, the input label */}
+  {/* optional */}
+  id={id} {/* string, the input id */}
+  statusLabelTrue={statusLabelTrue} {/* string, label text for checked state */}
+  statusLabelFalse={statusLabelFalse} {/* string, label text for unchecked state */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  error={error} {/* boolean */}
+  onChange={(value: boolean) => {}} {/* function, reads the selected value */}
+>
+  {children} {/* children slot for the description  */}
+</SwitchCard>
+`}
+/>
+
+### Story props
+
+<Controls />

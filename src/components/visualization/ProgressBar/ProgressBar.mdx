@@ -1,0 +1,32 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/blocks'
+import * as ProgressBarStories from './ProgressBar.stories'
+
+<Meta of={ProgressBarStories} />
+
+# ProgressBar
+
+ProgressBar shows the progression of a system operation: downloading, uploading, processing, etc., in a visual way.
+
+It can represent either determinate or indeterminate progress.
+
+<Canvas of={ProgressBarStories.Default} />
+
+### Usage
+
+<Source code={` import { ProgressBar } from '@acme/ui' `} />
+
+<Source code={`
+<ProgressBar label="Uploading..." indeterminate />
+
+<ProgressBar label="Uploading..." value={value} />
+
+<ProgressBar label="Uploading..." value={value} srOnlyLabel />
+`}/>
+
+### Props notes
+
+- `label` : `string` - the text label for the progress bar
+- `value` : `number` - the percentage value
+- `indeterminate`: `boolean` - shows the progress as indeterminate
+- `srOnlyLabel`: `boolean` - renders the label for screen readers only without displaying it visually
+- `className` : additional classes can be applied to the component

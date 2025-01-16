@@ -1,0 +1,323 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks';
+
+# Zod Schemas
+
+Zod validation schema examples to be used in forms. 
+
+- [Form > Docs](/docs/forms-form--docs)
+
+- [Zod documentation](https://zod.dev/?id=basic-usage)
+
+
+## Common schema examples
+
+Define form fields as named variables using underscores / the `snake_case` convention, ensuring compatibility with Zod and React Hook Form functions, and avoiding the use of strings to maintain type safety and enhance code readability.
+### String
+
+<Source code={`{/* required, with per-case error msgs */}
+const TextInputSchema = z.object({
+first_name: z
+  .string({
+    required_error: 'Enter a valid name.',
+  })
+  .min(2, {
+    message: 'Name should be more than two characters.',
+  }),
+})
+
+{/* optional */}
+const TextareaSchema = z.object({
+  message: z.string().optional()
+})
+
+{/* enforce required & min length with different error messages */}
+const TextInputSchema = z.object({
+	username: z
+    .string({ required_error: 'Username is required.' })
+    .min(1, { message: 'Enter a username.' })
+    .min(5, { message: 'Username is too short.' })
+})`}/>
+
+### Boolean 
+
+<Source code={`{/* required true, with error msg */}
+const BooleanSchema = z.object({
+  checkbox: z.boolean().refine((value) => value === true, {
+    message: 'The boolean field must be true.',
+  }),
+})
+
+{/* optional */}
+const BooleanSchema = z.object({
+  paperless: z.boolean().optional()
+})`}/>
+
+### Number
+
+<Source code={`const NumberSchema = z.object({
+  amount_value: z
+    .number()
+    .refine((v) => v >= 1, 'Minimum amount is $1.')
+    .refine((v) => v <= 10000, 'Maximum amount is $10,000.')
+    .optional() //if optional or if using conditional validation
+})`}/>
+
+### Union type
+
+<Source code={`const UnionSchema = z.object({
+  payment_method: z.enum(['card', 'bank_account'])
+    .optional() //if optional or if using conditional validation
+})
+
+{/* or */}
+
+const amountTypes = ['amount-due', 'account-balance', 'other-amount']
+
+const UnionSchema = z.object({
+  .object({
+  amount_type: z
+    .string()
+    .refine((data) => Object.values(amountTypes).includes(data), {
+      message: 'Select payment amount.',
+    }),
+})`}/>
+
+### Select value
+
+<Source code={`const SelectSchema = z.object({
+  test_select: z
+    .string({
+      required_error: 'Select an option.',
+    })
+    .refine((data) => data.trim() !== ''), //important if the select field has the clear value item (sets value to "")
+})`}/>
+
+### Date
+
+<Source code={`const DateSchema = z.object({
+  date_picker: z.date({
+    required_error: 'Pick a date.',
+  })
+})`}/>
+
+### Date Range
+
+<Source code={`const DateRangeObjectSchema = z.object({
+  from: z.date(),
+  to: z.date(),
+})
+
+const DateRangeSchema = z.object({
+  test_rangepicker: DateRangeObjectSchema.nullable().refine(
+    (value) =>
+      value !== null && value.from !== undefined && value.to !== undefined,
+    {
+      message: 'Select date range.',
+    }
+  ),
+})`}/>
+
+### File upload (image)
+
+<Source code={`const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+
+const ImageSchema = z.object({
+  file: z
+    .custom<File>((file) => file, {
+      message: 'An image file is required.',
+    })
+    .refine(
+      (file) => file && ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      'Only .jpg, .jpeg, .png and .webp formats are supported.'
+    )
+  {/* if optional, validation will still happen if a file is uploaded */}
+  .optional(),  
+})`} />
+
+## Field value matching
+
+To match the value of two fields, ie. confirm email/password fields.
+
+<Source code={`const ChangePasswordFormSchema = z
+.object({
+  new_password: PasswordFieldSchemaForStrengthIndicator,
+  confirm_password: z.string(),
+})
+.superRefine((values, refinementContext) => {
+  if (values.new_password !== values.confirm_password) {
+    return refinementContext.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['confirm_password'],
+      message: 'Passwords do not match.',
+    })
+  }
+})`}/>
+
+
+## Conditional validation
+
+Zod offers conditional validation with the `.superRefine` method ([docs](https://zod.dev/?id=superrefine)).
+- fields are defined as `optional()` and `superRefine` handles the conditional validation
+- if a field is not defined as optional, its validation will run before `superRefine` and may cause undesired validation behavior or errors
+
+<Source code={`const PaymentFormSchema = z
+  .object({
+    amount_type: z
+      .string()
+      .refine((data) => Object.values(amountTypes).includes(data), {
+        message: 'Select payment amount.',
+      }), //this has a default value so does not have to be defined as optional
+    other_amount_value: z
+      .number()
+      .refine((v) => v >= 1, 'Minimum amount is $1.')
+      .refine((v) => v <= 10000, 'Maximum amount is $10,000.')
+      .optional(),
+		payment_method: z.enum(['card', 'bank_account']).optional(),
+		bank_account: z.string().optional(),
+		payment_date: z.date().optional(),
+	})
+	//conditional validation runs after initial definition^
+  .superRefine((values, refinementContext) => {
+    //if 'other-amount' is selected, other_amount_value is required
+    if (values.amount_type === 'other-amount' && !values.other_amount_value) {
+      return refinementContext.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Payment amount is required.',
+        path: ['other_amount_value'],
+      })
+    }
+    //if no payment_method
+    if (!values.payment_method) {
+      return refinementContext.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Payment method is required.',
+        path: ['payment_method'],
+      })
+    }
+    //if payment_method is bank_account, a bank_account must be selected
+    if (values.payment_method === 'bank_account' && !values.bank_account) {
+      return refinementContext.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Bank account is required.',
+        path: ['bank_account'],
+      })
+    }
+    //if no payment_date (in this example there is a default date set)
+    if (!values.payment_date) {
+      return refinementContext.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Payment date is required.',
+        path: ['payment_date'],
+      })
+    }
+  })`}/>  
+
+## Predefined schemas
+
+Certain fields from the UI library include exports of predefined schemas to simplify usage.
+
+- `EmailFieldSchema` for [EmailField](/docs/forms-fields-emailfield--docs)
+
+<Source code={`const EmailFieldSchema = z
+	.string()
+	.min(1, { message: 'Enter a valid email address (name@example.com).' })
+	.email('Enter a valid email address (name@example.com).')
+`}/>
+
+
+- `PasswordFieldSchema` for [PasswordField](/docs/forms-fields-passwordfield--docs)
+
+<Source code={`const PasswordFieldSchema = z
+  .string()
+  .refine((s) => !s.includes(' '), {
+    message: 'Password must not contain spaces.',
+  })
+  .refine((s) => /[a-z]/.test(s), {
+    message: 'Password must contain at least one lowercase letter.',
+  })
+  .refine((s) => /[A-Z]/.test(s), {
+    message: 'Password must contain at least one capital letter.',
+  })
+  .refine((s) => /\d/.test(s), {
+    message: 'Password must contain at least one number.',
+  })
+  .refine((s) => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(s), {
+    message: 'Password must contain at least one symbol.',
+  })
+  .refine((s) => s.length >= 8, {
+    message: 'Password must be at least 8 characters long.',
+  })
+  .refine((s) => s.length <= 16, {
+    message: 'Password must be at most 16 characters long.',
+})`}/>
+
+- `PasswordFieldSchemaForStrengthIndicator` for [PasswordField](/docs/forms-fields-passwordfield--docs)
+
+<Source code={`const PasswordFieldSchemaForStrengthIndicator = z
+  .string()
+  .regex(
+    /^(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/,
+    {
+      message: ' ', //message property should be present for the error to register & focus on on the field - empty string replaces any default error messages
+    }
+  )
+  .min(8, { message: ' ' }) //message property should be present for the error to register & focus on on the field - empty string replaces any default error messages
+  .max(16, { message: 'Password must be between 8 and 16 characters.' })
+  .refine((s) => !s.includes(' '), 'Password must not contain spaces.')
+`}/>
+
+- `PasswordFieldSchemaSignIn` for [PasswordField](/docs/forms-fields-passwordfield--docs)
+
+<Source code={`const PasswordFieldSchemaSignIn = z
+  .string()
+  .min(1, { message: 'Enter a valid password.' })
+  .refine((s) => !s.includes(' '), 'Password must not contain spaces.')
+`}/>
+
+
+- `MaskedSsnFieldSchema` for [MaskedSsnField](/docs/forms-fields-maskedssnfield--docs)
+
+<Source code={`const MaskedSsnFieldSchema = z
+  .string()
+  .regex(
+    new RegExp(/^[0-9]{3}-[0-9]{2}-[0-9]{4}$/),
+    'Enter a valid Social Security Number.'
+  )`}/>
+
+-  `MaskedInputAccountSchema` for [MaskedInputField](/docs/forms-fields-maskedinputfield--docs)
+
+<Source code={`const MaskedInputAccountSchema = z
+  .string()
+  .regex(
+    new RegExp(/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/),
+    'Enter a valid account number (0000-0000-0000-0000).'
+  )`}/>
+
+
+- `MaskedInputZipSchema` for [MaskedInputField](/docs/forms-fields-maskedinputfield--docs)
+
+<Source code={`const MaskedInputZipSchema = z
+  .string()
+  .regex(new RegExp(/^[0-9]{5}$/), 'Enter a valid ZIP code.')
+`}/>
+
+-  `PhoneFieldSchema` for [PhoneField](/docs/forms-fields-phonefield--docs)
+
+<Source code={`const PhoneFieldSchema = z
+	.string()
+	.regex(new RegExp(/^\(\d{3}\) \d{3}-\d{4}$/), 'Enter a valid phone number.')
+`}/>
+
+### Usage
+
+- import the schema and add to a `z.object`
+
+<Source code={`import { PasswordFieldSchema } from '@ppl-gds/ui'
+
+const FormSchema = z.object({
+  password: PasswordFieldSchema,
+})`}/>
+
+Or
+
+- copy and paste the schema to make any amendments to the rules or error messages

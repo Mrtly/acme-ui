@@ -1,0 +1,35 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as UploadStories from './Upload.stories'
+
+<Meta of={UploadStories} />
+
+# Upload
+
+**`<Upload>`** is a styled input component for selecting a file.
+
+In forms use the **`<UploadField>`** component (see [Forms > Fields > UploadField](/docs/forms-fields-uploadfield--docs)).
+
+<Canvas of={UploadStories.Default} />
+
+### Usage
+
+<Source code={`import { Upload } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Upload
+  filetype={filetype} {/* 'file' | 'image' - defaults to 'file' */}
+  label={label} {/* string */}
+  accept="*" {/* string */}
+  onUpload={(file) => {}} {/* function */}
+  {/* optional props */}
+  id={id} {/* string */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  required={required} {/* boolean */}
+  showOptional={showOptional} {/* boolean */}
+  showPreview={showPreview} {/* boolean */}
+/>
+`}
+/>

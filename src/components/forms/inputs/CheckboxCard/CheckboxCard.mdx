@@ -1,0 +1,58 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as CheckboxCardStories from './CheckboxCard.stories'
+
+<Meta of={CheckboxCardStories} />
+
+# CheckboxCard
+
+**`<CheckboxCard>`** is a checkbox component visually styled as a card.
+
+Checkboxes allow users to select multiple items from a list of individual items, or to mark one individual item as selected (or not).
+
+This is an individual item, suitable for a `boolean` value input.
+
+For a group of CheckboxCards use the [CheckboxGroupField](/docs/inputs-checkboxgroup--docs).
+
+In forms use the **`<CheckboxCardField>`** component (see [Forms > Fields > CheckboxCardField](/docs/forms-fields-checkboxcardfield--docs)).
+
+<Canvas of={CheckboxCardStories.Default} />
+
+### Usage
+
+<Source code={`import { CheckboxCard } from '@acme/ui'`} />
+
+<Source
+	code={`
+<CheckboxCard
+  label={label} {/* string */}
+  value={value} {/* string */}
+  {/* optional props */}
+  id={id} {/* string */}
+  error={error} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean - can be set to false for inputs not part of a form ie. filters */}
+  defaultChecked={defaultChecked} {/* boolean - default value */}
+  onChange={(value: boolean) => {}} {/* value change listener */}
+  checked={checked} {/* controlled value - must be used with onChange listener */}
+  rightSlot={rightSlot} {/* ReactNode - right side content */}
+  rowReverse={rowReverse} {/* boolean - reverses the row order of checkbox and label */}
+  colReverse={colReverse} {/* boolean - reverses the column order of checkbox/label and description */}
+/>
+`}
+/>
+
+### Props notes
+
+The **`<CheckboxCard>`** accepts `children` used by the **`<CheckboxCardField>`** to render a field description.
+
+Optionally a `rightSlot` prop can be passed to render additional content on the right side of the card.
+
+`rowReverse` reverses the row order of checkbox and label.
+
+`colReverse` reverses the column order of checkbox/label and description.
+
+### Story props
+
+<Controls />

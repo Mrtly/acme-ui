@@ -12,8 +12,8 @@ const tailwindConfig : Config = {
 	theme: {
 		extend: {
 			colors: {
-				brand: '#1d4ed8', //blue-700
-				success: '#047857', //green-700
+				brand: '#4f46e5', //indigo-600
+				success: '#047857', //emerald-700
 				warning: '#c2410c', //orange-700
 				error:'#b91c1c', //red-700
 			},

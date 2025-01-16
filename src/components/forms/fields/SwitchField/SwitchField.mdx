@@ -1,0 +1,41 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SwitchFieldStories from './SwitchField.stories'
+
+<Meta of={SwitchFieldStories} />
+
+# SwitchField
+
+A **`<SwitchField>`** component to be used in Forms
+
+Switches allow users to turn an individual option on or off. They are usually used to activate or deactivate a setting.
+
+For non-form purposes, utilize the base **`<Switch>`** input. [Forms > Input > Switch](/docs/inputs-switch--docs).
+
+<Canvas of={SwitchFieldStories.Default} />
+
+### Usage
+
+Use **`<SwitchField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { SwitchField } from '@acme/ui'`} />
+
+<Source
+	code={`
+<SwitchField
+  control={form.control} {/* connect to form control */}
+  label={label} {/* string */}
+  name={name} {/* string */}
+  description={description} {/* stirng, recommended - add a description for better accessibility */}
+  {/* optional props */}
+  id={id} {/* string */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  defaultSelected={defaultSelected} {/* boolean */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

@@ -1,0 +1,138 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as AlertStories from './Alert.stories'
+
+<Meta of={AlertStories} />
+
+# Alert
+
+**`<Alert>`** can be used to provide important and potentially time-sensitive information in a way that does not interfere with the user's tasks. It keeps the user informed of the status of the system and may or may not require the user to take an action.
+
+<Canvas of={AlertStories.Default} />
+
+### Variants
+
+`neutral` | `info` | `success` | `warning` | `error`
+
+### Usage
+
+Alerts can be **static** or - most often - **dynamic**. This means a user action or system operation will **trigger** the **`<Alert>`** to appear in a certain area of the user interface.
+
+The **`<Alert>`** may be **dismissible**, which means the user can close it once they acknowledge the message.
+
+### Dynamic Alerts
+
+Alerts are added to the **`<AlertArea>`** using `addAlert()` from the `useAlertService` hook.
+
+New alerts are added to the **top** of the alert area.
+
+The area will display up to 3 alerts at a time. The rest of the alerts will be hidden until dismissed alerts make room for new ones. The alerts are rendered in reverse chronological order (newest first). The maximum visible alerts number can be customized via the `maxVisibleAlerts` prop on `<AlertArea>`.
+
+<Source code={`import { AlertArea, useAlertService } from '@acme/ui'`} />
+
+<Source code={`
+<AlertArea/> {/* place the AlertArea where the alerts should render inside the parent component */}
+
+const { addAlert } = useAlertService()
+
+addAlert({
+content: content, {/* string | ReactNode, required - alert content to display */}
+id: id, {/* string, optional - alert can be programmatically dismissed with this id */}
+variant: variant, {/* type of alert, optional - neutral, info, success, warning, error */}
+isDismissible: true, {/* boolean, default true - whether the alert is dismissible */}
+onDismissAction: () => {} {/* optional function to be called when the alert is dismissed */}
+{/* optional actions */}
+{/* adding an action button */}
+action: {
+label: actionLabel, {/* the action label */}
+onClick: action(), {/* the action callback */}
+},
+{/* adding an action link */}
+link: {
+label: linkLabel, {/* the link label */}
+href: linkHref {/* the link url */}
+}
+})
+
+{/* addAlert() can be called by any function or event */}
+{/* const { dismissAlert } = useAlertService() to clear an alert by its id passed in addAlert */}
+{/* const { clearAlerts } = useAlertService() to clear all alerts */}
+`} />
+
+When creating an alert with `addAlert()` an `id` is not required.
+
+The `alertService` assigns an `id` automatically if one is not provided, which is used to dismiss the alert via the `Dismiss` button (added by the `isDismissible` prop).
+
+An `id` must be passed to the `addAlert()` options when the intention is to remove that alert programmatically via the `dismissAlert(id)` action.
+
+If an alert with the given `id` already exists, the service will not add a duplicate alert.
+
+### Props
+
+**`<AlertArea>`**
+
+- `maxVisibleAlerts` - number - maximum number of alerts to show at once. Older alerts will be hidden until the visible alerts are dismissed. Defaults to `3` maxVisibleAlerts.
+
+<hr />
+
+### Static Alerts
+
+A static Alert can be assembled using the **`<Alert>`** component and its children.
+
+This Alert can not be dismissed via the `alertService` but allows for custom actions.
+
+<Source
+	code={`import { 
+  Alert, 
+  AlertContent, 
+  AlertActions, 
+  AlertActionButton ,
+  AlertActionLink
+} from '@acme/uis/uis/ui'`}
+/>
+
+<Source code={`<Alert variant={variant}>
+  <AlertContent>
+    {content}
+  </AlertContent>
+  <AlertActions
+    isDismissible={isDismissible} {/* boolean, default true - renders Dismiss button */}
+    onDismiss={dismissAction} {/* function - optional on dismiss action */}
+  >
+    <AlertActionButton onClick={action}>
+      {button label}
+    </AlertActionButton>
+
+    <AlertActionLink href={href}> {link label} </AlertActionLink>
+
+  </AlertActions>
+</Alert>`}/>
+
+### Props notes
+
+**`<Alert>`**
+
+- `variant` : `'neutral' | 'info' | 'success' | 'warning' | 'error'` - default: 'neutral'
+
+**`<AlertContent>`**
+
+- `{children}` - content of the alert
+
+**`<AlertActions>`**
+
+- `onDismiss` - function - dismiss action, will show Dismiss button
+
+**`<AlertActionButton>`**
+
+- `onClick` - function - click handler
+- `iconName` - by default the icon is 'ChevronRight' - to remove it add `iconName={null}`
+
+See [Icons](/docs/theme-icons--docs) for a list of available icons.
+
+**`<AlertActionLink>`**
+
+- `href` - string - the link url
+- `iconName` - by default the icon is 'ChevronRight' - to remove it add `iconName={null}`
+
+See [Icons](/docs/theme-icons--docs) for a list of available icons.
+
+---

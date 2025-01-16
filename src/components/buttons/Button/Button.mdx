@@ -1,0 +1,67 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/blocks'
+import * as ButtonStories from './Button.stories'
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A button allows a user to perform an action, with mouse, touch, and keyboard interactions.
+
+**`<Button>`** supports a `string` label added as `children`. Optionally add icons with the `iconName` prop.
+
+<Canvas of={ButtonStories.Default} />
+<Canvas of={ButtonStories.WithIcons} />
+
+### Usage
+
+<Source code={`import { Button } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Button 
+  onClick={() => {}}
+  {/* optional props */}
+  variant={variant} {/* 'primary' (default) | 'secondary' | 'destructive' | 'ghost' | 'action' */}
+  size={size} {/* 'sm' | 'md' (default) | 'lg' | 'xl' */}
+  type="button" {/* 'button' (default) | 'submit' | 'reset' */}
+  iconName={iconName} {/* type of iconName - see Icons for available icons */}
+  iconPosition="right" {/* 'right' | 'left' */}
+  disabled={disabled} {/* boolean */}
+  isFullWidth={isFullWidth} {/* boolean, sets the button width to the parent element's width */}
+  busy={busy} {/* boolean - displays LoadingIndicator icon inside the button, blocks onClick action */}
+  busyMsg={busyMsg} {/* string - will be displayed instead of the label when the button is busy  */}
+>
+  { Button label (string) }
+</Button>
+`}
+/>
+
+### icons
+
+Icons can be added to the **`<Button>`** by the `iconName` prop.
+
+See [Icons](/docs/theme-icons--docs) for a list of available icons.
+
+`iconPosition` ('right' | 'left') defines the icon's position within the label - by default it is set to 'right'.
+
+### Accessibility
+
+A `disabled` button is removed from keyboard navigation, which may be confusing for screen-reader users.
+
+After the button has been clicked and while an action is processing (ie. submitting a form),
+it is recommended to mark the button as `busy`. A busy button is still accessible by keyboard, but the `onClick` action is blocked.
+
+In the `busy` state the button will render a loading indicator next to the label, to indicate that an action is processing.
+
+Optionally add a `busyMsg` (string) to display instead of the button label when the button is busy.
+
+The `busy` variant does not render a loading indicator if the Button has other icons (prop `iconName`).
+
+### Props notes
+
+`type`: `'button' | 'submit' | 'reset'` defaults to `'button'` as a failsafe for unintended form submissions.
+The submit button in a Form should use the `type="submit"` attribute.
+
+### Story props
+
+<Controls />

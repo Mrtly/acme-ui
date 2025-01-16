@@ -1,0 +1,57 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as SelectFieldOptionsStories from './SelectFieldOptions.stories'
+
+<Meta of={SelectFieldOptionsStories} />
+
+# SelectFieldOptions
+
+A **`<SelectFieldOptions>`** component to be used in Forms for selecting
+
+- a **country**
+- a **US State**
+- a **time**
+
+<Canvas of={SelectFieldOptionsStories.State} />
+
+### Usage
+
+Use **`<SelectFieldOptions>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { SelectFieldOptions } from '@acme/ui'`} />
+
+<Source
+	code={`
+<SelectFieldOptions
+  options="country" | "state" | "time"
+  control={form.control} {/* connect to form control */}
+  id={id} {/* string */}
+  name={name} {/* string */}
+  label={label} {/* string */}
+  {/* optional props */}
+  description={description} {/* string, recommended - add a description for better accessibility */}
+  placeholder={placeholder} {/* string */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  srOnlyDescription={srOnlyDescription} {/* boolean */}
+  disabled={disabled} {/* boolean */}
+  stateValueDisplayed={stateValueDisplayed} {/* if options="state" only -  'name' | 'abbreviation' (default) */}
+  maxHeight={maxHeight} {/* 'sm' | 'md' (default) | 'lg' */}
+  required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+  showOptional={showOptional} {/* boolean */}
+/>
+`}
+/>
+
+All values are submited as strings.
+
+For the `"state"` options the component will show the abbreviation of the selected state by default.
+
+<br />
+The `stateValueDisplayed` prop ('name' | 'abbreviation') controls the displayed value.
+
+### Props notes
+
+The `maxHeight` prop will add a `max-height` class on the dropdown's scroll area. Use `sm`|`md`|`lg` for `30vh`|`50vh`|`70vh` accordingly
+
+### Story props
+
+<Controls />

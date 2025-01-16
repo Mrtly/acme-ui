@@ -1,0 +1,33 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as LabelStories from './Label.stories'
+
+<Meta of={LabelStories} />
+
+# Label
+
+The **`<Label>`** component provides a standardized and reusable interface for applying consistent label styling across various components.
+
+<Canvas of={LabelStories.Default} />
+
+### Usage
+
+<Source code={`import { Label } from '@acme/ui'`} />
+
+<Source
+	code={`
+<Label 
+  htmlFor={id}  {/* required, string - the associated input id */}
+  srOnly={srOnly} {/* optional, boolean - for visually-hidden label */}
+>
+  {label}
+</Label>
+`}
+/>
+
+### Label styles
+
+For components that do not directly employ the **`<Label>`** component, utilize the `labelStyles` custom class, defined in the `Tailwind.config` file, to uniformly apply label styling.
+
+### Story props
+
+<Controls />

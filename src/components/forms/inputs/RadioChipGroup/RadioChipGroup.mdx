@@ -1,0 +1,54 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as RadioChipGroupStories from './RadioChipGroup.stories'
+
+<Meta of={RadioChipGroupStories} />
+
+# RadioChipGroup
+
+RadioChipGroup allows a user to select a single item from a list of mutually exclusive options.
+
+components:
+
+- **`<RadioChipGroup>`**
+- **`<RadioChipGroupSection>`**
+- **`<RadioChip>`**
+
+In forms use the **`<RadioChipGroupField>`** component (see [Forms > Fields > RadioChipGroupField](/docs/forms-fields-RadioChipGroupfield--docs))
+
+<Canvas of={RadioChipGroupStories.Default} />
+
+### Usage
+
+<Source code={`import { RadioChipGroup, RadioChipGroupSection, RadioChip } from '@acme/ui'`} />
+
+<Source
+	code={`
+<RadioChipGroup
+  name={name} {/* string - the fieldset name */}
+  legend={legend} {/* string - the fieldset label/legend - this SR only */}
+  defaultValue={defaultValue} {/* string, optional - default value of the group */}
+  srOnlyLegend={srOnlyLegend} {/* boolean - visually hides the group legend */}
+  onValueChange={() => {}} {/* function - for updating local state */}
+  disabled={disabled} {/* boolean - disables the whole field */}
+>
+  <RadioChipGroupSection 
+    label={label} {/* string - the section label */}
+  >
+    <RadioChip
+      value={value} {/* string - the radio item value */}
+      label={label} {/* string - the radio item label */}
+      iconName={iconName} {/* optional - type of Icon names (see Icon docs for names) */}
+      disabled={disabled} {/* boolean - disables this Chip item only */}
+    />
+    { ...more items }
+  </RadioChipGroupSection>
+ { ...more sections }
+</RadioChipGroup>
+`}
+/>
+
+### Props notes
+
+**`<RadioChipGroup>`**
+
+- `legend` is a screen-reader-only label for the fieldset (added as the `aria-label` attribute)
