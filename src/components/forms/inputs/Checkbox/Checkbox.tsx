@@ -10,7 +10,7 @@ import { cn } from '@/utils/cn'
 // ------------------------------------- Checkbox
 
 export type CheckboxProps = CheckboxComponentProps & {
-	id: string
+	id?: string
 	label: string
 	value: string
 	error?: boolean

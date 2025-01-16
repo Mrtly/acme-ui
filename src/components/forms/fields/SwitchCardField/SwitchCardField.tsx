@@ -8,7 +8,7 @@ export type SwitchCardFieldProps<T extends FieldValues> = {
 	control: Control<T> //T is inferred from the Zod schema in a form zod.dev/?id=type-inference
 	name: Path<T> //react-hook-form.com/ts#FieldPath
 	className?: string
-	id: string
+	id?: string
 	label: string
 	srOnlyLabel?: boolean
 	description?: string | React.ReactNode

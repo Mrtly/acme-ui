@@ -43,7 +43,6 @@ const StoryDemo = ({ disabled, srOnlyLegend }: { disabled?: boolean; srOnlyLegen
 					{tomorrowAppointments.map((appointment) => (
 						<RadioChip
 							key={appointment}
-							id={appointment}
 							value={appointment}
 							label={getLabel(appointment)}
 							iconName="Clock"
@@ -54,7 +53,6 @@ const StoryDemo = ({ disabled, srOnlyLegend }: { disabled?: boolean; srOnlyLegen
 					{theNextDayAppointments.map((appointment) => (
 						<RadioChip
 							key={appointment}
-							id={appointment}
 							value={appointment}
 							label={getLabel(appointment)}
 							iconName="Clock"
@@ -65,7 +63,6 @@ const StoryDemo = ({ disabled, srOnlyLegend }: { disabled?: boolean; srOnlyLegen
 					{theDayAfterNextAppointments.map((appointment) => (
 						<RadioChip
 							key={appointment}
-							id={appointment}
 							value={appointment}
 							label={getLabel(appointment)}
 							iconName="Clock"

@@ -25,7 +25,7 @@ import { getLocalTimeZone, isSameDay, isWeekend, parseDate, today } from '@inter
 // ------------------------------------- DatePicker
 
 type DatePickerProps = {
-	id: string
+	id?: string
 	label: string
 	defaultValue?: Date
 	value?: Date | null //for controlled component

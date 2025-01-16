@@ -62,7 +62,6 @@ const RadioGroupField = <T extends FieldValues>({
 								disabled={disabled || field.disabled}
 								{...props}
 								isInvalid={!!error}
-								ref={field.ref}
 								name={field.name}
 								value={field.value ?? null} //ensure value is never undefined
 								onChange={field.onChange}
@@ -87,7 +86,7 @@ const RadioGroupField = <T extends FieldValues>({
 // ------------------------------------- RadioGroupFieldItem Type
 
 export type RadioGroupFieldItemProps = {
-	id: string //MUST HAVE id for the custom focus functionality to work
+	id?: string
 	label: React.ReactNode | string
 	value: string
 	disabled?: boolean

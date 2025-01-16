@@ -6,7 +6,7 @@ import { Label } from '@/components/forms/inputs/elements/Label'
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 	label: string
-	id: string
+	id?: string
 	srOnlyLabel?: boolean
 	error?: boolean
 	required?: boolean

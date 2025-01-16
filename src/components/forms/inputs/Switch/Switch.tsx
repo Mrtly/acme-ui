@@ -9,7 +9,7 @@ import { cn } from '@/utils/cn'
 // ------------------------------------- Switch
 
 export type SwitchProps = SwitchComponentProps & {
-	id: string
+	id?: string
 	label: string
 	error?: boolean
 	disabled?: boolean

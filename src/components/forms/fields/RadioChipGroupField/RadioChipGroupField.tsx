@@ -97,7 +97,7 @@ const RadioChipGroupFieldSection = ({
 // ------------------------------------- Item Props
 
 export type ChipFieldItemProps = {
-	id: string //MUST HAVE id for the custom focus functionality to work
+	id?: string
 	label: React.ReactNode | string
 	value: string
 	iconName?: IconProps['name']

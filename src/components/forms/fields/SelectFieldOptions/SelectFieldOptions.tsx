@@ -9,7 +9,7 @@ type SelectFieldOptionsProps<T extends FieldValues> = {
 	control: Control<T> //T is inferred from the Zod schema in a form zod.dev/?id=type-inference
 	name: Path<T> //react-hook-form.com/ts#FieldPath
 	options: 'state' | 'country' | 'time'
-	id: string
+	id?: string
 	label: string
 	className?: string
 	srOnlyLabel?: boolean

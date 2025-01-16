@@ -66,7 +66,7 @@ const Combobox = <T extends object>({
 // ------------------------------------- ComboboxTrigger
 
 type ComboboxTriggerProps = {
-	id: string
+	id?: string
 	placeholder?: string
 	error?: boolean
 	small?: boolean

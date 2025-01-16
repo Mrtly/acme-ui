@@ -8,7 +8,7 @@ import { cn } from '@/utils/cn'
 // ------------------------------------- Switch
 
 export type SwitchCardProps = RACSwitchProps & {
-	id: string
+	id?: string
 	label: string
 	children?: string | React.ReactNode
 	statusLabelTrue?: string

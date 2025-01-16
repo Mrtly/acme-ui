@@ -27,5 +27,6 @@
 	"tailwindCSS.experimental.classRegex": [
 		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
 		["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-	]
+  ],
+  "nuxt.isNuxtApp": false
 }

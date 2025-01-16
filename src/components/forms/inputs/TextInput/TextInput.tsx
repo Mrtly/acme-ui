@@ -8,7 +8,7 @@ import { Label } from '@/components/forms/inputs/elements/Label'
 
 export type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 	label: string
-	id: string
+	id?: string
 	type?: 'text' | 'email' | 'number' | 'password' | 'tel' | 'search'
 	srOnlyLabel?: boolean
 	error?: boolean

@@ -87,7 +87,7 @@ const RadioCardGroupField = <T extends FieldValues>({
 // ------------------------------------- RadioCardGroupFieldItem Type
 
 export type RadioCardGroupFieldItemProps = {
-	id: string
+	id?: string
 	label: React.ReactNode | string
 	value: string
 	description?: React.ReactNode | string

@@ -88,7 +88,7 @@ const CheckboxGroupField = <T extends FieldValues>({
 // ------------------------------------- CheckboxGroupFieldItem
 
 export type CheckboxGroupFieldItemProps = CheckboxProps & {
-	id: string
+	id?: string
 	label: string
 	value: string
 	disabled?: boolean
@@ -113,7 +113,7 @@ const CheckboxGroupFieldItem = ({
 // ------------------------------------- CheckboxGroupFieldCard
 
 export type CheckboxGroupFieldCardProps = CheckboxCardProps & {
-	id: string
+	id?: string
 	label: string
 	value: string
 	description?: string | React.ReactNode

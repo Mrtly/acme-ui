@@ -10,7 +10,7 @@ import { cn } from '@/utils/cn'
 // ------------------------------------- CheckboxCard
 
 export type CheckboxCardProps = CheckboxComponentProps & {
-	id: string
+	id?: string
 	label: string
 	value: string
 	/**

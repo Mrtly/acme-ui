@@ -1,5 +1,5 @@
 'use client'
-import React, { ReactElement, useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
 	Label,
 	Radio as RACRadio,
@@ -11,8 +11,9 @@ import { cn } from '@/utils/cn'
 
 // https://react-spectrum.adobe.com/react-aria/RadioGroup.html
 
-// The react-aria-components maintainers have confirmed that the RadioGroup does not expose a focusable ref yet but they are considering adding it
-// in the meantime this component uses custom focus logic
+// RAC RadioGroup does not expose a focusable ref
+// so it does not focus on the first radio when focus() is called by RHF
+// considering alternative solution or Radix primitives
 
 // ------------------------------------ RadioGroup
 
@@ -28,80 +29,63 @@ type RadioGroupProps = Omit<RACRadioGroupProps, 'children'> & {
 	srOnlyLegend?: boolean
 }
 
-const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
-	(
-		{
-			legend,
-			children,
-			error,
-			className,
-			disabled,
-			required,
-			readOnly,
-			showOptional,
-			srOnlyLegend,
-			orientation = 'vertical',
-			...props
-		},
-		ref
-	) => {
-		const styles = cn([
-			'max-w-max flex items-start gap-2',
-			error && 'border border-error rounded-lg p-2',
-			orientation === 'horizontal' && 'flex-row flex-wrap',
-			orientation === 'vertical' && 'flex-col',
-			className,
-		])
+const RadioGroup = ({
+	legend,
+	children,
+	error,
+	className,
+	disabled,
+	required,
+	readOnly,
+	showOptional,
+	srOnlyLegend,
+	orientation = 'vertical',
+	...props
+}: RadioGroupProps) => {
+	const styles = cn([
+		'max-w-max flex items-start gap-2',
+		error && 'border border-error rounded-lg p-2',
+		orientation === 'horizontal' && 'flex-row flex-wrap',
+		orientation === 'vertical' && 'flex-col',
+		className,
+	])
 
-		// -- Custom focus functionality for the first radio on field error
-		//the error boolean prop is set by the RHF field in the RadioGroupField component
-		const listOfChildren = React.Children.toArray(children)
-		const firstRadio = listOfChildren.find((child) =>
-			//a field description is also a child element but does not have a value,
-			//so the first child with a value prop is the first radio button
-			Object.prototype.hasOwnProperty.call((child as ReactElement<RadioProps>).props, 'value')
-		)
-		const firstRadioId = firstRadio ? (firstRadio as ReactElement<RadioProps>).props.id : undefined
+	const groupRef = useRef<HTMLDivElement | null>(null)
 
-		useEffect(() => {
-			if (error && firstRadioId) {
-				//if there is an error (set by the Field component through RHF), focus on the first radio
-				document.getElementById(firstRadioId)?.focus()
-			}
-		}, [error, firstRadioId])
-		// -- end custom focus
+	// custom focus because RAC does not support this
+	// focus the first radio when error is called on the group field
+	useEffect(() => {
+		if (error) (groupRef.current?.querySelector('input[type="radio"]') as HTMLInputElement)?.focus()
+	}, [error])
 
-		return (
-			<RACRadioGroup
-				{...props}
-				ref={ref}
-				isDisabled={disabled}
-				isRequired={required}
-				isReadOnly={readOnly}
-				className={styles}
-				isInvalid={!!error}
-				validationBehavior="aria"
-			>
-				<Label className={cn('labelStyles', srOnlyLegend && 'sr-only')}>
-					{legend}{' '}
-					{!required && showOptional && (
-						<span className="text-gray-500 font-normal">(optional)</span>
-					)}
-					{readOnly && <span className="sr-only">read-only</span>}
-				</Label>
+	return (
+		<RACRadioGroup
+			{...props}
+			ref={groupRef}
+			isDisabled={disabled}
+			isRequired={required}
+			isReadOnly={readOnly}
+			className={styles}
+			isInvalid={!!error}
+			validationBehavior="aria"
+		>
+			<Label className={cn('labelStyles', srOnlyLegend && 'sr-only')}>
+				{legend}{' '}
+				{!required && showOptional && <span className="text-gray-500 font-normal">(optional)</span>}
+				{readOnly && <span className="sr-only">read-only</span>}
+			</Label>
 
-				{children}
-			</RACRadioGroup>
-		)
-	}
-)
+			{children}
+		</RACRadioGroup>
+	)
+}
 
 RadioGroup.displayName = 'RadioGroup'
 
 // ------------------------------------ Radio
 
 type RadioProps = Omit<RACRadioProps, 'value'> & {
-	id: string
+	id?: string
 	value: string
 	label: React.ReactNode | string
 	className?: string

@@ -9,7 +9,7 @@ import { Control, FieldValues, Path } from 'react-hook-form'
 export type UploadFieldProps<T extends FieldValues> = {
 	control: Control<T> //T is inferred from the Zod schema in a form zod.dev/?id=type-inference
 	name: Path<T> //react-hook-form.com/ts#FieldPath
-	id: string
+	id?: string
 	className?: string
 	label: string
 	filetype?: 'file' | 'image'

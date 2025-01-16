@@ -77,7 +77,7 @@ type RadioGroupItemProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimi
 type RadioGroupItemRefProps = React.ElementRef<typeof RadioGroupPrimitive.Item>
 
 export type ChipProps = RadioGroupItemProps & {
-	id: string
+	id?: string
 	label: React.ReactNode | string
 	iconName?: IconProps['name']
 	disabled?: boolean

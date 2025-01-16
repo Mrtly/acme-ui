@@ -18,7 +18,7 @@ const CheckboxGroupDemo = ({ srOnlyLabel }: { srOnlyLabel?: boolean }) => {
 				srOnlyLabel={srOnlyLabel}
 			>
 				{['Lettuce', 'Tomato', 'Onion', 'Sprouts'].map((i) => {
-					return <Checkbox key={i} label={i} id={i} value={i} />
+					return <Checkbox key={i} label={i} value={i} />
 				})}
 			</CheckboxGroup>
 			<Separator />
@@ -78,7 +78,7 @@ const CheckboxGroupCardsDemo = ({ srOnlyLabel }: { srOnlyLabel?: boolean }) => {
 				srOnlyLabel={srOnlyLabel}
 			>
 				{['Lettuce', 'Tomato', 'Onion', 'Sprouts'].map((i) => {
-					return <CheckboxCard key={i} label={i} id={i} value={i} />
+					return <CheckboxCard key={i} label={i} value={i} />
 				})}
 			</CheckboxGroup>
 			<Separator />

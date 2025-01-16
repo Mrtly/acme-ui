@@ -10,7 +10,7 @@ export type DatePickerFieldProps<T extends FieldValues> = {
 	control: Control<T> //T is inferred from the Zod schema in a form zod.dev/?id=type-inference
 	name: Path<T> //react-hook-form.com/ts#FieldPath
 	className?: string
-	id: string
+	id?: string
 	defaultValue?: Date
 	label: string
 	srOnlyLabel?: boolean

@@ -9,7 +9,7 @@ import { cn } from '@/utils/cn'
 
 export type UploadProps = {
 	label: string
-	id: string
+	id?: string
 	filetype?: 'file' | 'image'
 
 	onUpload: (file: File | undefined) => void

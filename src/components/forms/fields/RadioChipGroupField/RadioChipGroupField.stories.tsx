@@ -91,7 +91,6 @@ const RadioChipGroupFieldDemo = ({
 								<RadioChipGroupFieldItem
 									iconName="Clock"
 									key={appointment}
-									id={appointment}
 									value={appointment}
 									label={getLabel(appointment)}
 								/>
@@ -102,7 +101,6 @@ const RadioChipGroupFieldDemo = ({
 								<RadioChipGroupFieldItem
 									iconName="Clock"
 									key={appointment}
-									id={appointment}
 									value={appointment}
 									label={getLabel(appointment)}
 								/>
@@ -113,7 +111,6 @@ const RadioChipGroupFieldDemo = ({
 								<RadioChipGroupFieldItem
 									iconName="Clock"
 									key={appointment}
-									id={appointment}
 									value={appointment}
 									label={getLabel(appointment)}
 									disabled

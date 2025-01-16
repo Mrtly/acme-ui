@@ -12,7 +12,7 @@ export type PasswordFieldProps<T extends FieldValues> =
 	React.InputHTMLAttributes<HTMLInputElement> & {
 		control: Control<T> //T is inferred from the Zod schema in a form zod.dev/?id=type-inference
 		name: Path<T> //react-hook-form.com/ts#FieldPath
-		id: string
+		id?: string
 		autoComplete?: 'current-password' | 'new-password' | 'off'
 		className?: string
 		label: string

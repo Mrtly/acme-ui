@@ -13,7 +13,7 @@ import { inputStyles } from '../TextInput'
 
 export type MaskedInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 	label: string
-	id: string
+	id?: string
 	srOnlyLabel?: boolean
 	error?: boolean
 	required?: boolean
