@@ -29,6 +29,7 @@
 		"start": "npx http-server storybook-static",
 		"test": "test-storybook",
 		"test-coverage": "test-storybook --coverage && npx nyc report --reporter=lcov -t coverage/storybook --report-dir coverage/storybook",
+		"test-storybook:ci": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"pnpm build:sb --quiet && npx http-server storybook-static --port 6006 --silent\" \"wait-on tcp:6006 && pnpm test\"",
 		"format": "prettier --write \"**/*.{js,ts,tsx}\"",
 		"type-check": "tsc --noEmit"
 	},
@@ -57,6 +58,7 @@
 		"@react-stately/toast": "^3.0.0-beta.1",
 		"@tailwindcss/forms": "^0.5.4",
 		"@tanstack/react-table": "^8.10.7",
+		"@vercel/analytics": "^1.4.1",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.0.0",
 		"cmdk": "^0.2.1",

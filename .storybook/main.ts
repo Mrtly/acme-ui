@@ -1,5 +1,6 @@
 import { StorybookConfig } from '@storybook/react-vite'
 
+
 const config: StorybookConfig = {
 	stories: [
     '../src/components/**/*.stories.tsx',
