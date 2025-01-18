@@ -2,14 +2,7 @@
 
 <hr/>
 
-A collection of samples of my work from the last couple years.
-
-- various **custom UI components** based on **radix** primitives
-- a **form system** with **inputs** & **field** wrappers using **react-hook-form** and **zod** (some based on adobe's **react-aria-components**)
-- a **data table** system wrapping **tanstack table**
-- **alert** & **toast/snackbar** notifications systems inlc. components & state/context hooks
-- an **`<Icon>`** wrapper component using the **react-feather** icons library
-- more! :)
+[<img width="700" alt="Screen Shot 2025-01-17 at 9 31 06 PM" src="https://github.com/user-attachments/assets/6391fe6f-59e4-4c48-ae9d-26d532da370a" />](https://acme-ui.vercel.app/)
 
 [acme-ui.vercel.app](https://acme-ui.vercel.app/)
 
