@@ -30,6 +30,8 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
 
+      - name: Install missing dev dependencies
+        run: pnpm add concurrently wait-on --save-dev
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Build Storybook
