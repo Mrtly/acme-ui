@@ -71,7 +71,7 @@ const StepperDemo = ({
 			>
 				{steps.map((step, index) => (
 					<Step index={index} key={index} isCompletedStep={isStepCompleted(index)} {...step}>
-						<div className="min-h-[160px] flex justify-between flex-col w-full rounded-lg bg-blue-200 p-4 text-gray-900">
+						<div className="min-h-[160px] flex justify-between flex-col w-full rounded-lg bg-indigo-100 p-4 text-gray-900">
 							<p>This is Step {index + 1}</p>
 
 							{!isStepperFinished && (

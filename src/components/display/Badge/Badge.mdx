@@ -1,10 +1,9 @@
 import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import { Badge } from './Badge'
 
 # Badge
 
 **`<Badge>`** is a small non-interactive element that displays status information for UI elements.
-
-<Canvas of={BadgeStories.Default} />
 
 ### Usage
 
@@ -12,11 +11,15 @@ A **`<Badge>`** is used to highlight a UI elemnent's status for quick recognitio
 
 The correct choice of color `variant` is important as it also conveys a message.
 
+<Badge> default </Badge>
+<Badge variant="secondary"> secondary </Badge>
+<Badge variant="info"> info </Badge>
+
 <Source code={`import { Badge } from '@acme/ui'`} />
 
 <Source code={`<Badge variant={variant}> { label } </Badge>`} />
 
 ### Props notes
 
-- `variant` : `'default' | 'secondary' | 'outline' | 'info' | 'success' | 'warning' | 'error'`
+- `variant` : `'default' | 'secondary' | 'info'`
 - `className` : additional classes can be applied to the Badge component

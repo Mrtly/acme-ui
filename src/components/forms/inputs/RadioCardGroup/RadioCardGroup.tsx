@@ -105,8 +105,8 @@ const RadioCard = ({
 	...props
 }: RadioCardProps) => {
 	const wrapperStyles = cn(
-		'w-full rounded-md flex items-start gap-4 border p-4 text-gray-800',
-		'[&:has(:focus-visible)]:border-primary-500 [&:has(:focus-visible)]:ring-2 [&:has(:focus-visible)]:ring-offset-2 ring-primary-500',
+		'group w-full rounded-md flex items-start gap-4 border p-4 text-gray-800',
+		'[&:has(:focus-visible)]:ring-2 [&:has(:focus-visible)]:ring-offset-2 ring-brand',
 		'cursor-pointer [&:has(:disabled)]:cursor-default',
 		disabled && 'opacity-75 cursor-not-allowed'
 	)
