@@ -421,7 +421,7 @@ const FormDemo2Comp = () => {
 					label="Select a date"
 					description="Set a date for your appointment"
 					handleFieldError={setDatepickerError}
-					disableWeekends
+					// disableWeekends
 				/>
 
 				<div>
