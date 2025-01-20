@@ -4,9 +4,9 @@
 
 <hr/>
 
-[<img width="700" alt="Screen Shot from Acme Storybook, link to demo" src="https://github.com/user-attachments/assets/a63ec41c-0d19-458f-a499-342a81c6373a" />]([https://acme-ui.vercel.app/](https://acme-ui.vercel.app/?path=/docs/about--docs))
+[<img width="700" alt="Screen Shot from Acme Storybook, link to demo" src="https://github.com/user-attachments/assets/a63ec41c-0d19-458f-a499-342a81c6373a" />](https://acme-ui.vercel.app/?path=/docs/about--docs)
 
-[acme-ui.vercel.app]([https://acme-ui.vercel.app/](https://acme-ui.vercel.app/?path=/docs/about--docs))
+[acme-ui.vercel.app](https://acme-ui.vercel.app/?path=/docs/about--docs)
 
 <hr/>
 
