@@ -1,16 +1,22 @@
-### @acme/ui component library
+### @acme/ui 
+
+#### a collection of crafty component samples
 
 <hr/>
 
-[<img width="700" alt="Screen Shot 2025-01-17 at 9 31 06 PM" src="https://github.com/user-attachments/assets/6391fe6f-59e4-4c48-ae9d-26d532da370a" />](https://acme-ui.vercel.app/)
+[<img width="700" alt="Screen Shot from Acme Storybook, link to demo" src="https://github.com/user-attachments/assets/a63ec41c-0d19-458f-a499-342a81c6373a" />]([https://acme-ui.vercel.app/](https://acme-ui.vercel.app/?path=/docs/about--docs))
 
-[acme-ui.vercel.app](https://acme-ui.vercel.app/)
+[acme-ui.vercel.app]([https://acme-ui.vercel.app/](https://acme-ui.vercel.app/?path=/docs/about--docs))
 
 <hr/>
 
 written with React, TypeScript, TailwindCSS, & Storybook workshop for component development
 
-a Tsup bundler setup shows how to export this components lib as a package _(lib not currently published - this is a demo repo)_
+**_lib not currently published - this is a demo repo_**
+
+a Tsup bundler setup shows how to export this components lib as a package 
+
+_(I'll also add some notes on how we achieved this in a monorepo)_
 
 <hr/>
 
