@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { cn } from '@/utils/cn'
 import { Icon } from '@/theme/Icons'
 
@@ -7,7 +7,10 @@ import { Icon } from '@/theme/Icons'
 
 export type SideNavMenuProps = {
 	children: React.ReactNode
-	ariaLabel?: string // default is 'Main navigation',
+	/**
+	 * default ariaLabel is 'Main navigation'
+	 */
+	ariaLabel?: string
 	className?: string
 }
 
@@ -28,9 +31,9 @@ SideNavMenu.displayName = 'SideNavMenu'
 
 // ------------------------------------- SideNavMenuHeading
 
-type SideNavMenuHeadingProps = {
-	id: string
+export type SideNavMenuHeadingProps = {
 	children: React.ReactNode
+	id: string
 	srOnly?: boolean
 }
 
@@ -39,7 +42,7 @@ const SideNavMenuHeading = ({ id, children, srOnly }: SideNavMenuHeadingProps) =
 		<h3
 			id={id}
 			className={cn(
-				'px-4 py-2 text-sm text-gray-500 tracking-wider uppercase',
+				'px-4 py-2 text-sm text-gray-600 tracking-wider uppercase',
 				srOnly && 'sr-only'
 			)}
 		>
@@ -50,7 +53,7 @@ const SideNavMenuHeading = ({ id, children, srOnly }: SideNavMenuHeadingProps) =
 
 // ------------------------------------- SideNavMenuSection
 
-type SideNavMenuSectionProps = {
+export type SideNavMenuSectionProps = {
 	id: string
 	heading?: string
 	srOnlyHeading?: boolean
@@ -66,7 +69,7 @@ const SideNavMenuSection = ({
 	className,
 }: SideNavMenuSectionProps) => {
 	return (
-		<div className={cn('flex flex-col gap-2 mx-2 text-gray-500', className)}>
+		<div className={cn('flex flex-col gap-2 mx-2 text-gray-600', className)}>
 			<SideNavMenuHeading srOnly={srOnlyHeading} id={id}>
 				{heading}
 			</SideNavMenuHeading>
@@ -86,72 +89,68 @@ export type SideNavMenuGroupProps = {
 	children: React.ReactNode
 }
 
-const CurrentChildContext = React.createContext<
-	[
-		{ href: string; current: boolean }[],
-		React.Dispatch<React.SetStateAction<{ href: string; current: boolean }[]>>,
-	]
->([null!, () => null!])
-
 const SideNavMenuGroup = React.forwardRef<HTMLButtonElement, SideNavMenuGroupProps>(
 	({ title, icon, children, className, ...props }, ref) => {
 		const [expanded, setExpanded] = useState(false)
-		const [childrenData, setChildrenData] = useState<{ href: string; current: boolean }[]>([])
 
-		const triggerStyles = cn(
-			'cursor-pointer flex items-center justify-between py-2 pl-4 pr-2 rounded-sm w-full',
-			'focusVisibleRingStyles',
-			className
-		)
-		const chevronStyles = cn('text-gray-600 transition-all duration-200', expanded && '-rotate-180')
+		const groupListParentRef = useRef<HTMLUListElement>(null)
 
-		const hasCurrentChildStyle = '' // TODO: decide what style this will be
-
-		const hasCurrentChild = childrenData.some((c) => c.current === true)
+		let hasCurrentChild: boolean | null = null
 
 		const contentStyles = cn('pl-5 mt-1', expanded ? 'visible h-full' : 'invisible h-0')
 		//^ use CSS to show/hide the content so the parent knows its children's width, current etc.
 
 		useEffect(() => {
 			//when landing on page, expand the group of current link
-			hasCurrentChild && setExpanded(true)
-		}, [hasCurrentChild])
+			if (groupListParentRef.current) {
+				const liElementsArr = Array.from(groupListParentRef.current?.querySelectorAll('li'))
+
+				hasCurrentChild = liElementsArr?.some((li) => li.getAttribute('data-current') === 'true')
+			}
+			if (hasCurrentChild) {
+				setExpanded(true)
+			}
+		}, [])
+
+		const triggerStyles = cn(
+			'cursor-pointer flex items-center justify-between py-2 pl-4 pr-2 rounded-sm w-full',
+			'focusVisibleRingStyles',
+			hasCurrentChild && '', // TODO decide what style this will be
+			className
+		)
+		const chevronStyles = cn('text-gray-600 transition-all duration-200', expanded && '-rotate-180')
 
 		return (
-			<CurrentChildContext.Provider value={[childrenData, setChildrenData]}>
-				<li>
-					<button
-						tabIndex={0}
-						ref={ref}
-						aria-haspopup="menu"
-						aria-expanded={expanded}
-						className={cn(triggerStyles, hasCurrentChild && hasCurrentChildStyle)}
-						{...props}
-						onClick={() => setExpanded(!expanded)}
-					>
-						<div className="flex items-center gap-1">
-							{/* {ItemIcon && <ItemIcon className="size-5 shrink-0 mr-1" />} */}
-							{icon &&
-								React.cloneElement(icon as React.ReactElement, {
-									size: 'md',
-									className: 'mr-1',
-								})}
-							{title}
-						</div>
-						<Icon name="ChevronDown" size="md" className={chevronStyles} />
-					</button>
-					<ul className={contentStyles}>{children}</ul>
-				</li>
-			</CurrentChildContext.Provider>
+			<li>
+				<button
+					tabIndex={0}
+					ref={ref}
+					aria-haspopup="menu"
+					aria-expanded={expanded}
+					className={cn(triggerStyles)}
+					{...props}
+					onClick={() => setExpanded(!expanded)}
+				>
+					<div className="flex items-center gap-1">
+						{icon &&
+							React.cloneElement(icon as React.ReactElement, {
+								size: 'md',
+								className: 'mr-1',
+							})}
+						{title}
+					</div>
+					<Icon name="ChevronDown" size="md" className={chevronStyles} />
+				</button>
+				<ul ref={groupListParentRef} className={contentStyles}>
+					{children}
+				</ul>
+			</li>
 		)
 	}
 )
 SideNavMenuGroup.displayName = 'SideNavMenuGroup'
 
-// ------------------------------------- reused by SideNavMenuLink & SideNavMenuButton
-
-const itemStyles =
-	'w-full text-gray-500 hover:text-black flex items-center gap-2 py-2 px-4 rounded-sm focusVisibleRingStyles'
+// ------------------------------------- reused by SideNavMenuListItem & SideNavMenuButton
 
 const checkIsParentUl = (itemRef: React.RefObject<HTMLLIElement> | null) => {
 	//confirm this <li> is contained in a <ul> - else console yell at developer
@@ -164,66 +163,56 @@ const checkIsParentUl = (itemRef: React.RefObject<HTMLLIElement> | null) => {
 	}
 }
 
-// ------------------------------------- SideNavMenuLink
+// ------------------------------------- SideNavMenuListItem
 
-export type SideNavMenuLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-	href: string
-	children: string
-	icon?: React.ReactNode
+export type SideNavMenuListItemProps = React.LiHTMLAttributes<HTMLLIElement> & {
+	children: React.ReactNode
 	className?: string
-	current?: boolean
+	/**
+	 * handles styling & adds aria-current="page" to the anchor child
+	 */
+	isCurrent?: boolean
 }
 
-const SideNavMenuLink = React.forwardRef<HTMLAnchorElement, SideNavMenuLinkProps>(
-	({ icon, children, href, className, current, ...props }, ref) => {
-		const listItemRef = useRef<HTMLLIElement>(null) //refers to <li> wrapper (not the link within it (ref))
-		useEffect(() => {
-			checkIsParentUl(listItemRef)
-		}, [])
+const SideNavMenuListItem = ({
+	children,
+	isCurrent,
+	className,
+	...props
+}: SideNavMenuListItemProps) => {
+	const liRef = useRef<HTMLLIElement>(null)
 
-		const linkStyles = cn(
-			itemStyles,
-			current && 'text-brand font-medium hover:text-brand', // TODO: decide what style this will be
-			className
-		)
-		const [childrenData, setChildrenData] = useContext(CurrentChildContext)
+	useEffect(() => {
+		if (liRef.current) {
+			const anchor = liRef.current?.querySelector('a')
+			if (isCurrent) {
+				anchor?.setAttribute('aria-current', 'page')
+			} else {
+				anchor?.removeAttribute('aria-current')
+			}
+		}
+	}, [isCurrent])
+	// https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current
 
-		// childrenData results in duplicate objects because of double rendering (react) - can this be improved? not breaking
-		useEffect(() => {
-			const child = childrenData?.find((i) => i.href === href)
-			setChildrenData((prevItems) => {
-				const updatedItems = [...prevItems]
-				if (child)
-					updatedItems.map((c) => {
-						if (c.href === href) {
-							c.current = !!current
-						}
-					})
-				else {
-					const newChild = Object.assign({ href: href }, { current: !!current })
-					updatedItems.push(newChild)
-				}
-				return updatedItems
-			})
-		}, [current, href]) // do not add the context to this, it results in infinite rerendering
-
-		return (
-			<li className="w-full" ref={listItemRef}>
-				<a
-					ref={ref}
-					href={href}
-					aria-current={current ? 'page' : undefined}
-					className={linkStyles}
-					{...props}
-				>
-					{icon && React.cloneElement(icon as React.ReactElement, { size: 'md' })}
-					{children}
-				</a>
-			</li>
-		)
-	}
-)
-SideNavMenuLink.displayName = 'SideNavMenuLink'
+	return (
+		<li
+			ref={liRef}
+			data-current={isCurrent ?? null} //used by parent to determine group expansion
+			className={cn(
+				'w-full text-gray-600 flex items-center gap-2 py-2 px-4 rounded-sm',
+				isCurrent ? 'text-brand' : 'hover:text-black',
+				'[&>a]:outline-none', //remove native outline from <a> child
+				isCurrent && '[&>a]:text-brand [&>a]:font-medium [&>a]:hover:text-brand',
+				// focus-visible ring on parent of interactive child (<a>)
+				'[&:has(:focus-visible)]:border-brand [&:has(:focus-visible)]:ring-2 [&:has(:focus-visible)]:ring-offset-2 ring-brand',
+				className
+			)}
+			{...props}
+		>
+			{children}
+		</li>
+	)
+}
 
 // ------------------------------------- SideNavMenuButton
 
@@ -233,6 +222,7 @@ export type SideNavMenuButtonProps = {
 	icon?: React.ReactNode
 	onClick: () => void
 }
+
 const SideNavMenuButton = React.forwardRef<HTMLButtonElement, SideNavMenuButtonProps>(
 	({ icon, children, className, onClick, ...props }, ref) => {
 		const listItemRef = useRef<HTMLLIElement>(null) //refers to <li> wrapper (not the button within it (ref))
@@ -240,7 +230,11 @@ const SideNavMenuButton = React.forwardRef<HTMLButtonElement, SideNavMenuButtonP
 			checkIsParentUl(listItemRef)
 		}, [])
 
-		const btnStyles = cn(itemStyles, className)
+		const btnStyles = cn(
+			'w-full flex items-center gap-2 py-2 px-4 rounded-sm text-gray-600',
+			'focusVisibleRingStyles hover:text-black active:text-black focus:text-black',
+			className
+		)
 
 		return (
 			<li className="w-full" ref={listItemRef}>
@@ -256,20 +250,29 @@ SideNavMenuButton.displayName = 'SideNavMenuButton'
 
 // ------------------------------------- SideNavMenuDetailsSection
 
-type SideNavMenuDetailsSectionProps = {
+export type SideNavMenuDetailsSectionProps = {
 	title: string
 	children: React.ReactNode
 }
+
 const SideNavMenuDetailsSection = ({ title, children }: SideNavMenuDetailsSectionProps) => {
-	const [childrenData, setChildrenData] = useState<{ href: string; current: boolean }[]>([])
-	const hasCurrentChild = childrenData.some((c) => c.current === true)
+	const groupListParentRef = useRef<HTMLDivElement>(null)
+	const [expanded, setExpanded] = useState(false)
 
-	const defaultOpen = hasCurrentChild
-	//eslint-disable-next-line
-	const [expanded, setExpanded] = useState(defaultOpen || false)
-	//Because defaultOpen does not change it does not cause a DOM update,
-	//so the HTML control is still in charge of its state.
+	useEffect(() => {
+		// when landing on page, expand the group if any child has data-current="true"
+		if (groupListParentRef.current) {
+			const liElementsArr = Array.from(groupListParentRef.current.querySelectorAll('li'))
 
+			const hasCurrentChild = liElementsArr.some((li) => li.getAttribute('data-current') === 'true')
+
+			if (hasCurrentChild) {
+				setExpanded(true)
+			}
+		}
+	}, [])
+
+	// add custom style for details marker on safari
 	useEffect(() => {
 		const style = document.createElement('style')
 		style.textContent = 'summary::-webkit-details-marker { display: none; }'
@@ -281,28 +284,28 @@ const SideNavMenuDetailsSection = ({ title, children }: SideNavMenuDetailsSectio
 	}, [])
 
 	return (
-		<CurrentChildContext.Provider value={[childrenData, setChildrenData]}>
-			<details
-				className="group"
-				open={defaultOpen}
-				onToggle={(e) => setExpanded((e.currentTarget as HTMLDetailsElement).open)}
+		<details
+			className="group"
+			open={expanded}
+			onToggle={(e) => setExpanded((e.currentTarget as HTMLDetailsElement).open)} // sync with native onToggle event
+		>
+			<summary
+				className={cn(
+					'font-semibold text-gray-600 list-none flex items-center gap-1 cursor-pointer rounded',
+					'py-2 focusVisibleRingStyles'
+				)}
 			>
-				<summary
-					className={cn(
-						'font-semibold text-gray-500 list-none flex items-center gap-1 cursor-pointer rounded',
-						'py-2 focusVisibleRingStyles'
-					)}
-				>
-					<Icon
-						name="ChevronRight"
-						size="md"
-						className="group-open:rotate-90 transition-transform duration-100"
-					/>
-					{title}
-				</summary>
-				<div className="py-4 flex flex-col gap-6">{children}</div>
-			</details>
-		</CurrentChildContext.Provider>
+				<Icon
+					name="ChevronRight"
+					size="md"
+					className="group-open:rotate-90 transition-transform duration-100"
+				/>
+				{title}
+			</summary>
+			<div ref={groupListParentRef} className="py-4 flex flex-col gap-6">
+				{children}
+			</div>
+		</details>
 	)
 }
 
@@ -312,7 +315,7 @@ export {
 	SideNavMenu,
 	SideNavMenuSection,
 	SideNavMenuGroup,
-	SideNavMenuLink,
+	SideNavMenuListItem,
 	SideNavMenuButton,
 	SideNavMenuDetailsSection,
 }

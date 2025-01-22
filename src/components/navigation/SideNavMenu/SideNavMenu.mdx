@@ -1,22 +1,17 @@
 import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
 import * as SideNavMenuStories from './SideNavMenu.stories'
 
-<Meta of={SideNavMenuStories} />
-
 # SideNavMenu
 
 A vertical navigation menu component, to be placed in the sidebar of a page or application.
 
-Renders a `<nav>` element with links and lists of links.
-
-<Canvas of={SideNavMenuStories.Default} />
+Renders a `<nav>` element with links and lists of links (or buttons).
 
 ### Usage
 
 **`<SideNavMenu>`** renders a (`<nav>`) element. Its direct children must be either **`<SideNavMenuSection>`** or **`<SideNavMenuDetailsSection>`**
 
-**`<SideNavMenuLink>`** renders a (`<a>`) element by default.
-It can render a **Next.js Link** if passed via the `as` prop. The `href` property is required
+**`<SideNavMenuListItem>`** renders a (`<li>`) element where a `<a>` or `<NextLink>` can be passed in as children.
 
 **`<SideNavMenuButton>`** renders a (`<button>`) element, used for calling an action. The `onClick` property is required
 
@@ -31,7 +26,7 @@ Group options:
 <Source code={`
 import {
   SideNavMenu,
-  SideNavMenuLink,
+  SideNavMenuListItem,
   SideNavMenuGroup,
   SideNavMenuButton,
   SideNavMenuSection,
@@ -47,41 +42,28 @@ import { usePathname } from 'next/navigation' {/* pathname can be used to determ
   {/* SideNavMenuSection must have id and heading - for accessibility */}
   {/* heading visually hidden with srOnlyHeading */}
   <SideNavMenuSection id="first-section" heading="welcome" srOnlyHeading> 
-    <SideNavMenuLink
-      href="/" {/* href is required */}
-      {/* optional props */}
-      as={Link} {/* as Next Link component */}
-      current={pathname === '/'} {/* boolean - pathname by next/navigation - prop is used for accessibility & styling */}
-      icon={Home}
+    <SideNavMenuListItem
+      isCurrent={pathname === '/'} {/* boolean - pathname by next/navigation - prop is used for accessibility & styling */}
     >
-      Home
-    </SideNavMenuLink>
+      <a href="/"> Home </a>
+    </SideNavMenuListItem>
   </SideNavMenuSection>
 
-{' '}
 <SideNavMenuSection id="forms-section" heading="Form components">
 	<SideNavMenuGroup title="Forms" icon={Circle}>
-		<SideNavMenuLink href="/forms/form-demo" current={pathname === '/forms/form-demo'}>
-			Form demo
-		</SideNavMenuLink>
+		<SideNavMenuListItem isCurrent={pathname === '/Forms'}>
+			<a href="/"> Forms </a>
+		</SideNavMenuListItem>
 		{/* {...} */}
 	</SideNavMenuGroup>
 </SideNavMenuSection>
 
-{' '}
 <SideNavMenuDetailsSection title="Components">
-	{' '}
 	{/* details/summary wrapper */}
 	<SideNavMenuSection id="buttons-section" heading="Buttons">
-		<SideNavMenuLink href="/components/button" current={pathname === '/components/button'}>
-			Button
-		</SideNavMenuLink>
-		<SideNavMenuLink
-			href="/components/icon-button"
-			current={pathname === '/components/icon-button'}
-		>
-			IconButton
-		</SideNavMenuLink>
+		<SideNavMenuListItem current={pathname === '/components/button'}>
+			<a href="/components/button"> Button </a>
+		</SideNavMenuListItem>
 	</SideNavMenuSection>
 	{/* {...} */}
 </SideNavMenuDetailsSection>
@@ -113,12 +95,10 @@ import { usePathname } from 'next/navigation' {/* pathname can be used to determ
 
 ---
 
-**`<SideNavMenuLink>`**
+**`<SideNavMenuListItem>`**
 
-- `href` : `string`, required
-- `as` : slot prop to pass in `NextLink` component, optional
-- `current` : `boolean`, used for accessibility & styling, optional
-- `icon` : slot prop for an Icon component, optional
+- `children` : slot for an anchor element (`<a>` or `<NextLink>`)
+- `isCurrent` : `boolean`, used for accessibility & styling, optional
 
 ---
 

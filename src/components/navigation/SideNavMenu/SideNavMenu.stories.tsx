@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import {
 	SideNavMenu,
-	SideNavMenuLink,
+	SideNavMenuListItem,
 	SideNavMenuGroup,
 	SideNavMenuButton,
 	SideNavMenuSection,
@@ -22,54 +22,46 @@ const SideNavMenuDemo = () => {
 	return (
 		<SideNavMenu className="max-w-[260px] shadow">
 			<SideNavMenuSection id="first-section" heading="main list" srOnlyHeading>
-				<SideNavMenuLink
-					href="/a"
-					current={currentLink === '/a'}
-					onClick={(e) => handleClick(e, '/a')}
-				>
-					Home
-				</SideNavMenuLink>
+				<SideNavMenuListItem isCurrent={currentLink === '/a'}>
+					{/* onClick on an <a> is bad! this is for the story only (instead of a mock) */}
+					<a href="/a" onClick={(e) => handleClick(e, '/a')}>
+						Home
+					</a>
+				</SideNavMenuListItem>
 			</SideNavMenuSection>
 
 			<SideNavMenuSection id="services-section" heading="services">
 				<SideNavMenuGroup title="Utilities">
-					<SideNavMenuLink
-						href="/b"
-						icon={<Icon name="Wind" />}
-						current={currentLink === '/b'}
-						onClick={(e) => handleClick(e, '/b')}
-					>
-						Gas
-					</SideNavMenuLink>
-					<SideNavMenuLink
-						href="/c"
-						icon={<Icon name="Zap" />}
-						current={currentLink === '/c'}
-						onClick={(e) => handleClick(e, '/c')}
-					>
-						Electric
-					</SideNavMenuLink>
+					<SideNavMenuListItem isCurrent={currentLink === '/b'}>
+						<Icon name="Wind" size="md" />{' '}
+						{/* onClick on an <a> is bad! this is for the story only (instead of a mock) */}
+						<a href="/b" onClick={(e) => handleClick(e, '/b')}>
+							Gas
+						</a>
+					</SideNavMenuListItem>
+					<SideNavMenuListItem isCurrent={currentLink === '/c'}>
+						<Icon name="Zap" size="md" />
+						<a href="/c" onClick={(e) => handleClick(e, '/c')}>
+							Electric
+						</a>
+					</SideNavMenuListItem>
 				</SideNavMenuGroup>
 
-				<SideNavMenuLink
-					href="/d"
-					icon={<Icon name="DollarSign" />}
-					current={currentLink === '/d'}
-					onClick={(e) => handleClick(e, '/d')}
-				>
-					Bills
-				</SideNavMenuLink>
+				<SideNavMenuListItem isCurrent={currentLink === '/d'}>
+					<Icon name="DollarSign" size="md" />
+					<a href="/d" onClick={(e) => handleClick(e, '/d')}>
+						Bills
+					</a>
+				</SideNavMenuListItem>
 			</SideNavMenuSection>
 
 			<SideNavMenuSection id="third-section" heading="profile">
 				<SideNavMenuGroup title="Settings" icon={<Icon name="Settings" />}>
-					<SideNavMenuLink
-						href="/e"
-						current={currentLink === '/e'}
-						onClick={(e) => handleClick(e, '/e')}
-					>
-						Profile
-					</SideNavMenuLink>
+					<SideNavMenuListItem isCurrent={currentLink === '/e'}>
+						<a href="/e" onClick={(e) => handleClick(e, '/e')}>
+							Profile
+						</a>
+					</SideNavMenuListItem>
 				</SideNavMenuGroup>
 
 				<SideNavMenuButton icon={<Icon name="LogOut" />} onClick={() => alert('button action')}>
@@ -79,29 +71,18 @@ const SideNavMenuDemo = () => {
 
 			<SideNavMenuDetailsSection title="Components">
 				<SideNavMenuSection id="buttons-section" heading="Buttons">
-					<SideNavMenuLink
-						href="/h"
-						current={currentLink === '/h'}
-						onClick={(e) => handleClick(e, '/h')}
-					>
-						Button
-					</SideNavMenuLink>
-					<SideNavMenuLink
-						href="/i"
-						current={currentLink === '/i'}
-						onClick={(e) => handleClick(e, '/i')}
-					>
-						IconButton
-					</SideNavMenuLink>
+					<SideNavMenuListItem isCurrent={currentLink === '/h'}>
+						<a href="/h" onClick={(e) => handleClick(e, '/h')}>
+							Button
+						</a>
+					</SideNavMenuListItem>
 				</SideNavMenuSection>
 				<SideNavMenuSection id="dialogs-section" heading="Dialogs">
-					<SideNavMenuLink
-						href="/j"
-						current={currentLink === '/j'}
-						onClick={(e) => handleClick(e, '/j')}
-					>
-						Alert Dialog
-					</SideNavMenuLink>
+					<SideNavMenuListItem isCurrent={currentLink === '/j'}>
+						<a href="/j" onClick={(e) => handleClick(e, '/j')}>
+							Alert Dialog
+						</a>
+					</SideNavMenuListItem>
 				</SideNavMenuSection>
 			</SideNavMenuDetailsSection>
 		</SideNavMenu>
@@ -130,7 +111,6 @@ const meta: Meta<typeof SideNavMenu> = {
 		expect(gasLink).toBeVisible()
 		expect(gasLink).toHaveAccessibleName()
 		expect(gasLink).toHaveAttribute('aria-current', 'page')
-		expect(gasLink).toHaveClass('text-brand')
 		const groupItemUtilities = within(nav).getByRole('button', {
 			name: 'Utilities',
 		})
@@ -168,7 +148,6 @@ const meta: Meta<typeof SideNavMenu> = {
 		expect(buttonLink).toBeVisible()
 		expect(buttonLink).toHaveAccessibleName()
 		await userEvent.click(buttonLink)
-		expect(buttonLink).toHaveClass('text-brand')
 	},
 }
 
