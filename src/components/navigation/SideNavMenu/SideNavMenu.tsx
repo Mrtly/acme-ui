@@ -180,11 +180,14 @@ const SideNavMenuListItem = ({
 	className,
 	...props
 }: SideNavMenuListItemProps) => {
-	const liRef = useRef<HTMLLIElement>(null)
+	const listItemRef = useRef<HTMLLIElement>(null)
+	useEffect(() => {
+		checkIsParentUl(listItemRef)
+	}, [])
 
 	useEffect(() => {
-		if (liRef.current) {
-			const anchor = liRef.current?.querySelector('a')
+		if (listItemRef.current) {
+			const anchor = listItemRef.current?.querySelector('a')
 			if (isCurrent) {
 				anchor?.setAttribute('aria-current', 'page')
 			} else {
@@ -196,10 +199,11 @@ const SideNavMenuListItem = ({
 
 	return (
 		<li
-			ref={liRef}
+			ref={listItemRef}
 			data-current={isCurrent ?? null} //used by parent to determine group expansion
 			className={cn(
 				'w-full text-gray-600 flex items-center gap-2 py-2 px-4 rounded-sm',
+				'transition-colors duration-200',
 				isCurrent ? 'text-brand' : 'hover:text-black',
 				'[&>a]:outline-none', //remove native outline from <a> child
 				isCurrent && '[&>a]:text-brand [&>a]:font-medium [&>a]:hover:text-brand',
@@ -232,6 +236,7 @@ const SideNavMenuButton = React.forwardRef<HTMLButtonElement, SideNavMenuButtonP
 
 		const btnStyles = cn(
 			'w-full flex items-center gap-2 py-2 px-4 rounded-sm text-gray-600',
+			'transition-colors duration-200',
 			'focusVisibleRingStyles hover:text-black active:text-black focus:text-black',
 			className
 		)

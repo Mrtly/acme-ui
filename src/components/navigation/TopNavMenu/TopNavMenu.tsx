@@ -1,12 +1,9 @@
 'use client'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '@/utils/cn'
 import { Icon } from '@/theme/Icons'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import debounce from '@/utils/helpers/debounce'
-
-// should there be a rightIcon property to define its size like the left icon?
-// if yes ^ should the link/button children type be string only?
 
 type ItemIconProps = React.SVGAttributes<SVGElement> & {
 	className?: string
@@ -16,13 +13,16 @@ type ItemIconProps = React.SVGAttributes<SVGElement> & {
 
 export type TopNavMenuProps = {
 	children: React.ReactNode
-	ariaLabel?: string // default is 'Top Navigation Bar', // better name?
+	/**
+	 * default ariaLabel is 'Top Navigation'
+	 */
+	ariaLabel?: string
 	className?: string
 }
 
 const TopNavMenu = ({
 	children,
-	ariaLabel = 'Top Navigation Bar',
+	ariaLabel = 'Top Navigation',
 	className,
 	...props
 }: TopNavMenuProps) => {
@@ -40,11 +40,11 @@ export type TopNavMenuGroupProps = {
 	title: React.ReactNode | string
 	className?: string
 	children: React.ReactNode
-	current?: boolean
+	hasCurrentChildItem?: boolean
 }
 
 const TopNavMenuGroup = React.forwardRef<HTMLButtonElement, TopNavMenuGroupProps>(
-	({ title, children, className, current, ...props }, ref) => {
+	({ title, children, className, hasCurrentChildItem, ...props }, ref) => {
 		const [expanded, setExpanded] = useState(false)
 
 		const listItemStyles = cn('relative group')
@@ -55,8 +55,8 @@ const TopNavMenuGroup = React.forwardRef<HTMLButtonElement, TopNavMenuGroupProps
 
 		const triggerStyles = cn(
 			'flex items-center gap-1 rounded p-2 outline-none ease-in',
-			'focusVisibleRingStyles transition-colors duration-200',
-			current ? 'font-medium text-brand' : 'font-medium text-gray-500 hover:text-black',
+			'cursor-default focusVisibleRingStyles transition-colors duration-200',
+			hasCurrentChildItem ? 'font-medium text-brand' : 'font-medium text-gray-500 hover:text-black',
 			className
 		)
 		const chevronStyles = cn(
@@ -118,48 +118,63 @@ const TopNavMenuGroup = React.forwardRef<HTMLButtonElement, TopNavMenuGroupProps
 )
 TopNavMenuGroup.displayName = 'TopNavMenuGroup'
 
-// ------------------------------------- TopNavMenuLink
+// ------------------------------------- TopNavMenuListItem
 
-export type TopNavMenuLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-	href: string
+export type TopNavMenuListItemProps = React.LiHTMLAttributes<HTMLLIElement> & {
 	children: string | React.ReactNode
-	icon?: React.FC<ItemIconProps>
 	className?: string
-	current?: boolean
+	/**
+	 * handles styling
+	 */
+	isCurrent?: boolean
 }
 
-const TopNavMenuLink = React.forwardRef<HTMLAnchorElement, TopNavMenuLinkProps>(
-	({ icon, children, href, className, current, ...props }, ref) => {
-		//listItemStyles currently unused. add to <li> for bottom border visual effect
-		// const listItemStyles = cn(
-		// 		'w-full relative',
-		// 		'group-data-[content]:after:bg-transparent', //after will not show if link is a group's child
-		// 		'hover:after:bg-brand after:transition-colors after:delay-75 after:duration-200',
-		// 		current && 'after:bg-brand',
-		// 		'after:h-1 after:w-[calc(100%-16px)] after:absolute after:-bottom-[2px] after:right-2'
-		// 	)
+const TopNavMenuListItem = ({
+	children,
+	className,
+	isCurrent,
+	...props
+}: TopNavMenuListItemProps) => {
+	//listItemStyles currently unused. add to <li> for bottom border visual effect
+	// const listItemStyles = cn(
+	// 		'w-full relative',
+	// 		'group-data-[content]:after:bg-transparent', //after will not show if link is a group's child
+	// 		'hover:after:bg-brand after:transition-colors after:delay-75 after:duration-200',
+	// 		current && 'after:bg-brand',
+	// 		'after:h-1 after:w-[calc(100%-16px)] after:absolute after:-bottom-[2px] after:right-2'
+	// 	)
+	const listItemRef = useRef<HTMLLIElement>(null)
 
-		const linkStyles = cn(
-			'w-full flex items-center gap-2 p-2 rounded whitespace-nowrap',
-			'focusVisibleRingStyles transition-colors duration-200',
-			current ? ' text-brand' : 'text-gray-500 hover:text-black',
-			// font is medium when outside of a group, but normal when within a group content
-			'font-medium group-data-[content]:font-normal group-data-[content]:hover:bg-gray-100',
-			className
-		)
+	const listItemStyles = cn(
+		'w-full flex items-center gap-2 p-2 rounded whitespace-nowrap',
+		'transition-colors duration-200',
+		isCurrent ? 'text-brand' : 'text-gray-500 hover:text-black',
+		// font is medium when outside of a group, but normal when within a group content
+		'font-medium group-data-[content]:font-normal group-data-[content]:hover:bg-gray-100',
+		'[&>a]:outline-none', //remove native outline from <a> child
+		// // focus-visible ring on parent of interactive child (<a>)
+		'[&:has(:focus-visible)]:border-brand [&:has(:focus-visible)]:ring-2 [&:has(:focus-visible)]:ring-offset-2 ring-brand',
+		className
+	)
 
-		const Icon = icon || null
-		return (
-			<li>
-				<a ref={ref} href={href} className={linkStyles} {...props} data-current={current}>
-					{Icon && <Icon className="size-5 shrink-0" />}
-					{children}
-				</a>
-			</li>
-		)
-	}
-)
-TopNavMenuLink.displayName = 'TopNavMenuLink'
+	useEffect(() => {
+		if (listItemRef.current) {
+			const anchor = listItemRef.current?.querySelector('a')
+			if (isCurrent) {
+				anchor?.setAttribute('aria-current', 'page')
+			} else {
+				anchor?.removeAttribute('aria-current')
+			}
+		}
+	}, [isCurrent])
+	// https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current
+
+	return (
+		<li ref={listItemRef} data-current={isCurrent} className={listItemStyles} {...props}>
+			{children}
+		</li>
+	)
+}
 
 // ------------------------------------- TopNavMenuButton
 
@@ -203,4 +218,4 @@ TopNavMenuButton.displayName = 'TopNavMenuButton'
 
 // ------------------------------------- TopNavMenu exports
 
-export { TopNavMenu, TopNavMenuGroup, TopNavMenuLink, TopNavMenuButton }
+export { TopNavMenu, TopNavMenuGroup, TopNavMenuListItem, TopNavMenuButton }

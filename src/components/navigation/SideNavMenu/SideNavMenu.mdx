@@ -9,7 +9,8 @@ Renders a `<nav>` element with links and lists of links (or buttons).
 
 ### Usage
 
-**`<SideNavMenu>`** renders a (`<nav>`) element. Its direct children must be either **`<SideNavMenuSection>`** or **`<SideNavMenuDetailsSection>`**
+**`<SideNavMenu>`** renders a (`<nav>`) element.
+Its direct children must be either **`<SideNavMenuSection>`** or **`<SideNavMenuDetailsSection>`**
 
 **`<SideNavMenuListItem>`** renders a (`<li>`) element where a `<a>` or `<NextLink>` can be passed in as children.
 
@@ -23,7 +24,8 @@ Group options:
 
 - **`<SideNavMenuDetailsSection>`** (`<details>` to expand/hide) for nested sections. Its children must be wrapped in **`<SideNavMenuDetailsSection>`**
 
-<Source code={`
+<Source
+	code={`
 import {
   SideNavMenu,
   SideNavMenuListItem,
@@ -32,10 +34,8 @@ import {
   SideNavMenuSection,
   SideNavMenuDetailsSection
 } from '@acme/ui'
-
-import Link from 'next/link' {/* if using Next Link */}
-import { usePathname } from 'next/navigation' {/* pathname can be used to determine a current link */}
-`} />
+`}
+/>
 
 <Source code={`
 <SideNavMenu ariaLabel="Main nav">  {/* optional - default is 'Main navigation' */}
@@ -43,7 +43,7 @@ import { usePathname } from 'next/navigation' {/* pathname can be used to determ
   {/* heading visually hidden with srOnlyHeading */}
   <SideNavMenuSection id="first-section" heading="welcome" srOnlyHeading> 
     <SideNavMenuListItem
-      isCurrent={pathname === '/'} {/* boolean - pathname by next/navigation - prop is used for accessibility & styling */}
+      isCurrent={pathname === '/'} {/* boolean - pathname by navigation - prop is used for accessibility & styling */}
     >
       <a href="/"> Home </a>
     </SideNavMenuListItem>

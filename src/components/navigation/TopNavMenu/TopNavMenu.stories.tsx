@@ -2,45 +2,49 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Icon } from '@/theme/Icons'
 import { userEvent, waitFor, within, expect } from '@storybook/test'
-import { TopNavMenu, TopNavMenuLink, TopNavMenuGroup, TopNavMenuButton } from './TopNavMenu'
+import { TopNavMenu, TopNavMenuListItem, TopNavMenuGroup, TopNavMenuButton } from './TopNavMenu'
 
 const TopNavMenuDemo = () => {
 	// router mock for story only
 	const [currentLink, setCurrentLink] = useState('/a')
-	const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, path: string) => {
+	const handleClick = (
+		event: React.MouseEvent<HTMLAnchorElement | HTMLLIElement, MouseEvent>,
+		path: string
+	) => {
 		event.preventDefault() //storybook should not navigate
 		setCurrentLink(path)
 	}
 
 	return (
 		<TopNavMenu className="shadow">
-			<TopNavMenuLink href="/" current={currentLink === '/a'} onClick={(e) => handleClick(e, '/a')}>
-				Home
-			</TopNavMenuLink>
+			{/* onClick on an <a> is bad! this is for the story only (instead of a mock) */}
+			<TopNavMenuListItem isCurrent={currentLink === '/a'} onClick={(e) => handleClick(e, '/a')}>
+				<a href="/a">Home</a>
+			</TopNavMenuListItem>
 
-			<TopNavMenuGroup title="Documentation" current={currentLink.startsWith('/b')}>
-				<TopNavMenuLink
-					href="/"
-					onClick={(e) => handleClick(e, '/bb')}
-					current={currentLink == '/bb'}
-				>
-					How to do stuff
-				</TopNavMenuLink>
-				<TopNavMenuLink
-					href="/"
-					onClick={(e) => handleClick(e, '/bbb')}
-					current={currentLink == '/bbb'}
-				>
-					This is a longer link name
-				</TopNavMenuLink>
+			<TopNavMenuGroup title="Documentation" hasCurrentChildItem={currentLink.startsWith('/b')}>
+				<TopNavMenuListItem isCurrent={currentLink == '/bb'}>
+					{/* onClick on an <a> is bad! this is for the story only (instead of a mock) */}
+					<a href="/bb" onClick={(e) => handleClick(e, '/bb')}>
+						How to do stuff
+					</a>
+				</TopNavMenuListItem>
+				<TopNavMenuListItem isCurrent={currentLink == '/bbb'}>
+					<a href="/bbb" onClick={(e) => handleClick(e, '/bbb')}>
+						This is a longer link name
+					</a>
+				</TopNavMenuListItem>
 				<TopNavMenuButton onClick={() => alert('button action')}>
 					A button in the content
 				</TopNavMenuButton>
 			</TopNavMenuGroup>
 
-			<TopNavMenuLink href="https://www.example.com/" target="_blank">
-				Example Site <Icon name="ExternalLink" />
-			</TopNavMenuLink>
+			<TopNavMenuListItem>
+				<a href="https://www.example.com/" target="_blank">
+					Example Site
+				</a>
+				<Icon name="ExternalLink" />
+			</TopNavMenuListItem>
 
 			<TopNavMenuButton onClick={() => alert('button action')}>
 				Button <Icon name="LogOut" size="sm" />
@@ -55,10 +59,10 @@ const meta: Meta = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement)
 
-		const nav = canvas.getByRole('navigation', { name: 'Top Navigation Bar' })
+		const nav = canvas.getByRole('navigation', { name: 'Top Navigation' })
 		expect(nav).toBeInTheDocument()
 		expect(nav).toBeVisible()
-		expect(nav).toHaveAttribute('aria-label', 'Top Navigation Bar')
+		expect(nav).toHaveAttribute('aria-label', 'Top Navigation')
 		expect(nav).toHaveAccessibleName()
 
 		const trigger = within(nav).getByRole('button', {
@@ -78,7 +82,7 @@ const meta: Meta = {
 		await waitFor(async () => {
 			const link1 = canvas.getByRole('link', { name: 'How to do stuff' })
 			expect(link1).toBeVisible()
-			expect(link1).toHaveAttribute('href', '/')
+			expect(link1).toHaveAttribute('href', '/bb')
 		})
 		expect(trigger).toHaveAttribute('aria-expanded', 'true')
 		expect(trigger).toHaveAttribute('data-state', 'open')
