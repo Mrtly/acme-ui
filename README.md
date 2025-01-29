@@ -16,7 +16,7 @@ written with React, TypeScript, TailwindCSS, & Storybook workshop for component 
 
 a Tsup bundler setup shows how to export this components lib as a package 
 
-_(I'll also add some notes on how we achieved this in a monorepo)_
+_[gist on how we published a components lib from a monorepo](https://gist.github.com/Mrtly/948bf1eaa9635357f9fcafec2d4fda5c) while keeping the local components linked to /apps during development_
 
 <hr/>
 
