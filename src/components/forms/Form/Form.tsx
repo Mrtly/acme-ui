@@ -16,12 +16,6 @@ import { z, ZodType } from 'zod'
 
 // Inspiration: https://ui.shadcn.com/docs/components/form
 // Primitives: https://www.radix-ui.com/primitives/docs/components/form
-// TODO: dissect this and decide if we should use it or create our own.
-// TODO: fix the descriptionId error when there is no description used.
-// TODO: probably should require custom id instead of React.id() for analytics.
-// TODO: probably convert description to take a ReactNode so we can use RichText.
-// TODO: might be able to use local field state to manage boolean for the description.
-// TODO: figure out the FormFIeldContextValue types using extends
 
 // ------------------------------------- Form
 // https://react-hook-form.com/docs/formprovider
