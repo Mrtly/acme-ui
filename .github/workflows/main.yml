@@ -10,25 +10,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
 
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm
+      - name: Setup pnpm 8.x
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
-      - name: Clean install with pnpm
+      - name: Install dependencies 
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile 
 
       - name: Install missing dev dependencies
         run: pnpm add concurrently wait-on --save-dev
