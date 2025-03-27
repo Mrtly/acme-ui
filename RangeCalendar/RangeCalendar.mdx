@@ -1,0 +1,40 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as RangeCalendarStories from './RangeCalendar.stories'
+
+<Meta of={RangeCalendarStories} />
+
+# RangeCalendar
+
+**`<RangeCalendar>`** displays a date grid and allows users to select a contiguous range of dates.
+
+It is used in the [RangeDatePicker input](/docs/inputs-rangedatepicker--docs) and the [RangeDatePickerField](/docs/forms-fields-rangedatepickerfield--docs).
+
+It selects and emits the range of `start` and `end` dates as `DateValue` (the type used by [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html))
+
+<Canvas of={RangeCalendarStories.Default} />
+
+### Usage
+
+<Source code={`import { RangeCalendar } from '@ppl-gds/ui'`} />
+
+<Source
+	code={`
+<RangeCalendar
+  {/* optional props */}
+  ariaLabel="Select a date range" {/* string, defaults to 'Select a date range' */}
+  disablePastDates={disablePastDates} {/* boolean */}
+  disableWeekends={disableWeekends} {/* boolean */}
+  disableToday={disableToday} {/* boolean */}
+  showCalendarValue={showCalendarValue} {/* boolean - prints the value inside the calendar */}
+  readOnly={readOnly} {/* boolean */}
+  minDate={minDate} {/* Date */}
+  maxDate={maxDate} {/* Date */}
+  defaultValue={defaultValue} {/* { start: Date, end: Date } */}
+  onChange={onChange} {/* emits the range as the DateRange type */}
+/>
+`}
+/>
+
+### Story props
+
+<Controls />

@@ -1,0 +1,50 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as TimePickerFieldStories from './TimePickerField.stories'
+
+<Meta of={TimePickerFieldStories} />
+
+# TimePickerField
+
+A **`<TimePickerField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<TimePicker>`** input. [Inputs > TimePicker](/docs/inputs-timepicker--docs).
+
+<Canvas of={TimePickerFieldStories.Default} />
+
+A recommended `TimePickerFieldSchema` is also available for use in forms.
+
+<Source code={`
+//TimePickerFieldSchema
+z.object(
+  {
+    hour: z.number(),
+    minute: z.number(),
+  },
+  { required_error: 'Time is required' }
+)
+`} />
+
+### Usage 
+
+Use `<TimePickerField>` inside the `<Form>` wrapper component (see [Form > Docs](/docs/forms--docs))
+
+<Source code={`import { TimePickerField, TimePickerFieldSchema } from '@ppl-gds/ui'`} />
+
+<Source code={`
+const FormSchema = z.object({
+	time_picker: TimePickerFieldSchema,
+})
+
+<TimePickerField
+  control={form.control} {/* connect to form control */}
+  name="time_picker" {/* connect to form name */}
+/>
+`} />
+
+### Props
+
+`TimePicker`props (see [TimePicker](/docs/inputs-timepicker--docs)) & additional props for the field
+
+<Controls of={TimePickerFieldStories.Default} />
+
+

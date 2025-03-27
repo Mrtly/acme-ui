@@ -1,0 +1,113 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DateRangePickerFieldStories from './DateRangePickerField.stories'
+
+<Meta of={DateRangePickerFieldStories} />
+
+# DateRangePickerField
+
+A **`<DateRangePickerField>`** component to be used in Forms
+
+For non-form purposes, utilize the base **`<DateRangePicker>`** input. [Inputs > DateRangePicker](/docs/inputs-daterangepicker--docs).
+
+<Canvas of={DateRangePickerFieldStories.Default} />
+
+### Usage
+
+Use **`<DateRangePickerField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+**`<DateRangePickerField>`** uses two subcomponents, Calendar and DateInput from RAC.
+Calendar accepts the disabling props, and will not let the user pick any unavailable dates.
+
+<br /> The DateInput will do the same validation based on the disabling props, but requires extra
+handling inside the `Form` component. This is because form validation will come from zod but also
+from within the DateRangePikcerField component, and this information must be considered before the form
+is submitted.
+
+<Source code={`import { DateRangePickerField } from '@ppl-gds/ui'`} />
+
+<Source code={`
+{/* The below handles validation for the DateInput for unavailable dates */}
+const [dateRangepickerError, setDateRangepickerError] = useState<string | null>(null)
+
+const setErrorMessage = useCallback(
+  (msg: string) => {
+    form.setError('date_picker', {
+      type: 'custom',
+      message: msg,
+    })
+  },[form]
+)
+
+useEffect(() => {
+    dateRangepickerError
+      ? setErrorMessage(dateRangepickerError)
+      : form.clearErrors('date_picker')
+  }, [form, dateRangepickerError, setErrorMessage])
+
+const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
+  if (dateRangepickerError) {
+    //set the error message again because RHF removes it
+    setErrorMessage(dateRangepickerError)
+    // focus on the first invalid field
+    const firstErrorField = Object.keys(form.formState.errors)[0]
+    const fieldRef = form.control.\_fields?.[firstErrorField]?.\_f.ref
+    // @ts-expect-error (ref possibly undefined)
+    fieldRef && fieldRef.focus()
+  } else {
+    onSubmit(data) //proceed to submission
+  }
+}
+`}/>
+
+<Source
+	code={`
+<Form
+  formMethods={form}
+  formName="dateRangepicker form"
+  onSubmit={handleSubmit} {/* the handleSubmit method defined above */}
+>
+  <DateRangePickerField
+    control={form.control} {/* connect to form control */}
+    name={name} {/* string - must match the name declared in form (useForm by RHF) */}
+    label={label} {/* string */}
+    handleFieldError={setDateRangepickerError} {/* () => {} - set the error msg in the local state */}
+    description={description} {/* string - recommended, add a description for better accessibility */}
+    {/* optional props */}
+    id={id} {/* string */}
+    srOnlyLabel={srOnlyLabel} {/* boolean */}
+    srOnlyDescription={srOnlyDescription} {/* boolean */}
+    disabled={disabled} {/* boolean */}
+    readOnly={readOnly} {/* boolean */}
+    required={required} {/* boolean, default true - "(optional)" shown on label if !required  */}
+    showOptional={showOptional} {/* boolean */}
+    {/* optional calendar props */}
+    showCalendarValue={showCalendarValue} {/* boolean */}
+    disablePastDates={disablePastDates} {/* boolean */}
+    disableWeekends={disableWeekends} {/* boolean */}
+    disableToday={disableToday} {/* boolean */}
+    minDate={minDate} {/* Date, default is new Date(1900, 0, 1) */}
+    maxDate={maxDate} {/* Date */}
+  />
+</Form>
+`}
+/>
+
+### Setting a default value
+
+Settting a `defaultValue` in the `form` will populate the **DateRangePickerField** on initial render.
+
+<Source
+	code={`const form = useForm<z.infer<typeof FormSchema2>>({
+  resolver: zodResolver(FormSchema2),
+  defaultValues: {
+    date_range_picker: {
+      start: new Date(),
+      end: new Date()
+    }
+  },
+})`}
+/>
+
+### Story props
+
+<Controls />

@@ -1,0 +1,68 @@
+import { Meta, Story, ArgTypes, Canvas, Source } from '@storybook/blocks'
+import * as DropZoneStories from './DropZone.stories'
+import { DropZone } from './DropZone'
+
+<Meta of={DropZoneStories} />
+
+# DropZone
+
+A drag-and-drop file upload component that allows users to upload files either by dragging and dropping them into the zone or by clicking to open the file selector.
+
+In forms use the **`<DropZoneField>`** component (see [Forms > Fields > DropZoneField](/docs/forms-fields-dropzonefield--docs)).
+
+## Features
+
+- Single or multiple file upload
+- File type restrictions
+- File size limits
+- Custom error messages
+- Drag and drop support
+- Accessible file input
+
+## Usage
+
+<Canvas of={DropZoneStories.Default} />
+
+<Source code={`
+<DropZone
+  onSelect={onSelectHandler}
+  onRemove={onRemoveHandler}
+  
+  {/* optional props */}
+  allowsMultiple={boolean}
+  acceptType={MIME type(s) string}
+  maxSizeInBytes={number}
+  multipleFilesLimit={number}
+  customErrorText={string} 
+  textContent={object} 
+/>`} />
+
+ 
+## Properties
+
+`acceptType` is a string that can be a single MIME type or a comma-separated list of MIME types.
+[MDN - accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept#limiting_accepted_file_types)
+
+<ArgTypes of={DropZone} />
+
+## Text Content Customization
+
+The `textContent` prop allows customizing all text strings.
+The default text content is:
+
+```
+{
+  dropFileSingle: 'Drop file here',
+  dropFilesMultiple: 'Drop files here',
+  browse: 'Browse',
+  maxFileSizeIs: 'The maximum file size is',
+  couldNotSelect: 'Could not select file',
+  canOnlySelectOneFile: 'You can only select one file',
+  fileTooLarge: 'The file is too large',
+  fileTypeNotValid: 'The file type is not valid',
+  defaultErrorText: 'An error occurred. Please try again.',
+  acceptedTypesText: 'Accepted file types:',
+  filesLimit: 'Max number of files accepted:',
+}
+```
+ 
