@@ -1,0 +1,44 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as DateRangePickerStories from './DateRangePicker.stories'
+
+<Meta of={DateRangePickerStories} />
+
+# DateRangePicker
+
+**`<DateRangePicker>`** combines two DateFields and a RangeCalendar popover to allow users to enter or select a date and time range.
+
+In forms use the **`<DateRangePickerField>`** component (see [Forms > Fields > DateRangePickerField](/docs/forms-fields-dateRangepickerfield--docs)).
+
+<Canvas of={DateRangePickerStories.Default} />
+
+### Usage
+
+<Source code={`import { DateRangePicker } from '@ppl-gds/ui'`} />
+
+<Source code={`
+const [range, setRange] = useState<RangeValue<Date> | undefined>()
+const [invalid, setInvalid] = useState<boolean>(false)
+
+<DateRangePicker
+  label={label} {/* string */}
+  onChange={setDate} {/* (value: RangeValue<Date>) => {} - value change listener */}
+  {/* optional props */}
+  defaultValue={RangeValue<Date>} {/* set a default value */}
+  value={RangeValue<Date>} {/* controlled value used by the RHF field */}
+  id={id} {/* string */}
+  error={error} {/* boolean */}
+  onValidation={setInvalid} {/* (value: boolean) => {} - error state change listener used in the field component */}
+  disabled={disabled} {/* boolean */}
+  readOnly={readOnly} {/* boolean */}
+  srOnlyLabel={srOnlyLabel} {/* boolean */}
+  required={required} {/* boolean - "(optional)" shown on label if !required & showOptional={true} */}
+  showOptional={showOptional} {/* boolean */}
+  {/* optional calendar props */}
+  showCalendarValue={showCalendarValue} {/* boolean */}
+  disablePastDates={disablePastDates} {/* boolean */}
+  disableWeekends={disableWeekends} {/* boolean */}
+  disableToday={disableToday} {/* boolean */}
+  minDate={minDate} {/* Date */}
+  maxDate={maxDate} {/* Date */}
+/>
+`}/>

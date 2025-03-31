@@ -1,0 +1,31 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as TimePickerStories from './TimePicker.stories'
+
+<Meta of={TimePickerStories} />
+
+# TimePicker
+
+**`<TimePicker>`** allows users to select a time.
+
+In forms use the **`<TimePickerField>`** component (see [Forms > Fields > TimePickerField](/docs/forms-fields-timepickerfield--docs)).
+
+<Canvas of={TimePickerStories.Default} />
+
+### Usage
+
+<Source code={`import { TimePicker } from '@ppl-gds/ui'`} />
+
+<Source code={`
+<TimePicker
+  label="Time Picker"
+  defaultValue={Time value} //Time constructor value from @internationalized/date
+  onChange={(e) => setTime(e)} //onChange handler
+/>
+`} />
+
+### Props
+
+
+<Controls of={TimePickerStories.Default} /> 
+
+

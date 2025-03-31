@@ -1,0 +1,96 @@
+import { Meta, Story, ArgTypes, Canvas, Source } from '@storybook/blocks'
+import * as DropZoneFieldStories from './DropZoneField.stories'
+import { DropZoneField } from './DropZoneField'
+
+<Meta of={DropZoneFieldStories} />
+
+# DropZoneField
+
+A drag-and-drop file upload component that allows users to upload files either by dragging and dropping them into the zone or by clicking to open the file selector.
+
+For non-form purposes, utilize the base **`<DropZone>`** input. [Inputs > DropZone](/docs/inputs-dropzone--docs).
+
+<Canvas of={DropZoneFieldStories.Default} />
+
+
+## Features
+
+- Single or multiple file upload
+- File type restrictions
+- File size limits
+- Custom error messages
+- Drag and drop support
+- Accessible file input
+- Integrates with React Hook Form for form handling
+- Supports file validation through Zod schema
+- Inherits all DropZone component features
+- Accessible form field with error states and descriptions
+
+## Validation
+
+The field supports validation through Zod schema, including:
+- Required files
+- File size limits
+- File type restrictions
+- Custom validation rules
+
+## Accessibility
+
+- Form field association
+- Error message announcements
+- Description support (optional screen reader only)
+- Status updates for form validation
+
+### Usage
+
+Use **`<DropZoneField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Canvas of={DropZoneFieldStories.Default} />
+
+<Source code={`
+<DropZoneField
+  control={control}
+  name="dropZoneField" //matches the name of the field in the form schema
+
+  {/* optional props */}
+  allowsMultiple={boolean}
+  acceptType={MIME type(s) string}
+  maxSizeInBytes={number}
+  multipleFilesLimit={number}
+  customErrorText={string} 
+  textContent={object} 
+  description={string}
+  srOnlyDescription={boolean}
+  isRequired={boolean}
+/>`} />
+
+ 
+## Properties
+
+`acceptType` is a string that can be a single MIME type or a comma-separated list of MIME types.
+[MDN - accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept#limiting_accepted_file_types)
+
+
+<ArgTypes of={DropZoneField} />
+
+## Text Content Customization
+
+The `textContent` prop allows customizing all text strings.
+The default text content is:
+
+```
+{
+  dropFileSingle: 'Drop file here',
+  dropFilesMultiple: 'Drop files here',
+  browse: 'Browse',
+  maxFileSizeIs: 'The maximum file size is',
+  couldNotSelect: 'Could not select file',
+  canOnlySelectOneFile: 'You can only select one file',
+  fileTooLarge: 'The file is too large',
+  fileTypeNotValid: 'The file type is not valid',
+  defaultErrorText: 'An error occurred. Please try again.',
+  acceptedTypesText: 'Accepted file types:',
+  filesLimit: 'Max number of files accepted:',
+}
+```
+ 
