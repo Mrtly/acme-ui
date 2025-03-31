@@ -1,0 +1,38 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as MultiSelectFieldStories from './MultiSelectField.stories'
+
+<Meta of={MultiSelectFieldStories} />
+
+# MultiSelectField
+
+A **`<MultiSelectField>`** component to be used in Forms.
+
+It displays a collapsible list of options and allows a user to select one or more of them.
+
+For non-form purposes, utilize the base **`<Select>`** input. [Inputs > Select](/docs/inputs-select--docs).
+
+<Canvas of={MultiSelectFieldStories.Default} />
+
+### Usage
+
+Use **`<MultiSelectField>`** inside the **`<Form>`** wrapper component (see [Form > Docs](/docs/forms-fields-form--docs))
+
+<Source code={`import { MultiSelectField, MultiSelectFieldItem } from '@ppl-gds/ui'`} />
+
+<Source code={`
+<MultiSelectField
+  control={form.control}
+  name="multi_select"
+  label={args.label}
+  id="multi-select"
+  {...props}
+>
+  {items.map((item) => (
+    <MultiSelectFieldItem item={item} />
+  ))}
+</MultiSelectField>
+`}/>
+
+### Story props
+
+<Controls />
