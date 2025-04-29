@@ -9,17 +9,32 @@ import {
 } from './MultiSelect'
 
 const items: Array<MultiSelectItemType> = [
-	{ id: '1-chocolate', name: 'Chocolate' },
-	{ id: '2-mint', name: 'Mint' },
+	{ id: '1-vanilla', name: 'Vanilla' },
+	{ id: '2-chocolate', name: 'Chocolate' },
 	{ id: '3-strawberry', name: 'Strawberry' },
-	{ id: '4-vanilla', name: 'Vanilla' },
-	{ id: '5-caramel', name: 'Caramel', disabled: true },
+	{ id: '4-mint-chip', name: 'Mint Chip' },
+	{ id: '5-cookies-n-cream', name: 'Cookies and Cream' },
+	{ id: '6-butter-pecan', name: 'Butter Pecan' },
+	{ id: '7-rocky-road', name: 'Rocky Road' },
+	{ id: '8-neapolitan', name: 'Neapolitan' },
+	{ id: '9-coffee', name: 'Coffee' },
+	{ id: '10-pistachio', name: 'Pistachio' },
+	{ id: '11-caramel-swirl', name: 'Caramel Swirl' },
+	{ id: '12-mango', name: 'Mango' },
+	{ id: '13-matcha', name: 'Matcha' },
+	{ id: '14-black-raspberry', name: 'Black Raspberry' },
+	{ id: '15-salted-caramel', name: 'Salted Caramel' },
+	{ id: '16-lemon', name: 'Lemon' },
+	{ id: '17-birthday-cake', name: 'Birthday Cake' },
+	{ id: '18-cherry-garcia', name: 'Cherry Garcia' },
+	{ id: '19-banana', name: 'Banana' },
+	{ id: '20-hazelnut', name: 'Hazelnut' },
 ]
 
 const meta: Meta = {
-	title: 'Inputs/MultiSelect',
+	title: 'Input/MultiSelect',
 	render: ({ ...args }) => (
-		<div className="max-w-sm">
+		<div className="max-w-sm mt-40">
 			<MultiSelect label={args.label} {...args} onChange={(v) => console.log(v)}>
 				<MultiSelectTrigger />
 				<MultiSelectContent>
@@ -69,22 +84,20 @@ const meta: Meta = {
 			await expect(canvas.getByText('1 item selected')).toBeVisible()
 
 			//select 2nd item
-			const itemMint = await screen.findByRole('button', { name: 'Mint' }) //popover stays open
+			const itemMint = await screen.findByRole('button', { name: 'Mint Chip' }) //popover stays open
 			await expect(itemMint).toHaveAttribute('aria-pressed', 'false') //not selected
 			await userEvent.click(itemMint)
 			await expect(itemMint).toHaveAttribute('aria-pressed', 'true') //item is selected
 			await expect(multiselect).toHaveAttribute('aria-expanded', 'true')
 			await expect(canvas.getByText('2 items selected')).toBeVisible()
 
-			//close popover
-			await userEvent.click(multiselect)
-			await expect(multiselect).toHaveAttribute('aria-expanded', 'false') //popover closes
+			const itemPecan = await screen.findByRole('button', { name: 'Butter Pecan' })
+			await userEvent.click(itemPecan)
+			await expect(canvas.getByText('3 items selected')).toBeVisible()
 
-			//open & remove selection
-			await userEvent.click(multiselect)
-			await userEvent.click(itemChoco)
-			await userEvent.click(itemMint)
-			await userEvent.click(multiselect)
+			//close popover
+			await userEvent.keyboard('{Escape}')
+			await expect(multiselect).toHaveAttribute('aria-expanded', 'false') //popover closes
 		}
 	},
 }
@@ -94,3 +107,33 @@ export default meta
 type Story = StoryObj
 
 export const Default: Story = {}
+
+// -----
+
+const extraFlavors: Array<MultiSelectItemType> = [
+	{ id: '21-blueberry-cheesecake', name: 'Blueberry Cheesecake' },
+	{ id: '22-honey-lavender', name: 'Honey Lavender' },
+	{ id: '23-peanut-butter-cup', name: 'Peanut Butter Cup' },
+	{ id: '24-coconut', name: 'Coconut' },
+	{ id: '25-smore', name: 'S’mores' },
+	{ id: '26-gingerbread', name: 'Gingerbread' },
+	{ id: '27-key-lime-pie', name: 'Key Lime Pie' },
+	{ id: '28-tiramisu', name: 'Tiramisu' },
+	{ id: '29-raspberry-sorbet', name: 'Raspberry Sorbet' },
+	{ id: '30-apple-pie', name: 'Apple Pie', disabled: true },
+]
+
+export const WithMaxHeight = {
+	render: ({ ...args }) => (
+		<div className="max-w-sm">
+			<MultiSelect maxHeight={240} label={args.label} {...args} onChange={(v) => console.log(v)}>
+				<MultiSelectTrigger />
+				<MultiSelectContent>
+					{items.concat(extraFlavors).map((item) => (
+						<MultiSelectItem key={item.id} item={item} />
+					))}
+				</MultiSelectContent>
+			</MultiSelect>
+		</div>
+	),
+}

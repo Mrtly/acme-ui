@@ -1,9 +1,20 @@
 'use client'
-import { ReactNode, Ref, useState, createContext, useContext, ButtonHTMLAttributes } from 'react'
+import {
+	ReactNode,
+	Ref,
+	useState,
+	createContext,
+	useContext,
+	ButtonHTMLAttributes,
+	useEffect,
+	RefObject,
+} from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/utility/Popover'
-import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group'
+import { ToggleGroup } from 'radix-ui'
 import { Icon } from '@/theme/Icons'
 import { cn } from '@/utils/cn'
+import { ScrollArea } from '@/components/utility/ScrollArea'
+import { useViewportHeight } from '../../../hooks/useViewportHeight'
 
 // https://www.radix-ui.com/primitives/docs/components/toggle-group
 // https://www.radix-ui.com/primitives/docs/components/popover
@@ -14,14 +25,22 @@ type MultiSelectContextType = {
 	selectedItems: string[]
 	setSelectedItems: (items: string[]) => void
 	onChange: (s: string[]) => void
-	disabled?: boolean
 	label: string
+	disabled?: boolean
 	id?: string
 	placeholder?: string
 	error?: boolean
 	required?: boolean
 	showOptional?: boolean
 	srOnlyLabel?: boolean
+	/** number of pixels to set as maxHeight on the popover element */
+	maxHeight?: number //pixels
+	/** position info is used for the popover content height */
+	triggerPosition?: {
+		bottom: number
+		top: number
+	}
+	setTriggerPosition: (position: { bottom: number; top: number }) => void
 }
 
 const MultiSelectContext = createContext<MultiSelectContextType | undefined>(undefined)
@@ -41,6 +60,7 @@ export type MultiSelectItemType = {
 	id: string
 	/**  'name' required. The display name of the item. */
 	name: string
+	/**  whether the item is disabled */
 	disabled?: boolean
 	/** any other property */
 	//eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,10 +74,9 @@ const MultiSelectItem = ({ item, disabled }: MultiSelectItemProps) => {
 	const { disabled: contextDisabled } = useMultiSelectContext()
 	const isDisabled = item.disabled || disabled || contextDisabled
 
-	//Storybook accessibility check shows a contrast error on the item
-	//investigated, no visual issue, it may be a false positive coming from the Item primitive
+	//Storybook accessibility check may show a couple of incomplete items - no contrast or focus issue - warnings coming from the primitives
 	return (
-		<ToggleGroupItem
+		<ToggleGroup.Item
 			value={item.id}
 			disabled={isDisabled}
 			className="group w-full flex items-center gap-2 py-1 px-2 focus-visible:bg-gray-100 outline-none disabled:opacity-70"
@@ -69,10 +88,10 @@ const MultiSelectItem = ({ item, disabled }: MultiSelectItemProps) => {
 					'group-data-[state="off"]:opacity-50 group-data-[state="off"]:[&_svg]:invisible'
 				)}
 			>
-				<Icon name="Check" className="size-5" />
+				<Icon name="Check" className="size-5 group-data-[state='off']:invisible" />
 			</div>
 			{item.name}
-		</ToggleGroupItem>
+		</ToggleGroup.Item>
 	)
 }
 
@@ -80,11 +99,26 @@ const MultiSelectItem = ({ item, disabled }: MultiSelectItemProps) => {
 
 type MultiSelectTriggerProps = {
 	ref?: Ref<HTMLButtonElement>
-	className?: string
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
+/** Used with MultiSelect. Interactive component that triggers the MultiSelect dropdown display. */
 const MultiSelectTrigger = ({ className, ref, ...props }: MultiSelectTriggerProps) => {
-	const { selectedItems, id, label, placeholder, error, disabled } = useMultiSelectContext()
+	const { selectedItems, id, label, placeholder, error, disabled, required, setTriggerPosition } =
+		useMultiSelectContext()
+
+	// measure and set position in the context to be read by the content popover
+	const measurePosition = () => {
+		const element =
+			(ref as RefObject<HTMLButtonElement>)?.current || document.getElementById(id ?? label)
+		if (element) {
+			const rect = element.getBoundingClientRect()
+
+			setTriggerPosition({
+				bottom: rect.bottom,
+				top: rect.top,
+			})
+		}
+	}
 
 	const getValue = () => {
 		const length = selectedItems?.length
@@ -106,13 +140,18 @@ const MultiSelectTrigger = ({ className, ref, ...props }: MultiSelectTriggerProp
 			disabled={disabled}
 			data-disabled={disabled}
 			data-error={error}
+			data-required={required}
 			className={cn(
-				'w-full flex items-center justify-between py-2 px-3',
+				'w-full flex items-center justify-between py-2 px-3 text-sm',
 				'group focusVisibleRingStyles border border-gray-600 rounded-md',
 				'disabled:border-gray-500 disabled:cursor-not-allowed disabled:opacity-70',
 				error && 'border-error-500',
 				className
 			)}
+			onClick={(e) => {
+				measurePosition()
+				if (props.onClick) props.onClick(e)
+			}}
 		>
 			<div
 				id="multiselect-value"
@@ -133,29 +172,54 @@ const MultiSelectTrigger = ({ className, ref, ...props }: MultiSelectTriggerProp
 
 type MultiSelectContentProps = {
 	children: ReactNode
-	className?: string
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
-const MultiSelectContent = ({ children, className }: MultiSelectContentProps) => {
-	const { selectedItems, setSelectedItems, onChange } = useMultiSelectContext()
+/** Used with MultiSelect. Contains the selectable options. */
+const MultiSelectContent = ({ children, className, ...props }: MultiSelectContentProps) => {
+	const { selectedItems, setSelectedItems, onChange, maxHeight, triggerPosition } =
+		useMultiSelectContext()
+
+	const viewportHeight = useViewportHeight()
+
+	// calculate height based on space available from the trigger position
+	const calculatedHeight =
+		viewportHeight && triggerPosition
+			? Math.min(
+					maxHeight ? maxHeight : viewportHeight - 40, // 20px padding top + 20px padding bottom
+					// Use the maximum available space (either above or below)
+					Math.max(
+						viewportHeight - triggerPosition.bottom - 20, // space below with 20px padding
+						triggerPosition.top - 20 // space above with 20px padding
+					)
+				)
+			: viewportHeight
+				? Math.min(
+						maxHeight ? maxHeight : viewportHeight - 40, // 20px padding top + 20px padding bottom
+						viewportHeight - 40 // fallback with 20px padding top + 20px padding bottom
+					)
+				: 0 // SSR fallback (Next)
 
 	return (
 		<PopoverContent
+			{...props}
 			style={{ width: 'var(--radix-popover-trigger-width)' }}
-			className={cn('p-0 bg-white border-gray-600', className)}
+			className={cn('p-0 bg-white border-gray-600 rounded-md', className)}
+			hideWhenDetached
 		>
-			<ToggleGroup
-				type="multiple"
-				data-orientation="vertical"
-				value={selectedItems}
-				onValueChange={(value) => {
-					setSelectedItems(value)
-					onChange(value)
-				}}
-				className="flex flex-col gap-1 items-start p-1"
-			>
-				{children}
-			</ToggleGroup>
+			<ScrollArea type="auto" areaMaxHeight={calculatedHeight}>
+				<ToggleGroup.Root
+					type="multiple"
+					data-orientation="vertical"
+					value={selectedItems}
+					onValueChange={(value) => {
+						setSelectedItems(value)
+						onChange(value)
+					}}
+					className="flex flex-col gap-1 items-start p-1 text-sm"
+				>
+					{children}
+				</ToggleGroup.Root>
+			</ScrollArea>
 		</PopoverContent>
 	)
 }
@@ -174,11 +238,15 @@ export type MultiSelectProps = {
 	disabled?: boolean
 	required?: boolean
 	showOptional?: boolean
+	/** Initial value for uncontrolled component (only used if value is not provided) */
 	defaultValue?: string[]
-	className?: string
-}
+	/** Controlled component value - overrides internal state when provided */
+	value?: string[]
+	/** number of pixels to set as maxHeight on the popover element */
+	maxHeight?: number //pixels
+} & React.HTMLAttributes<HTMLDivElement>
 
-/** A select input element for multiple selection. */
+/** A custom select input element for multiple selection. */
 const MultiSelect = ({
 	children,
 	label,
@@ -191,15 +259,35 @@ const MultiSelect = ({
 	required,
 	showOptional,
 	defaultValue = [],
+	value,
 	className,
+	maxHeight,
+	...props
 }: MultiSelectProps) => {
-	const [selectedItems, setSelectedItems] = useState<Array<string>>(defaultValue)
+	const [selectedItems, setSelectedItems] = useState<Array<string>>(value || defaultValue)
+
+	// Update internal state when value prop changes
+	useEffect(() => {
+		if (value !== undefined) {
+			setSelectedItems(value)
+		}
+	}, [value])
+
+	const handleSelectionChange = (newSelectedItems: string[]) => {
+		setSelectedItems(newSelectedItems)
+		onChange(newSelectedItems)
+	}
+
+	// Add state for trigger position
+	const [triggerPosition, setTriggerPosition] = useState<
+		{ bottom: number; top: number } | undefined
+	>(undefined)
 
 	return (
 		<MultiSelectContext.Provider
 			value={{
 				selectedItems,
-				setSelectedItems,
+				setSelectedItems: handleSelectionChange,
 				onChange,
 				disabled,
 				label,
@@ -209,9 +297,12 @@ const MultiSelect = ({
 				required,
 				showOptional,
 				srOnlyLabel,
+				maxHeight,
+				triggerPosition,
+				setTriggerPosition,
 			}}
 		>
-			<div className={className}>
+			<div {...props} className={className}>
 				<div
 					id="multiselect-label"
 					className={cn(
@@ -225,12 +316,12 @@ const MultiSelect = ({
 						<span className="text-gray-500 font-normal">(optional)</span>
 					)}
 				</div>
-				<Popover>{children}</Popover>
+				<Popover modal>{children}</Popover>
 			</div>
 		</MultiSelectContext.Provider>
 	)
 }
 
-// ------------------------------------- Export components
+// ------------------------------------- export MultiSelect components
 
 export { MultiSelect, MultiSelectTrigger, MultiSelectContent, MultiSelectItem }
