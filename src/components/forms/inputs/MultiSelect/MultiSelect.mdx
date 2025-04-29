@@ -1,0 +1,57 @@
+import { Meta, Story, Canvas, Source, Controls, Markdown } from '@storybook/blocks'
+import * as MultiSelectStories from './MultiSelect.stories'
+
+<Meta of={MultiSelectStories} />
+
+# MultiSelect
+
+**`<MultiSelect>`** displays a collapsible list of options and allows a user to select one or more of them.
+
+In forms use the **`<MultiSelectField>`** component (see [Forms > Fields > MultiSelectField](/docs/forms-fields-Multiselectfield--docs)).
+
+<Canvas of={MultiSelectStories.Default} />
+
+### Usage
+
+<Source
+	code={`import { MultiSelect, MultiSelectTrigger, MultiSelectContent, MultiSelectItem } from '@ppl-gds/ui'`}/>
+
+<Source code={`
+<MultiSelect 
+  label={args.label} 
+  onChange={(v) => console.log(v)} //callback emits the selected item ids
+  defaultValue={['item-id']} // optional defaultValue: Array of item IDs
+  {...args} 
+>
+  <MultiSelectTrigger />
+  <MultiSelectContent>
+    {items.map((item) => (
+      <MultiSelectItem 
+        key={item.id} 
+        item={item} // must have id & name properties 
+      />
+    ))}
+  </MultiSelectContent>
+</MultiSelect>
+`}/>
+
+### Accessibility
+
+**MultiSelect** uses Radix Primitive components Popover and ToggleGroup.
+
+**`<MultiSelectItem>`** has the role of 'toggle button' with the 'aria-pressed' property that enhances the screen-reader experience by announcing the name of the item and whether it is selected.
+
+### Props
+
+`onChange` emits the selected item `id`s in an Array.
+
+Optional: 
+
+A `defaultValue` may be passed as an Array of item `id`s.
+
+`maxHeight`: Sets the maximum height of the popover element in pixels.
+
+
+### Story props
+
+<Controls />
